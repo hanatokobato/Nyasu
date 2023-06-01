@@ -14,7 +14,7 @@ const DeckItem: React.FC<IProps> = ({ deck }) => {
               width={40}
               height={40}
               className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
-              src="/logo.png"
+              src={deck.photoUrl ?? ''}
               alt="Bordered avatar"
             />
           </div>

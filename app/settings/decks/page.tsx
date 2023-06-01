@@ -30,6 +30,7 @@ const SettingsDecks = () => {
         id: deck._id,
         name: deck.name,
         description: deck.description,
+        photoUrl: deck.photoUrl,
         createdAt: deck.createdAt,
       }));
       setIsLoading(false);
@@ -133,7 +134,7 @@ const SettingsDecks = () => {
                               width={40}
                               height={40}
                               alt="profil"
-                              src="/images/person/8.jpg"
+                              src={deck.photoUrl ?? ''}
                               className="mx-auto object-cover rounded-full h-10 w-10 "
                             />
                           </a>
