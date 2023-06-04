@@ -61,7 +61,8 @@ const DeckForm: React.FC<IProps> = ({ deck }) => {
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/decks`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      reset({ name: '', description: '', photo: undefined });
+      reset({ name: '', description: '', photo: [] });
+      setImage(undefined);
       toast('Deck created!', { type: 'success' });
     } catch (e: any) {
       toast(e.message, { type: 'error' });
