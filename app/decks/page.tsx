@@ -23,6 +23,7 @@ const Decks = () => {
         id: deck._id,
         name: deck.name,
         description: deck.description,
+        photoUrl: deck.photoUrl,
         createdAt: deck.createdAt,
       }));
       setIsLoading(false);

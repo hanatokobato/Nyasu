@@ -1,4 +1,5 @@
-import Image from "next/image";
+import Image from 'next/image';
+import Link from 'next/link';
 
 const Header = () => {
   return (
@@ -6,30 +7,16 @@ const Header = () => {
       <nav className="flex items-center justify-between flex-wrap p-4">
         <div className="flex items-center flex-shrink-0 text-white mr-6">
           <Image src="/logo.png" alt="logo" width={40} height={40} />
-          <span className="font-semibold text-xl tracking-tight">
-            Nyasu
-          </span>
+          <span className="font-semibold text-xl tracking-tight">Nyasu</span>
         </div>
         <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
           <div className="text-sm lg:flex-grow">
-            <a
-              href="#responsive-header"
+            <Link
+              href="/decks"
               className="block mt-4 lg:inline-block lg:mt-0 mr-4"
             >
-              Docs
-            </a>
-            <a
-              href="#responsive-header"
-              className="block mt-4 lg:inline-block lg:mt-0 mr-4"
-            >
-              Examples
-            </a>
-            <a
-              href="#responsive-header"
-              className="block mt-4 lg:inline-block lg:mt-0"
-            >
-              Blog
-            </a>
+              Decks
+            </Link>
           </div>
           <div>
             <a

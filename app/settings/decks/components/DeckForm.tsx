@@ -2,74 +2,99 @@
 
 import axios from 'axios';
 import React, { SyntheticEvent, useCallback, useState } from 'react';
+import { useForm, Resolver } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 
 interface IProps {
   deck?: IDeck;
 }
 
-const DeckForm: React.FC<IProps> = ({ deck }) => {
-  const [name, setName] = useState<string>(deck?.name || '');
-  const [description, setDescription] = useState<string>(
-    deck?.description || ''
-  );
+type FormValues = {
+  name: string;
+  description: string;
+  photo: File[];
+};
 
-  const resetForm = useCallback(() => {
-    setName('');
-    setDescription('');
+const resolver: Resolver<FormValues> = async (values) => {
+  return {
+    values: values,
+    errors: !values.name
+      ? {
+          name: {
+            type: 'required',
+            message: 'This is required.',
+          },
+        }
+      : {},
+  };
+};
+
+const DeckForm: React.FC<IProps> = ({ deck }) => {
+  const [image, setImage] = useState<string>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver,
+    defaultValues: {
+      name: deck?.name,
+      description: deck?.description,
+    },
+  });
+
+  const updateDeck = useCallback(async (id: string, formData: FormData) => {
+    try {
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/decks/${id}`,
+        formData
+      );
+      toast('Deck updated!', { type: 'success' });
+    } catch (e: any) {
+      toast(e.message, { type: 'error' });
+    }
   }, []);
 
-  const updateDeck = useCallback(
-    async (
-      id: string,
-      { name, description }: { name: string; description: string }
-    ) => {
-      try {
-        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/decks/${id}`, {
-          name,
-          description,
-        });
-        toast('Deck updated!', { type: 'success' });
-      } catch (e: any) {
-        toast(e.message, { type: 'error' });
-      }
-    },
-    []
-  );
-
-  const createDeck = useCallback(
-    async ({ name, description }: { name: string; description: string }) => {
-      try {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/decks`, {
-          name,
-          description,
-        });
-        resetForm();
-        toast('Deck created!', { type: 'success' });
-      } catch (e: any) {
-        toast(e.message, { type: 'error' });
-      }
-    },
-    [resetForm]
-  );
+  const createDeck = useCallback(async (formData: FormData) => {
+    try {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/decks`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      reset({ name: '', description: '', photo: [] });
+      setImage(undefined);
+      toast('Deck created!', { type: 'success' });
+    } catch (e: any) {
+      toast(e.message, { type: 'error' });
+    }
+  }, []);
 
   const submitHandler = useCallback(
-    (event: SyntheticEvent) => {
-      event.preventDefault();
+    (data: FormValues) => {
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('description', data.description);
+      formData.append('photo', data.photo[0]);
 
       const res = deck?.id
-        ? updateDeck(deck.id, { name, description })
-        : createDeck({ name, description });
+        ? updateDeck(deck.id, formData)
+        : createDeck(formData);
     },
-    [deck?.id, name, description, updateDeck, createDeck]
+    [deck?.id, updateDeck, createDeck]
   );
+
+  const onImageChange = (event: any) => {
+    if (event.target.files && event.target.files[0]) {
+      setImage(URL.createObjectURL(event.target.files[0]));
+    }
+  };
 
   return (
     <section className="h-screen bg-gray-100/50">
       <ToastContainer theme="colored" autoClose={2000} hideProgressBar />
       <form
         className="container max-w-2xl mx-auto shadow-md md:w-3/4"
-        onSubmit={submitHandler}
+        onSubmit={handleSubmit(submitHandler)}
       >
         <div className="p-4 border-t-2 border-indigo-400 rounded-lg bg-gray-100/5 ">
           <div className="max-w-sm mx-auto md:w-full md:mx-0">
@@ -87,8 +112,7 @@ const DeckForm: React.FC<IProps> = ({ deck }) => {
                   type="text"
                   className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                   placeholder="Deck name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  {...register('name')}
                 />
               </div>
             </div>
@@ -103,8 +127,7 @@ const DeckForm: React.FC<IProps> = ({ deck }) => {
                     type="text"
                     className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                     placeholder="Deck description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    {...register('description')}
                   />
                 </div>
               </div>
@@ -113,11 +136,22 @@ const DeckForm: React.FC<IProps> = ({ deck }) => {
           <hr />
           <div className="items-center w-full p-8 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
             <h2 className="max-w-sm mx-auto md:w-4/12">Photo</h2>
-            <input
-              className="relative m-0 block min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-              type="file"
-              id="formFile"
-            />
+            <div className="flex flex-col">
+              <input
+                className="relative m-0 block min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+                type="file"
+                id="formFile"
+                {...register('photo')}
+                onChange={onImageChange}
+              />
+              {(deck?.photoUrl || image) && (
+                <img
+                  src={image ? image : deck?.photoUrl}
+                  alt="deck"
+                  className="mt-4 object-cover rounded-full h-20 w-20"
+                />
+              )}
+            </div>
           </div>
           <hr />
           <div className="w-full px-4 pb-4 ml-auto text-gray-500 md:w-1/3">
