@@ -1,7 +1,6 @@
 import DeckForm from '../components/DeckForm';
 import axios from 'axios';
 import React from 'react';
-import { NextPage } from 'next';
 
 const getData = async (deckId: string) => {
   const res = await axios.get(

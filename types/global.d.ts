@@ -8,4 +8,9 @@ declare global {
     photoUrl?: string;
     createdAt?: date;
   }
+
+  interface ICard {
+    id: string;
+    content: string;
+  }
 }
