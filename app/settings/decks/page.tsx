@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { BsSearch } from 'react-icons/bs';
+import { GiCardRandom } from 'react-icons/gi';
 
 const SettingsDecks = () => {
   const router = useRouter();
@@ -158,9 +159,15 @@ const SettingsDecks = () => {
                     </td>
                     <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
                       <div className="flex items-center">
+                        <Link href={`/settings/cards?deck_id=${deck.id}`}>
+                          <span className="px-4 py-1 flex items-center text-base rounded-full text-blue-600  bg-blue-200">
+                            <GiCardRandom className="mr-1" />
+                            Cards
+                          </span>
+                        </Link>
                         <Link
                           href={`/settings/decks/${deck.id}`}
-                          className="text-indigo-600 hover:text-indigo-900"
+                          className="text-indigo-600 hover:text-indigo-900 ml-4"
                         >
                           Edit
                         </Link>
