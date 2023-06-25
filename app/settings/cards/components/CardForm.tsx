@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 import MDEditor, {
@@ -12,6 +12,7 @@ import MDEditor, {
 import '@uiw/react-md-editor/dist/markdown-editor.css';
 import '@uiw/react-markdown-preview/dist/markdown.css';
 import axios from 'axios';
+import Image from 'next/image';
 
 interface IProps {
   card?: ICard;
@@ -21,14 +22,19 @@ interface IProps {
 const CardForm: React.FC<IProps> = ({ card, deckId }) => {
   const { handleSubmit } = useForm();
   const [content, setContent] = useState<string | undefined>(card?.content);
-  const attachmentRef = useRef<HTMLInputElement>(null);
+  const imageAttachmentRef = useRef<HTMLInputElement>(null);
+  const audioAttachmentRef = useRef<HTMLInputElement>(null);
+  const [audio, setAudio] = useState<HTMLAudioElement>(
+    new Audio(card?.audioUrl)
+  );
+  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
 
-  const onChooseAttachment = useCallback(
+  const onChooseImageAttachment = useCallback(
     async (state: TextState, api: TextAreaTextApi) => {
       try {
-        if (attachmentRef.current?.files?.length) {
+        if (imageAttachmentRef.current?.files?.length) {
           const formData = new FormData();
-          formData.append('file', attachmentRef.current.files[0]);
+          formData.append('file', imageAttachmentRef.current.files[0]);
           const res = await axios.post(
             `${process.env.NEXT_PUBLIC_API_URL}/cards/attachments`,
             formData,
@@ -38,7 +44,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
           );
           const { name, path } = res.data.attachment;
           const fileUrl = `${process.env.NEXT_PUBLIC_API_ROOT_URL}${path}`;
-          attachmentRef.current.value = '';
+          imageAttachmentRef.current.value = '';
 
           // Replaces the current selection with the image
           const imageTemplate = fileUrl;
@@ -51,6 +57,15 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
     },
     []
   );
+
+  const onChooseAudioAttachment = useCallback(() => {
+    if (audioAttachmentRef.current?.files?.length) {
+      const previewUrl = URL.createObjectURL(
+        audioAttachmentRef.current.files[0]
+      );
+      setAudio(new Audio(previewUrl));
+    }
+  }, []);
 
   const attachImage: ICommand = {
     name: 'image',
@@ -68,45 +83,74 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
     execute: (state: TextState, api: TextAreaTextApi) => {
       const selectImageHandler = (e: any) => {
         e.target.setAttribute('onSelectImage', 'true');
-        onChooseAttachment(state, api);
+        onChooseImageAttachment(state, api);
       };
-      if (attachmentRef.current?.getAttribute('onSelectImage') !== 'true') {
-        attachmentRef.current?.addEventListener('change', selectImageHandler);
+      if (
+        imageAttachmentRef.current?.getAttribute('onSelectImage') !== 'true'
+      ) {
+        imageAttachmentRef.current?.addEventListener(
+          'change',
+          selectImageHandler
+        );
       }
-      attachmentRef.current?.click();
+      imageAttachmentRef.current?.click();
     },
   };
 
-  const createCard = useCallback(async () => {
+  const playAudio = useCallback(() => {
+    if (isPlayingAudio) {
+      audio?.pause();
+      setIsPlayingAudio(false);
+    } else {
+      audio?.play();
+      setIsPlayingAudio(true);
+    }
+  }, [audio, isPlayingAudio]);
+
+  const createCard = useCallback(async (formData: FormData) => {
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cards`, {
-        content,
-        deck_id: deckId,
-      });
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cards`, formData);
       toast('Card created!', { type: 'success' });
     } catch (e: any) {
       toast(e.message, { type: 'error' });
     }
-  }, [content, deckId]);
+  }, []);
 
-  const updateCard = useCallback(async () => {
-    try {
-      await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/cards/${card?.id}`, {
-        content,
-        deck_id: deckId,
-      });
-      toast('Card updated!', { type: 'success' });
-    } catch (e: any) {
-      toast(e.message, { type: 'error' });
-    }
-  }, [content, card?.id, deckId]);
+  const updateCard = useCallback(
+    async (formData: FormData) => {
+      try {
+        await axios.put(
+          `${process.env.NEXT_PUBLIC_API_URL}/cards/${card?.id}`,
+          formData
+        );
+        toast('Card updated!', { type: 'success' });
+      } catch (e: any) {
+        toast(e.message, { type: 'error' });
+      }
+    },
+    [card?.id]
+  );
 
   const submitHandler = useCallback(
     (data: any) => {
-      card?.id ? updateCard() : createCard();
+      const formData = new FormData();
+      formData.append('content', content ?? '');
+      formData.append('deck_id', deckId);
+      if (audioAttachmentRef.current?.files?.length)
+        formData.append('file', audioAttachmentRef.current.files[0]);
+      card?.id ? updateCard(formData) : createCard(formData);
     },
-    [card?.id, createCard, updateCard]
+    [card?.id, createCard, updateCard, content, deckId]
   );
+
+  useEffect(() => {
+    if (audio) {
+      audio.addEventListener('ended', () => setIsPlayingAudio(false));
+      return () => {
+        audio.removeEventListener('ended', () => setIsPlayingAudio(false));
+      };
+    }
+  }, [audio]);
 
   return (
     <section className="h-screen bg-gray-100/50">
@@ -136,6 +180,26 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
               />
             </div>
           </div>
+          <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+            <div className="mx-auto ml-4 w-full">
+              <input
+                ref={audioAttachmentRef}
+                type="file"
+                accept="audio/*"
+                onChange={onChooseAudioAttachment}
+              />
+              {audio && (
+                <Image
+                  src="/sound.png"
+                  alt="sound"
+                  width={40}
+                  height={40}
+                  className="cursor-pointer"
+                  onClick={playAudio}
+                />
+              )}
+            </div>
+          </div>
           <hr />
           <div className="w-full px-4 pb-4 ml-auto text-gray-500 md:w-1/3">
             <button
@@ -146,7 +210,12 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
             </button>
           </div>
         </div>
-        <input type="file" ref={attachmentRef} className="invisible" />
+        <input
+          type="file"
+          accept="image/*"
+          ref={imageAttachmentRef}
+          className="invisible"
+        />
       </form>
     </section>
   );
