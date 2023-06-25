@@ -3,12 +3,13 @@
 import DropDownMenu from '@/app/components/DropDownMenu';
 import MDEditor from '@uiw/react-md-editor';
 import axios from 'axios';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { AiFillFileAdd, AiFillDelete } from 'react-icons/ai';
 import { TfiMoreAlt } from 'react-icons/tfi';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Cards = () => {
   const router = useRouter();
@@ -17,6 +18,8 @@ const Cards = () => {
   const [cards, setCards] = useState<ICard[]>([]);
   const [deck, setDeck] = useState<IDeck>();
   const [isLoading, setIsLoading] = useState(false);
+  const [audio, setAudio] = useState<HTMLAudioElement>();
+  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean | string>(false);
 
   const fetchDeck = useCallback(async () => {
     const res = await axios.get(
@@ -43,6 +46,7 @@ const Cards = () => {
         id: card._id,
         deckId: card.deck_id,
         content: card.content,
+        audioUrl: card.audioUrl,
       }));
       setIsLoading(false);
 
@@ -72,12 +76,36 @@ const Cards = () => {
     setCards(initCards);
   }, [fetchCards, fetchDeck]);
 
+  const playAudio = useCallback(
+    (card: ICard) => {
+      if (isPlayingAudio) {
+        audio?.pause();
+        setIsPlayingAudio(false);
+      } else {
+        setAudio(new Audio(card.audioUrl));
+        audio?.play();
+        setIsPlayingAudio(card.id);
+      }
+    },
+    [audio, isPlayingAudio]
+  );
+
   useEffect(() => {
     initData();
   }, [initData]);
 
+  useEffect(() => {
+    if (audio) {
+      audio.addEventListener('ended', () => setIsPlayingAudio(false));
+      return () => {
+        audio.removeEventListener('ended', () => setIsPlayingAudio(false));
+      };
+    }
+  }, [audio]);
+
   return (
     <>
+      <ToastContainer />
       <div className="mb-8">
         <div className="flex justify-between p-4 m-auto bg-white rounded-lg shadow w-96">
           <div>
@@ -106,6 +134,16 @@ const Cards = () => {
               key={card.id}
               className="flex flex-col ml-4 mb-4 border-gray-400 w-60"
             >
+              {card.audioUrl && (
+                <Image
+                  src="/sound.png"
+                  alt="sound"
+                  width={40}
+                  height={40}
+                  className="cursor-pointer"
+                  onClick={() => playAudio(card)}
+                />
+              )}
               <div className="flex justify-end">
                 <DropDownMenu
                   items={[
