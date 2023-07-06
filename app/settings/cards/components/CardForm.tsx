@@ -20,12 +20,22 @@ interface IProps {
 }
 
 const CardForm: React.FC<IProps> = ({ card, deckId }) => {
-  const { handleSubmit } = useForm();
-  const [content, setContent] = useState<string | undefined>(card?.content);
+  const { handleSubmit, register, watch } = useForm({
+    defaultValues: {
+      word: card?.fields.word,
+      translate: card?.fields.translate,
+      spelling: card?.fields.spelling,
+      example: card?.fields.example.sentence,
+      example_translate: card?.fields.example.translate,
+    },
+  });
+  const [content, setContent] = useState<{ front: string; back?: string }>(
+    card?.content ?? { front: '' }
+  );
   const imageAttachmentRef = useRef<HTMLInputElement>(null);
   const audioAttachmentRef = useRef<HTMLInputElement>(null);
-  const [audio, setAudio] = useState<HTMLAudioElement>(
-    new Audio(card?.audioUrl)
+  const [audio, setAudio] = useState<HTMLAudioElement | undefined>(
+    card?.audioUrl ? new Audio(card?.audioUrl) : undefined
   );
   const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
 
@@ -134,7 +144,14 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
   const submitHandler = useCallback(
     (data: any) => {
       const formData = new FormData();
-      formData.append('content', content ?? '');
+
+      formData.append('content[front]', content.front);
+      formData.append('fields[word]', data.word);
+      formData.append('fields[translate]', data.translate);
+      formData.append('fields[spelling]', data.spelling);
+      formData.append('fields[example][sentence]', data.example);
+      formData.append('fields[example][translate]', data.example_translate);
+      if (content.back) formData.append('content[back]', content.back);
       formData.append('deck_id', deckId);
       if (audioAttachmentRef.current?.files?.length)
         formData.append('file', audioAttachmentRef.current.files[0]);
@@ -152,8 +169,28 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
     }
   }, [audio]);
 
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      if (type === 'change') {
+        switch (name) {
+          case 'word':
+          case 'spelling':
+          case 'translate':
+            const backContent = `<h1>${value.word}</h1>\r\n\r\n${value.spelling}\r\n\r\n**${value.translate}**`;
+            setContent((cur) => ({ ...cur, back: backContent ?? '' }));
+            break;
+          case 'example':
+            const frontContent = value.example;
+            setContent((cur) => ({ ...cur, front: frontContent ?? '' }));
+            break;
+        }
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   return (
-    <section className="h-screen bg-gray-100/50">
+    <section className="bg-gray-100/50">
       <ToastContainer theme="colored" autoClose={2000} hideProgressBar />
       <form
         className="container max-w-2xl mx-auto shadow-md md:w-3/4"
@@ -167,17 +204,112 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
           </div>
         </div>
         <div className="space-y-6 bg-white">
-          <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
-            <div className="mx-auto ml-4 w-full">
-              <MDEditor
-                value={content}
-                onChange={setContent}
-                commands={[
-                  ...commands
-                    .getCommands()
-                    .map((i) => (i.name == 'image' ? attachImage : i)),
-                ]}
-              />
+          <div className="p-4">
+            <label
+              htmlFor="username"
+              className="block text-sm text-gray-500 dark:text-gray-300"
+            >
+              Word
+            </label>
+
+            <input
+              {...register('word')}
+              type="text"
+              placeholder="Word"
+              className="block  mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-red-400 bg-white px-5 py-2.5 text-gray-700 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 dark:border-red-400 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-red-300"
+            />
+
+            <p className="mt-3 text-xs text-red-400">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </p>
+
+            <input
+              {...register('translate')}
+              type="text"
+              placeholder="Translate"
+              className="block  mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-red-400 bg-white px-5 py-2.5 text-gray-700 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 dark:border-red-400 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-red-300"
+            />
+
+            <p className="mt-3 text-xs text-red-400">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </p>
+
+            <input
+              {...register('spelling')}
+              type="text"
+              placeholder="Spelling"
+              className="block  mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-red-400 bg-white px-5 py-2.5 text-gray-700 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 dark:border-red-400 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-red-300"
+            />
+
+            <p className="mt-3 text-xs text-red-400">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </p>
+          </div>
+          <div className="p-4">
+            <label className="block text-sm text-gray-500 dark:text-gray-300">
+              Example
+            </label>
+
+            <input
+              {...register('example')}
+              type="text"
+              placeholder="Example"
+              className="block  mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-red-400 bg-white px-5 py-2.5 text-gray-700 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 dark:border-red-400 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-red-300"
+            />
+
+            <p className="mt-3 text-xs text-red-400">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </p>
+
+            <input
+              {...register('example_translate')}
+              type="text"
+              placeholder="Translate"
+              className="block  mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-red-400 bg-white px-5 py-2.5 text-gray-700 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 dark:border-red-400 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-red-300"
+            />
+
+            <p className="mt-3 text-xs text-red-400">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </p>
+          </div>
+          <div>
+            <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+              <div className="mx-auto w-full">Front</div>
+            </div>
+            <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+              <div className="mx-auto w-full">
+                <MDEditor
+                  value={content?.front}
+                  onChange={(val) =>
+                    setContent((cur) => ({ ...cur, front: val ?? '' }))
+                  }
+                  commands={[
+                    ...commands
+                      .getCommands()
+                      .map((i) => (i.name == 'image' ? attachImage : i)),
+                  ]}
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+              <div className="mx-auto w-full">Back</div>
+            </div>
+            <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+              <div className="mx-auto w-full">
+                <MDEditor
+                  value={content?.back}
+                  onChange={(val) =>
+                    setContent((cur) => ({ ...cur, back: val ?? '' }))
+                  }
+                  commands={[
+                    ...commands
+                      .getCommands()
+                      .map((i) => (i.name == 'image' ? attachImage : i)),
+                  ]}
+                />
+              </div>
             </div>
           </div>
           <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">

@@ -1,4 +1,4 @@
-import './globals.css';
+import './globals.scss';
 import { Quicksand } from 'next/font/google';
 import Header from './components/Header';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={quickSand.className}>
         <Header />
-        {children}
+        <div className="pt-16 h-screen">{children}</div>
       </body>
     </html>
   );

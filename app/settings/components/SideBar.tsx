@@ -4,7 +4,7 @@ const SideBar = () => {
   return (
     <div className="relative bg-white dark:bg-gray-800">
       <div className="flex flex-col sm:flex-row sm:justify-around">
-        <div className="h-screen w-72">
+        <div className="h-full w-72">
           <nav className="mt-10 px-6 ">
             <Link
               href="/settings/decks"

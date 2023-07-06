@@ -161,7 +161,7 @@ const Cards = () => {
                   href={`/settings/cards/${card.id}`}
                   className="w-full h-full"
                 >
-                  <MDEditor.Markdown source={card.content} />
+                  <MDEditor.Markdown source={card.content.front} />
                 </Link>
               </div>
             </li>

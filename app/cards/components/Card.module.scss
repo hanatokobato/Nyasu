@@ -1,0 +1,117 @@
+@import './../../sass/variables';
+
+.card {
+  perspective: 150rem;
+  -moz-perspective: 150rem;
+  position: relative;
+  min-height: 25rem;
+
+  &__side--front.rotate {
+    transform: rotateY(180deg);
+  }
+
+  &__side--back.rotate {
+    transform: rotateY(0deg);
+  }
+
+  &__side {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.8s ease;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+
+    &--front {
+      background-color: $color-white;
+    }
+
+    &--back {
+      transform: rotateY(-180deg);
+    }
+  }
+
+  &__heading {
+    font-size: 2.8rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    position: absolute;
+    top: 12rem;
+    right: 2rem;
+    text-align: right;
+    color: $color-white;
+    width: 75%;
+  }
+
+  &__details {
+    padding: 1.5rem;
+    padding-top: 3rem;
+
+    ul {
+      list-style: none;
+      width: 80%;
+      margin: 0 auto;
+
+      li {
+        text-align: center;
+        font-size: 1.5rem;
+        padding: 1rem;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid $color-grey-light-2;
+        }
+      }
+    }
+  }
+
+  &__cta {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center;
+  }
+
+  &__price-box {
+    text-align: center;
+    margin-bottom: 8rem;
+  }
+
+  &__price-only {
+    font-size: 1.4rem;
+    text-transform: uppercase;
+  }
+
+  &__price-value {
+    font-size: 6rem;
+    font-weight: 100;
+  }
+}
+
+.btn-sound-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #e5e5e5;
+  border: none;
+  padding: 0;
+  position: relative;
+
+  img {
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+
+    &:active,
+    &:focus {
+      transform: translateY(5px);
+    }
+  }
+}
