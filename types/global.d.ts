@@ -11,8 +11,20 @@ declare global {
 
   interface ICard {
     id: string;
-    content: string;
+    content: {
+      front: string;
+      back: string;
+    };
     deckId: string;
     audioUrl: string;
+    fields: {
+      word: string;
+      spelling: string;
+      translate: string;
+      example: {
+        sentence: string;
+        translate?: string;
+      };
+    };
   }
 }

@@ -3,24 +3,21 @@ import Link from 'next/link';
 
 const Header = () => {
   return (
-    <header className="bg-white border-b">
-      <nav className="flex items-center justify-between flex-wrap p-4">
+    <header className="bg-white border-b w-full absolute">
+      <nav className="flex items-center justify-between p-4">
         <div className="flex items-center flex-shrink-0 text-white mr-6">
           <Image src="/logo.png" alt="logo" width={40} height={40} />
           <span className="font-semibold text-xl tracking-tight">Nyasu</span>
         </div>
-        <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-          <div className="text-sm lg:flex-grow">
+        <div className="w-full block flex-grow flex items-center w-auto">
+          <div className="text-sm flex-grow">
             <Link
               href="/settings"
-              className="block mt-4 lg:inline-block lg:mt-0 mr-4"
+              className="block inline-block mt-0 mr-4"
             >
               Settings
             </Link>
-            <Link
-              href="/decks"
-              className="block mt-4 lg:inline-block lg:mt-0 mr-4"
-            >
+            <Link href="/decks" className="block inline-block mt-0 mr-4">
               Decks
             </Link>
           </div>

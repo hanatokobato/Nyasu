@@ -8,7 +8,9 @@ export default function SettingsLayout({
 }) {
   return (
     <div className="flex">
-      <SideBar />
+      <div className="mt-3">
+        <SideBar />
+      </div>
       <div className="container mx-auto mt-12 px-6">
         {children}
         <ToastContainer />

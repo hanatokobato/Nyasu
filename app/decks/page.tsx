@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import DeckItem from './components/DeckItem';
+import Link from 'next/link';
 
 const Decks = () => {
   const [decks, setDecks] = useState<IDeck[]>([]);
@@ -49,7 +50,9 @@ const Decks = () => {
         <div className="flex justify-center flex-wrap mx-6 mt-2">
           <div className="w-9/12">
             {decks.map((deck) => (
-              <DeckItem key={deck.id} deck={deck} />
+              <Link href={`/cards?deck_id=${deck.id}`} key={deck.id}>
+                <DeckItem deck={deck} />
+              </Link>
             ))}
           </div>
         </div>
