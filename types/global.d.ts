@@ -7,6 +7,9 @@ declare global {
     description?: string;
     photoUrl?: string;
     createdAt?: date;
+    learning: {
+      _id: string;
+    };
   }
 
   interface ICard {
@@ -26,5 +29,9 @@ declare global {
         translate?: string;
       };
     };
+  }
+
+  interface IReview {
+    card: ICard;
   }
 }
