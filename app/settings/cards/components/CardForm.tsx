@@ -37,7 +37,6 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
   const [audio, setAudio] = useState<HTMLAudioElement | undefined>(
     card?.audioUrl ? new Audio(card?.audioUrl) : undefined
   );
-  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
 
   const onChooseImageAttachment = useCallback(
     async (state: TextState, api: TextAreaTextApi) => {
@@ -107,15 +106,14 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
     },
   };
 
-  const playAudio = useCallback(() => {
-    if (isPlayingAudio) {
-      audio?.pause();
-      setIsPlayingAudio(false);
-    } else {
-      audio?.play();
-      setIsPlayingAudio(true);
-    }
-  }, [audio, isPlayingAudio]);
+  const playAudio = useCallback(
+    (e: any) => {
+      e.preventDefault();
+
+      setAudio(new Audio(card?.audioUrl));
+    },
+    [card?.audioUrl]
+  );
 
   const createCard = useCallback(async (formData: FormData) => {
     try {
@@ -162,10 +160,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
 
   useEffect(() => {
     if (audio) {
-      audio.addEventListener('ended', () => setIsPlayingAudio(false));
-      return () => {
-        audio.removeEventListener('ended', () => setIsPlayingAudio(false));
-      };
+      audio.play();
     }
   }, [audio]);
 
@@ -321,14 +316,16 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
                 onChange={onChooseAudioAttachment}
               />
               {audio && (
-                <Image
-                  src="/sound.png"
-                  alt="sound"
-                  width={40}
-                  height={40}
-                  className="cursor-pointer"
-                  onClick={playAudio}
-                />
+                <button className="relative w-14 h-14 bg-neutral-200 rounded-full">
+                  <Image
+                    src="/sound.svg"
+                    alt="sound"
+                    width={59}
+                    height={59}
+                    className="cursor-pointer rounded-full bg-white absolute left-0 bottom-1.5 active:translate-y-1.5 focus:translate-y-1.5"
+                    onClick={playAudio}
+                  />
+                </button>
               )}
             </div>
           </div>
