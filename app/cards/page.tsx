@@ -10,6 +10,7 @@ import FillBlankInput from '../components/inputs/FillBlankInput';
 import Answer from './components/Answer';
 import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
+import LearnButton from '../components/buttons/LearnButton';
 
 enum QuestionType {
   FREE_INPUT = 'FREE_INPUT',
@@ -150,7 +151,7 @@ const Cards = () => {
   }, [cards, passedCards, router, deckId]);
 
   return (
-    <div className="flex bg-slate-100 h-full">
+    <div className="flex bg-slate-100 min-h-full-minus-header">
       <ToastContainer />
       <div className="flex-auto w-1/4"></div>
       <div className="flex-auto w-2/3 bg-main-center relative">
@@ -187,15 +188,9 @@ const Cards = () => {
           </div>
         </div>
         <div className="flex justify-center absolute w-full bottom-24">
-          <button
-            type="button"
-            className="py-2 px-8 flex justify-center items-center  bg-green-500 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-full"
-            onClick={goNextHandler}
-          >
-            <div className="flex items-center justify-center">
-              <span>TIẾP TỤC</span>
-            </div>
-          </button>
+          <LearnButton className="w-60" onClick={goNextHandler}>
+            TIẾP TỤC
+          </LearnButton>
         </div>
         {cards.length > 0 && cards[0].currentAnswer !== undefined && (
           <div className="mt-20">

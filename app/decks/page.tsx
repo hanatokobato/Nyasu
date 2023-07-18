@@ -45,7 +45,7 @@ const Decks = () => {
   }, [initData]);
 
   return (
-    <div className="flex bg-slate-100 h-screen">
+    <div className="flex bg-slate-100 min-h-full-minus-header">
       <div className="flex-auto w-1/4"></div>
       <div className="flex-auto w-1/2 bg-white">
         <div className="flex justify-center flex-wrap mx-6 mt-2">

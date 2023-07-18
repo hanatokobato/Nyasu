@@ -111,7 +111,7 @@ const Review = () => {
   }, [reviews, passedCards, router]);
 
   return (
-    <div className="flex bg-slate-100 h-full">
+    <div className="flex bg-slate-100 min-h-full-minus-header">
       <ToastContainer />
       <div className="flex-auto w-1/4"></div>
       <div className="flex-auto w-2/3 bg-main-center relative">

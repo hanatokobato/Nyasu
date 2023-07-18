@@ -10,7 +10,7 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <header className="bg-white border-b w-full absolute h-24">
+    <header className="bg-white border-b w-full absolute top-0 h-24">
       <nav className="flex items-center justify-between h-full px-8 bg-stone-100">
         <div className="flex items-center flex-shrink-0 text-white mr-6 w-1/4">
           <Image src="/logo.png" alt="logo" width={40} height={40} />

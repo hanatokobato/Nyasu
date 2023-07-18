@@ -16,7 +16,7 @@ const Home = async () => {
     await getData();
 
   return (
-    <div className="flex bg-slate-100 h-full">
+    <div className="flex bg-slate-100 min-h-full-minus-header">
       <div className="flex-auto w-1/4"></div>
       <div className="flex-auto w-2/3 bg-main-center relative">
         <div className="flex justify-center flex-wrap mx-6 mt-2">
@@ -26,9 +26,7 @@ const Home = async () => {
               {wait_review_count > 0 && (
                 <p className="mb-12">Chuẩn bị ôn tập: {wait_review_count} từ</p>
               )}
-              {wait_review_count > 0 && curr_review_count === 0 && (
-                <WaitReviewBtn date={upcoming} />
-              )}
+              {curr_review_count === 0 && <WaitReviewBtn date={upcoming} />}
               {curr_review_count > 0 && (
                 <Link href="/review">
                   <LearnButton className="w-60">ÔN TẬP NGAY</LearnButton>

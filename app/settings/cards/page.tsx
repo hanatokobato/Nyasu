@@ -76,19 +76,9 @@ const Cards = () => {
     setCards(initCards);
   }, [fetchCards, fetchDeck]);
 
-  const playAudio = useCallback(
-    (card: ICard) => {
-      if (isPlayingAudio) {
-        audio?.pause();
-        setIsPlayingAudio(false);
-      } else {
-        setAudio(new Audio(card.audioUrl));
-        audio?.play();
-        setIsPlayingAudio(card.id);
-      }
-    },
-    [audio, isPlayingAudio]
-  );
+  const playAudio = useCallback((card: ICard) => {
+    setAudio(new Audio(card?.audioUrl));
+  }, []);
 
   useEffect(() => {
     initData();
@@ -96,10 +86,7 @@ const Cards = () => {
 
   useEffect(() => {
     if (audio) {
-      audio.addEventListener('ended', () => setIsPlayingAudio(false));
-      return () => {
-        audio.removeEventListener('ended', () => setIsPlayingAudio(false));
-      };
+      audio.play();
     }
   }, [audio]);
 
@@ -135,14 +122,16 @@ const Cards = () => {
               className="flex flex-col ml-4 mb-4 border-gray-400 w-60"
             >
               {card.audioUrl && (
-                <Image
-                  src="/sound.png"
-                  alt="sound"
-                  width={40}
-                  height={40}
-                  className="cursor-pointer"
-                  onClick={() => playAudio(card)}
-                />
+                <button className="relative w-14 h-14 bg-neutral-200 rounded-full">
+                  <Image
+                    src="/sound.svg"
+                    alt="sound"
+                    width={59}
+                    height={59}
+                    className="cursor-pointer rounded-full bg-white absolute left-0 bottom-1.5 active:translate-y-1.5 focus:translate-y-1.5"
+                    onClick={() => playAudio(card)}
+                  />
+                </button>
               )}
               <div className="flex justify-end">
                 <DropDownMenu

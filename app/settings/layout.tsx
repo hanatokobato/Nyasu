@@ -7,11 +7,9 @@ export default function SettingsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex">
-      <div className="mt-3">
-        <SideBar />
-      </div>
-      <div className="container mx-auto mt-12 px-6">
+    <div className="flex min-h-full-minus-header">
+      <SideBar />
+      <div className="container mx-auto pt-12 px-6">
         {children}
         <ToastContainer />
       </div>
