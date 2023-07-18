@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useCallback, useState, MouseEvent } from 'react';
+import React, { useCallback, useState, MouseEvent, useEffect } from 'react';
 
 interface IProps {
+  value?: string;
   options: ICard[];
   quizType: string;
   onSelected?: (selection: string | null) => void;
 }
 
-const SelectAnswer = ({ options, quizType, onSelected }: IProps) => {
-  const [selected, setSelected] = useState<string | null>();
+const SelectAnswer = ({ options, quizType, onSelected, value }: IProps) => {
+  const [selected, setSelected] = useState<string | undefined>(value);
 
   const selectHandler = useCallback(
     (selection: string) => {
@@ -18,6 +19,10 @@ const SelectAnswer = ({ options, quizType, onSelected }: IProps) => {
     },
     [onSelected]
   );
+
+  useEffect(() => {
+    setSelected(value);
+  }, [value]);
 
   return (
     <div>
