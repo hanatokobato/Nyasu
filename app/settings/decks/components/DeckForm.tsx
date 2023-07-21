@@ -97,7 +97,7 @@ const DeckForm: React.FC<IProps> = ({ deck }) => {
         className="container max-w-2xl mx-auto shadow-md md:w-3/4"
         onSubmit={handleSubmit(submitHandler)}
       >
-        <div className="p-4 border-t-2 border-purple-400 rounded-lg bg-gray-100/5 ">
+        <div className="p-4 border-t-2 rounded-lg bg-gray-100/5 ">
           <div className="max-w-sm mx-auto md:w-full md:mx-0">
             <div className="inline-flex items-center space-x-4">
               <h1 className="text-gray-600">Deck</h1>

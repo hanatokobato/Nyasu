@@ -19,8 +19,21 @@ interface IProps {
   deckId: string;
 }
 
+interface IFormInputs {
+  word: string;
+  translate: string;
+  spelling: string;
+  example: string;
+  example_translate: string;
+}
+
 const CardForm: React.FC<IProps> = ({ card, deckId }) => {
-  const { handleSubmit, register, watch } = useForm({
+  const {
+    handleSubmit,
+    register,
+    watch,
+    formState: { errors },
+  } = useForm<IFormInputs>({
     defaultValues: {
       word: card?.fields.word,
       translate: card?.fields.translate,
@@ -191,7 +204,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
         className="container max-w-2xl mx-auto shadow-md md:w-3/4"
         onSubmit={handleSubmit(submitHandler)}
       >
-        <div className="p-4 border-t-2 border-green-400 rounded-lg bg-gray-100/5 ">
+        <div className="p-4 border-t-2 rounded-lg bg-gray-100/5 ">
           <div className="max-w-sm mx-auto md:w-full md:mx-0">
             <div className="inline-flex items-center space-x-4">
               <h1 className="text-gray-600">Card</h1>
@@ -208,36 +221,44 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
             </label>
 
             <input
-              {...register('word')}
+              {...register('word', { required: true })}
               type="text"
               placeholder="Word"
-              className="block  mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-red-400 bg-white px-5 py-2.5 text-gray-700 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 dark:border-red-400 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-red-300"
+              className={`block  mt-2 w-full placeholder-gray-400/70 rounded-lg border ${
+                errors.word ? 'border-red-400 focus:ring-red-300' : ''
+              } bg-white px-5 py-2.5 text-gray-700 focus:outline-none focus:ring`}
             />
 
             <p className="mt-3 text-xs text-red-400">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              {errors.word?.type === 'required' && 'This is required field.'}
             </p>
 
             <input
-              {...register('translate')}
+              {...register('translate', { required: true })}
               type="text"
               placeholder="Translate"
-              className="block  mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-red-400 bg-white px-5 py-2.5 text-gray-700 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 dark:border-red-400 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-red-300"
+              className={`block  mt-2 w-full placeholder-gray-400/70 rounded-lg border ${
+                errors.translate ? 'border-red-400 focus:ring-red-300' : ''
+              } bg-white px-5 py-2.5 text-gray-700 focus:outline-none focus:ring`}
             />
 
             <p className="mt-3 text-xs text-red-400">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              {errors.translate?.type === 'required' &&
+                'This is required field.'}
             </p>
 
             <input
-              {...register('spelling')}
+              {...register('spelling', { required: true })}
               type="text"
               placeholder="Spelling"
-              className="block  mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-red-400 bg-white px-5 py-2.5 text-gray-700 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 dark:border-red-400 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-red-300"
+              className={`block  mt-2 w-full placeholder-gray-400/70 rounded-lg border ${
+                errors.spelling ? 'border-red-400 focus:ring-red-300' : ''
+              } bg-white px-5 py-2.5 text-gray-700 focus:outline-none focus:ring`}
             />
 
             <p className="mt-3 text-xs text-red-400">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              {errors.spelling?.type === 'required' &&
+                'This is required field.'}
             </p>
           </div>
           <div className="p-4">
@@ -246,25 +267,32 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
             </label>
 
             <input
-              {...register('example')}
+              {...register('example', { required: true })}
               type="text"
               placeholder="Example"
-              className="block  mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-red-400 bg-white px-5 py-2.5 text-gray-700 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 dark:border-red-400 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-red-300"
+              className={`block  mt-2 w-full placeholder-gray-400/70 rounded-lg border ${
+                errors.example ? 'border-red-400 focus:ring-red-300' : ''
+              } bg-white px-5 py-2.5 text-gray-700 focus:outline-none focus:ring`}
             />
 
             <p className="mt-3 text-xs text-red-400">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              {errors.example?.type === 'required' && 'This is required field.'}
             </p>
 
             <input
               {...register('example_translate')}
               type="text"
               placeholder="Translate"
-              className="block  mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-red-400 bg-white px-5 py-2.5 text-gray-700 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 dark:border-red-400 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-red-300"
+              className={`block  mt-2 w-full placeholder-gray-400/70 rounded-lg border ${
+                errors.example_translate
+                  ? 'border-red-400 focus:ring-red-300'
+                  : ''
+              } bg-white px-5 py-2.5 text-gray-700 focus:outline-none focus:ring`}
             />
 
             <p className="mt-3 text-xs text-red-400">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              {errors.example_translate?.type === 'required' &&
+                'This is required field.'}
             </p>
           </div>
           <div>
