@@ -92,7 +92,7 @@ const Cards = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme="colored" autoClose={2000} hideProgressBar />
       <div className="mb-8">
         <div className="flex justify-between p-4 m-auto bg-white rounded-lg shadow w-96">
           <div>

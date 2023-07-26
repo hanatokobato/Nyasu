@@ -5,12 +5,12 @@ import Card from './components/Card';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { cloneDeep, lowerCase } from 'lodash';
-import GameInput from '../components/inputs/TextInput';
-import FillBlankInput from '../components/inputs/FillBlankInput';
+import GameInput from '../../components/inputs/TextInput';
+import FillBlankInput from '../../components/inputs/FillBlankInput';
 import Answer from './components/Answer';
 import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
-import LearnButton from '../components/buttons/LearnButton';
+import LearnButton from '../../components/buttons/Button';
 
 enum QuestionType {
   FREE_INPUT = 'FREE_INPUT',
@@ -152,7 +152,7 @@ const Cards = () => {
 
   return (
     <div className="flex bg-slate-100 min-h-full-minus-header">
-      <ToastContainer />
+      <ToastContainer theme="colored" autoClose={2000} hideProgressBar />
       <div className="flex-auto w-1/4"></div>
       <div className="flex-auto w-2/3 bg-main-center relative">
         <div className="flex justify-center flex-wrap mx-6 mt-2">

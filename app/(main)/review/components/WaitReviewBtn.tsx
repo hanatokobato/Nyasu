@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { ButtonHTMLAttributes } from 'react';
 import Countdown, { CountdownRendererFn } from 'react-countdown';
-import timeImg from '../../images/time.svg';
-import warningImg from '../../images/warning.png';
+import timeImg from '../../../images/time.svg';
+import warningImg from '../../../images/warning.png';
 
 interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   date: Date;

@@ -1,7 +1,8 @@
-import './globals.scss';
+import '../globals.scss';
 import { Quicksand } from 'next/font/google';
-import Header from './components/Header';
+import Header from '../components/Header';
 import 'react-toastify/dist/ReactToastify.css';
+import { NextAuthProvider } from '../providers';
 
 const quickSand = Quicksand({ subsets: ['vietnamese'] });
 
@@ -18,8 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={quickSand.className}>
-        <Header />
-        <div className="pt-24 min-h-screen">{children}</div>
+        <NextAuthProvider>
+          <div className="min-h-screen">{children}</div>
+        </NextAuthProvider>
       </body>
     </html>
   );

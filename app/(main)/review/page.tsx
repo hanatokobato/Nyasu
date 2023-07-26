@@ -5,7 +5,7 @@ import { cloneDeep, isEmpty, sample, uniqBy } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Question from './components/Question';
 import SelectAnswer from './components/SelectAnswer';
-import LearnButton from '../components/buttons/LearnButton';
+import LearnButton from '../../components/buttons/Button';
 import Answer from '../cards/components/Answer';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
@@ -112,7 +112,7 @@ const Review = () => {
 
   return (
     <div className="flex bg-slate-100 min-h-full-minus-header">
-      <ToastContainer />
+      <ToastContainer theme="colored" autoClose={2000} hideProgressBar />
       <div className="flex-auto w-1/4"></div>
       <div className="flex-auto w-2/3 bg-main-center relative">
         <div className="mt-20">
