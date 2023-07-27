@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 
 const AUTH_PATHS = ['/auth/login', '/auth/register'];
 const PUBLIC_PATHS = ['/', '/auth/logout'].concat(AUTH_PATHS);
+const ADMIN_PATHS = ['/settings'];
 
 export default withAuth(
   function middleware(req) {
@@ -25,7 +26,13 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        return PUBLIC_PATHS.includes(req.nextUrl.pathname) || token !== null;
+        if (PUBLIC_PATHS.includes(req.nextUrl.pathname)) return true;
+
+        if (ADMIN_PATHS.some((p) => req.nextUrl.pathname.startsWith(p))) {
+          return token !== null && (token.user as IUser).role === 'ADMIN';
+        }
+
+        return token !== null;
       },
     },
   }

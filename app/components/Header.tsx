@@ -9,10 +9,14 @@ import { useSession } from 'next-auth/react';
 import { useMemo } from 'react';
 
 const Header = () => {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const pathname = usePathname();
 
   const isLoggedIn = useMemo(() => status === 'authenticated', [status]);
+  const isAdminLoggedIn = useMemo(
+    () => status === 'authenticated' && session.user?.role === 'ADMIN',
+    [status, session]
+  );
 
   return (
     <header className="bg-white border-b w-full absolute top-0 h-24">
@@ -44,10 +48,10 @@ const Header = () => {
           </div>
         )}
         <div className="w-1/4 flex justify-end">
-          {isLoggedIn && (
+          {isAdminLoggedIn && (
             <Link href="/settings">
               <span className="font-bold text-2xl text-yellow-500">
-                Settings
+                Quản lý
               </span>
             </Link>
           )}
@@ -58,15 +62,13 @@ const Header = () => {
               </span>
             </Link>
           )}
-          {
-            !isLoggedIn && (
-              <Link href="/auth/login">
-                <span className="font-bold text-2xl text-yellow-500 ml-4">
-                  Đăng nhập
-                </span>
-              </Link>
-            )
-          }
+          {!isLoggedIn && (
+            <Link href="/auth/login">
+              <span className="font-bold text-2xl text-yellow-500 ml-4">
+                Đăng nhập
+              </span>
+            </Link>
+          )}
         </div>
       </nav>
     </header>

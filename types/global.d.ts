@@ -34,4 +34,9 @@ declare global {
   interface IReview {
     card: ICard;
   }
+
+  interface IUser {
+    email: string;
+    role: 'ADMIN' | 'USER';
+  }
 }

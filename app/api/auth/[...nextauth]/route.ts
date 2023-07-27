@@ -27,10 +27,12 @@ const handler = NextAuth({
     async redirect({ url, baseUrl }) {
       return baseUrl;
     },
-    async session({ session, user, token }) {
+    async session({ session, token }) {
+      session.user = token.user as IUser;
       return session;
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
+    async jwt({ token, user }) {
+      if (user) token.user = user;
       return token;
     },
   },
