@@ -4,10 +4,11 @@ import Button from '@/app/components/buttons/Button';
 import axios, { AxiosError } from 'axios';
 import { join } from 'lodash';
 import Link from 'next/link';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 import Input from '../components/Input';
+import { signIn } from 'next-auth/react';
 
 const Register = () => {
   const { register, handleSubmit } = useForm();
@@ -19,6 +20,7 @@ const Register = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
         { email, password }
       );
+      await signIn('credentials', {});
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         toast(
