@@ -1,6 +1,6 @@
 import React, { ButtonHTMLAttributes } from 'react';
 
-const LearnButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
+const Button = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <div
       className={`relative h-12 bg-lime-700 rounded-full mx-auto ${props.className}`}
@@ -19,4 +19,4 @@ const LearnButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
   );
 };
 
-export default LearnButton;
+export default Button;

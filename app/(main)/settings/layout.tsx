@@ -11,7 +11,7 @@ export default function SettingsLayout({
       <SideBar />
       <div className="container mx-auto pt-12 px-6">
         {children}
-        <ToastContainer />
+        <ToastContainer theme="colored" autoClose={2000} hideProgressBar />
       </div>
     </div>
   );

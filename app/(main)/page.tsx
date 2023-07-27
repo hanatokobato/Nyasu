@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
-import LearnButton from './components/buttons/LearnButton';
+import LearnButton from '../components/buttons/Button';
 import Chart from './review/components/Chart';
 import WaitReviewBtn from './review/components/WaitReviewBtn';
 
