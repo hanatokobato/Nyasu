@@ -27,7 +27,7 @@ const Home = async () => {
       <Image src="/menu-avatar.png" width={200} height={234} alt="" />
       <div className="mt-4">
         <p className="font-bold text-2xl text-center">
-          Để kích hoạt tính năng "Thời điểm vàng"
+          Để kích hoạt tính năng &quot;Thời điểm vàng&quot;
           <br />
           hãy học 1 bài học từ mới
         </p>
