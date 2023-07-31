@@ -104,11 +104,11 @@ const Cards = () => {
           <button
             type="button"
             className="py-2 px-4 flex justify-center items-center  bg-green-500 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-full"
-            onClick={() => router.push(`settings/cards/new?deck_id=${deckId}`)}
+            onClick={() => router.push(`/settings/cards/new?deck_id=${deckId}`)}
           >
             <div className="flex items-center justify-center">
               <AiFillFileAdd />
-              <span className="ml-2">Add card</span>
+              <span className="ml-2">Thêm thẻ</span>
             </div>
           </button>
         </div>
@@ -137,7 +137,7 @@ const Cards = () => {
                 <DropDownMenu
                   items={[
                     {
-                      label: 'Delete',
+                      label: 'Xóa',
                       icon: <AiFillDelete color="#CC0000" />,
                       clickHandler: () => deleteCard(card.id),
                     },

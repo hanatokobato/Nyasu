@@ -67,15 +67,15 @@ const SettingsDecks = () => {
       <ToastContainer theme="colored" autoClose={2000} hideProgressBar />
       <div className="py-8">
         <div className="flex flex-row justify-between w-full mb-1 sm:mb-0">
-          <h2 className="text-2xl leading-tight">Decks</h2>
+          <h2 className="text-2xl leading-tight">Các chủ đề</h2>
           <div className="text-end">
-            <form className="flex flex-col justify-center w-3/4 max-w-sm space-y-3 md:flex-row md:w-full md:space-x-3 md:space-y-0">
+            <form className="flex flex-col justify-center items-center space-y-3 md:flex-row md:w-full md:space-x-3 md:space-y-0">
               <div className=" relative ">
                 <input
                   type="text"
                   id='"form-subscribe-Filter'
                   className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                  placeholder="name"
+                  placeholder="tên"
                 />
               </div>
               <button
@@ -83,14 +83,14 @@ const SettingsDecks = () => {
                 className="bg-yellow-500 hover:bg-yellow-600 text-grey-darkest font-bold py-2 px-4 rounded inline-flex items-center"
               >
                 <BsSearch />
-                <span className="ml-2">Search</span>
+                <span className="ml-2 whitespace-nowrap">Tìm kiếm</span>
               </button>
               <button
                 className="text-purple-500 background-transparent font-bold uppercase px-8 py-3 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={() => router.push(`settings/decks/new`)}
+                onClick={() => router.push(`/settings/decks/new`)}
               >
-                Create
+                <span className="whitespace-nowrap">Tạo chủ đề mới</span>
               </button>
             </form>
           </div>
@@ -104,19 +104,19 @@ const SettingsDecks = () => {
                     scope="col"
                     className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
                   >
-                    Name
+                    Tên
                   </th>
                   <th
                     scope="col"
                     className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
                   >
-                    Description
+                    Mô tả
                   </th>
                   <th
                     scope="col"
                     className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
                   >
-                    Created at
+                    Tạo lúc
                   </th>
                   <th
                     scope="col"
@@ -162,14 +162,14 @@ const SettingsDecks = () => {
                         <Link href={`/settings/cards?deck_id=${deck.id}`}>
                           <span className="px-4 py-1 flex items-center text-base rounded-full text-blue-600  bg-blue-200">
                             <GiCardRandom className="mr-1" />
-                            Cards
+                            Các thẻ học
                           </span>
                         </Link>
                         <Link
                           href={`/settings/decks/${deck.id}`}
                           className="text-indigo-600 hover:text-indigo-900 ml-4"
                         >
-                          Edit
+                          Sửa
                         </Link>
                         <div className="ml-4">
                           <button
