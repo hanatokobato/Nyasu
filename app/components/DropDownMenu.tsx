@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useOutsideClicked } from '@/hooks/useOutsideAlerter';
+import React, { useRef, useState } from 'react';
 
 interface Props {
   //boolean to always open ddm (for presentation)
@@ -15,13 +16,16 @@ export interface DDMItem {
   label: string;
   desc?: string;
   link?: string;
-  clickHandler?: ({...args}: any) => any;
+  clickHandler?: ({ ...args }: any) => any;
 }
 
 const DropDownMenu = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useOutsideClicked(ref, () => setIsOpen(false));
+
   return (
-    <div className="relative inline-block text-left">
+    <div ref={ref} className="relative inline-block text-left">
       <div>
         <button
           type="button"
@@ -30,7 +34,7 @@ const DropDownMenu = (props: Props) => {
             props.withBackground
               ? 'border border-gray-300 bg-white dark:bg-gray-800 shadow-sm'
               : ''
-          } flex items-center justify-center w-full rounded-md  px-4 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500`}
+          } flex items-center justify-center w-full rounded-md  px-4 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none `}
           id="options-menu"
         >
           {props.label}

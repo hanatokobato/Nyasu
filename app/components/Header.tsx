@@ -6,11 +6,15 @@ import reviewImg from '../images/review.png';
 import learningImg from '../images/learning.png';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { useMemo } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { useOutsideClicked } from '@/hooks/useOutsideAlerter';
 
 const Header = () => {
   const { status, data: session } = useSession();
   const pathname = usePathname();
+  const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  useOutsideClicked(menuRef, () => setIsOpenMenu(false));
 
   const isLoggedIn = useMemo(() => status === 'authenticated', [status]);
   const isAdminLoggedIn = useMemo(
@@ -47,27 +51,45 @@ const Header = () => {
             <div className="w-1/4"></div>
           </div>
         )}
-        <div className="w-1/4 flex justify-end">
-          {isAdminLoggedIn && (
-            <Link href="/settings">
-              <span className="font-bold text-2xl text-yellow-500">
-                Quản lý
-              </span>
-            </Link>
-          )}
-          {isLoggedIn && (
-            <Link href="/auth/logout">
-              <span className="font-bold text-2xl text-yellow-500 ml-4">
-                Đăng xuất
-              </span>
-            </Link>
-          )}
+        <div className="w-1/4 flex justify-end items-center">
           {!isLoggedIn && (
             <Link href="/auth/login">
               <span className="font-bold text-2xl text-yellow-500 ml-4">
                 Đăng nhập
               </span>
             </Link>
+          )}
+          {isLoggedIn && (
+            <div ref={menuRef}>
+              <div
+                className="bg-menu-avatar w-14 h-14 bg-cover rounded-full border-4 border-orange-500 cursor-pointer"
+                onClick={() => setIsOpenMenu((isOp) => !isOp)}
+              ></div>
+              {isOpenMenu && (
+                <div className="absolute bg-yellow-500 z-50 right-2.5 top-24 max-w-xs w-11/12 rounded-b-2xl px-6 pb-5 text-white">
+                  {isAdminLoggedIn && (
+                    <Link
+                      href="/settings"
+                      onClick={() => setIsOpenMenu((isOp) => !isOp)}
+                    >
+                      <div className="bg-yellow-400 border border-yellow-600 h-14 rounded-xl mt-4 flex justify-center items-center">
+                        <span>Quản lý</span>
+                      </div>
+                    </Link>
+                  )}
+                  {isLoggedIn && (
+                    <Link
+                      href="/auth/logout"
+                      onClick={() => setIsOpenMenu((isOp) => !isOp)}
+                    >
+                      <div className="bg-yellow-400 border border-yellow-600 h-14 rounded-xl mt-4 flex justify-center items-center">
+                        <span>Đăng xuất</span>
+                      </div>
+                    </Link>
+                  )}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </nav>

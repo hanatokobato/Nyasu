@@ -207,7 +207,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
         <div className="p-4 border-t-2 rounded-lg bg-gray-100/5 ">
           <div className="max-w-sm mx-auto md:w-full md:mx-0">
             <div className="inline-flex items-center space-x-4">
-              <h1 className="text-gray-600">Card</h1>
+              <h1 className="text-gray-600">Thẻ</h1>
             </div>
           </div>
         </div>
@@ -217,13 +217,13 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
               htmlFor="username"
               className="block text-sm text-gray-500 dark:text-gray-300"
             >
-              Word
+              Từ
             </label>
 
             <input
               {...register('word', { required: true })}
               type="text"
-              placeholder="Word"
+              placeholder="Từ"
               className={`block  mt-2 w-full placeholder-gray-400/70 rounded-lg border ${
                 errors.word ? 'border-red-400 focus:ring-red-300' : ''
               } bg-white px-5 py-2.5 text-gray-700 focus:outline-none focus:ring`}
@@ -236,7 +236,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
             <input
               {...register('translate', { required: true })}
               type="text"
-              placeholder="Translate"
+              placeholder="Dịch nghĩa"
               className={`block  mt-2 w-full placeholder-gray-400/70 rounded-lg border ${
                 errors.translate ? 'border-red-400 focus:ring-red-300' : ''
               } bg-white px-5 py-2.5 text-gray-700 focus:outline-none focus:ring`}
@@ -250,7 +250,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
             <input
               {...register('spelling', { required: true })}
               type="text"
-              placeholder="Spelling"
+              placeholder="Cách phát âm"
               className={`block  mt-2 w-full placeholder-gray-400/70 rounded-lg border ${
                 errors.spelling ? 'border-red-400 focus:ring-red-300' : ''
               } bg-white px-5 py-2.5 text-gray-700 focus:outline-none focus:ring`}
@@ -263,13 +263,13 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
           </div>
           <div className="p-4">
             <label className="block text-sm text-gray-500 dark:text-gray-300">
-              Example
+              Ví dụ
             </label>
 
             <input
               {...register('example', { required: true })}
               type="text"
-              placeholder="Example"
+              placeholder="Ví dụ"
               className={`block  mt-2 w-full placeholder-gray-400/70 rounded-lg border ${
                 errors.example ? 'border-red-400 focus:ring-red-300' : ''
               } bg-white px-5 py-2.5 text-gray-700 focus:outline-none focus:ring`}
@@ -282,7 +282,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
             <input
               {...register('example_translate')}
               type="text"
-              placeholder="Translate"
+              placeholder="Dịch nghĩa câu"
               className={`block  mt-2 w-full placeholder-gray-400/70 rounded-lg border ${
                 errors.example_translate
                   ? 'border-red-400 focus:ring-red-300'
@@ -297,7 +297,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
           </div>
           <div>
             <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
-              <div className="mx-auto w-full">Front</div>
+              <div className="mx-auto w-full">Mặt trước thẻ</div>
             </div>
             <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
               <div className="mx-auto w-full">
@@ -317,7 +317,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
           </div>
           <div>
             <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
-              <div className="mx-auto w-full">Back</div>
+              <div className="mx-auto w-full">Mặt sau thẻ</div>
             </div>
             <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
               <div className="mx-auto w-full">
@@ -363,7 +363,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
               type="submit"
               className="py-2 px-4  bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
             >
-              Save
+              Lưu
             </button>
           </div>
         </div>
