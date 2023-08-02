@@ -20,7 +20,8 @@ const Login = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
         { email, password }
       );
-      await signIn('credentials', {});
+      const { token } = res.data;
+      await signIn('credentials', { token });
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         toast(
