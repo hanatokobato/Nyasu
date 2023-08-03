@@ -3,17 +3,15 @@ import Link from 'next/link';
 import LearnButton from '../components/buttons/Button';
 import Chart from './review/components/Chart';
 import WaitReviewBtn from './review/components/WaitReviewBtn';
-import { getServerSession } from 'next-auth';
+import { getServerSession, Session } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]/route';
-import { headers } from 'next/headers';
 import Image from 'next/image';
 import Button from '../components/buttons/Button';
 
-const getData = async () => {
-  const reqHeaders = Object.fromEntries(Array.from(headers().entries()));
+const getData = async (session: Session) => {
   const result = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/learnings`,
-    { headers: reqHeaders }
+    { headers: {'Authorization': `Bearer ${session.user.auth_token}`} }
   );
   const { word_levels, wait_review_count, curr_review_count, upcoming } =
     result.data;
@@ -41,7 +39,7 @@ const Home = async () => {
   );
   if (session) {
     const { word_levels, wait_review_count, curr_review_count, upcoming } =
-      await getData();
+      await getData(session);
     content = (
       <>
         <Chart wordLevels={word_levels} />

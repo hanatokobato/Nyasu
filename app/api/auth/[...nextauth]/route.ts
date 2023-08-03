@@ -1,19 +1,21 @@
 import axios from 'axios';
-import NextAuth, { AuthOptions } from 'next-auth';
+import NextAuth, { AuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
-      credentials: {},
+      credentials: { token: {} },
       async authorize(credentials, req) {
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/user`,
-          { headers: req.headers }
+          { headers: { Authorization: `Bearer ${credentials?.token}` } }
         );
+        const currentUser = res.data.data.user;
+        currentUser.auth_token = credentials?.token;
 
-        return res.data.data.user;
+        return currentUser;
       },
     }),
   ],
@@ -28,7 +30,7 @@ export const authOptions: AuthOptions = {
       return baseUrl;
     },
     async session({ session, token }) {
-      session.user = token.user as IUser;
+      session.user = token.user as User;
       return session;
     },
     async jwt({ token, user }) {
