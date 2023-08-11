@@ -148,8 +148,8 @@ const DeckForm: React.FC<IProps> = ({ deck }) => {
               {(deck?.photoUrl || image) && (
                 <Image
                   src={(image ? image : deck?.photoUrl) ?? ''}
-                  width={20}
-                  height={20}
+                  width={80}
+                  height={80}
                   alt="deck"
                   className="mt-4 object-cover rounded-full h-20 w-20"
                 />
