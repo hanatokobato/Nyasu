@@ -129,6 +129,12 @@ const Cards = () => {
   }, [fetchCards]);
 
   useEffect(() => {
+    if (cards[0]?.audioUrl) {
+      new Audio(cards[0].audioUrl).play();
+    }
+  }, [cards, cards[0]?.currentQuestion]);
+
+  useEffect(() => {
     initData();
   }, [initData]);
 

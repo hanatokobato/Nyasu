@@ -2,13 +2,21 @@
 
 import axios from 'axios';
 import { cloneDeep, isEmpty, sample, uniqBy } from 'lodash';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  ChangeEvent,
+} from 'react';
 import Question from './components/Question';
 import SelectAnswer from './components/SelectAnswer';
 import LearnButton from '../../components/buttons/Button';
 import Answer from '../cards/components/Answer';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
+import GameInput from '@/app/components/inputs/TextInput';
+import FillBlankInput from '@/app/components/inputs/FillBlankInput';
 
 interface IPassedCard {
   id: string;
@@ -73,7 +81,14 @@ const Review = () => {
   }, [selectedAnswer, isSubmitted]);
 
   const quizType = useMemo(() => {
-    return sample(['translate', 'fillblank']) as string;
+    if (reviews.length > 0) {
+      return sample([
+        'translate',
+        'fillblank',
+        'freeinput',
+        'fillinput',
+      ]) as string;
+    }
   }, [reviews]);
 
   useEffect(() => {
@@ -96,7 +111,8 @@ const Review = () => {
             .map((card) => card.id),
           failed_cards: passedCards
             .filter((card) => card.attemptCount > 1)
-            .map((card) => card.id),
+            .map((card) => card.id)
+            .concat(reviews.map((r) => r.card.id)),
         });
 
         router.push('/');
@@ -105,7 +121,10 @@ const Review = () => {
       }
     };
 
-    if (reviews.length === 0 && passedCards.length > 0) {
+    if (
+      (reviews.length === 0 && passedCards.length > 0) ||
+      reviews.some((r) => r.attemptCount > 3)
+    ) {
       updateLearning();
     }
   }, [reviews, passedCards, router]);
@@ -119,26 +138,58 @@ const Review = () => {
           <div className="relative">
             <div className="flex justify-center flex-wrap">
               <div className="w-9/12">
-                <div className="text-center w-full">
-                  <p className="font-bold text-2xl text-stone-500 mb-4">
-                    Chọn từ thích hợp điền vào chỗ trống
-                  </p>
-                </div>
-              </div>
-              <div className="w-9/12">
                 {reviews && reviews.length > 0 && (
                   <>
-                    <Question card={reviews[0].card} quizType={quizType} />
+                    <Question
+                      card={reviews[0].card}
+                      quizType={quizType ?? ''}
+                    />
                     <div className="mt-8">
-                      <SelectAnswer
-                        value={selectedAnswer}
-                        options={uniqBy(
-                          [...(randomCards || []), reviews[0].card],
-                          'id'
+                      {quizType &&
+                        ['translate', 'fillblank'].includes(quizType) && (
+                          <SelectAnswer
+                            value={selectedAnswer}
+                            options={uniqBy(
+                              [...(randomCards || []), reviews[0].card],
+                              'id'
+                            )}
+                            quizType={quizType ?? ''}
+                            onSelected={selectAnswerHandler}
+                          />
                         )}
-                        quizType={quizType}
-                        onSelected={selectAnswerHandler}
-                      />
+                      {quizType === 'freeinput' && (
+                        <GameInput
+                          placeholder="Gõ lại từ bạn đã nghe được"
+                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            selectAnswerHandler(
+                              e.target.value === reviews[0].card.fields.word
+                                ? reviews[0].card.id
+                                : '_'
+                            )
+                          }
+                          onKeyDown={(
+                            e: React.KeyboardEvent<HTMLInputElement>
+                          ) => {
+                            if (e.key === 'Enter') {
+                              checkAnswerHandler();
+                            }
+                          }}
+                          autoFocus
+                        />
+                      )}
+                      {quizType === 'fillinput' && (
+                        <FillBlankInput
+                          numOfChars={reviews[0].card.fields.word.length}
+                          onChange={(val) => {
+                            selectAnswerHandler(
+                              val.join('') === reviews[0].card.fields.word
+                                ? reviews[0].card.id
+                                : '_'
+                            );
+                          }}
+                          onSubmit={checkAnswerHandler}
+                        />
+                      )}
                     </div>
                   </>
                 )}
