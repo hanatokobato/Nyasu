@@ -32,32 +32,27 @@ const Cards = () => {
   const [passedCards, setPassedCards] = useState<ICardLearning[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<string>();
 
-  const fetchCards = useCallback(
-    async (page: number = 1, perPage: number = 10): Promise<ICard[]> => {
-      setIsLoading(true);
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/cards`,
-        {
-          params: {
-            page,
-            per_page: perPage,
-            deck_id: deckId,
-          },
-        }
-      );
-      const fetchedCards = response.data.cards.map((card: any) => ({
-        id: card._id,
-        deckId: card.deck_id,
-        content: card.content,
-        audioUrl: card.audioUrl,
-        fields: card.fields,
-      }));
-      setIsLoading(false);
+  const fetchCards = useCallback(async (): Promise<ICard[]> => {
+    setIsLoading(true);
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/cards/learning`,
+      {
+        params: {
+          deck_id: deckId,
+        },
+      }
+    );
+    const fetchedCards = response.data.cards.map((card: any) => ({
+      id: card._id,
+      deckId: card.deck_id,
+      content: card.content,
+      audioUrl: card.audioUrl,
+      fields: card.fields,
+    }));
+    setIsLoading(false);
 
-      return fetchedCards;
-    },
-    [deckId]
-  );
+    return fetchedCards;
+  }, [deckId]);
 
   const goNextHandler = useCallback(async () => {
     const card = cards[0];
@@ -145,7 +140,7 @@ const Cards = () => {
           deck_id: deckId,
         });
 
-        router.push('/decks');
+        router.push('/');
       } catch (e: any) {
         toast(e.message, { type: 'error' });
       }

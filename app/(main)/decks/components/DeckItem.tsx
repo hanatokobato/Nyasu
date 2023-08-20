@@ -8,13 +8,15 @@ const DeckItem: React.FC<IProps> = ({ deck }) => {
   return (
     <div
       className={`${
-        deck.learning ? 'bg-lime-700' : 'bg-neutral-200'
+        deck.hasUnlearnedCard
+          ? 'bg-neutral-200'
+          : 'bg-lime-700 cursor-not-allowed'
       } rounded-2xl shadow-md mb-5`}
     >
       <div
         className={`${
-          deck.learning ? 'bg-lime-500 text-white' : 'bg-slate-50'
-        } rounded-2xl cursor-pointer -translate-y-1 active:translate-y-0 focus:translate-y-0`}
+          deck.hasUnlearnedCard ? 'bg-slate-50' : 'bg-lime-500 text-white'
+        } rounded-2xl -translate-y-1 active:translate-y-0 focus:translate-y-0`}
       >
         <div className="flex">
           <div className="w-1/6 flex items-center justify-center">

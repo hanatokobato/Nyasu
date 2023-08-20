@@ -115,6 +115,7 @@ const Review = () => {
             .concat(reviews.map((r) => r.card.id)),
         });
 
+        router.prefetch('/');
         router.push('/');
       } catch (e: any) {
         toast(e.message, { type: 'error' });
