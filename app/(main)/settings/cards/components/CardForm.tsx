@@ -64,8 +64,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
               headers: { 'Content-Type': 'multipart/form-data' },
             }
           );
-          const { name, path } = res.data.attachment;
-          const fileUrl = `${process.env.NEXT_PUBLIC_API_ROOT_URL}${path}`;
+          const { name, path: fileUrl } = res.data.attachment;
           imageAttachmentRef.current.value = '';
 
           // Replaces the current selection with the image
