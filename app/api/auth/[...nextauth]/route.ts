@@ -38,6 +38,9 @@ export const authOptions: AuthOptions = {
       return token;
     },
   },
+  session: {
+    maxAge: 60 * 60 * 24,
+  },
 };
 
 const handler = NextAuth(authOptions);

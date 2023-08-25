@@ -198,23 +198,23 @@ const Review = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-center absolute w-full bottom-24">
+        <div className="flex flex-col justify-between w-full mt-10">
+          {isSubmitted && (
+            <div>
+              <Answer
+                card={reviews[0].card}
+                isCorrect={reviews[0].card.id === selectedAnswer}
+              />
+            </div>
+          )}
           <LearnButton
-            className="w-60"
+            className="w-60 mt-10"
             disabled={isEmpty(selectedAnswer)}
             onClick={checkAnswerHandler}
           >
             {isSubmitted ? 'TIẾP TỤC' : 'KIỂM TRA'}
           </LearnButton>
         </div>
-        {isSubmitted && (
-          <div className="mt-20">
-            <Answer
-              card={reviews[0].card}
-              isCorrect={reviews[0].card.id === selectedAnswer}
-            />
-          </div>
-        )}
       </div>
       <div className="flex-auto w-1/4"></div>
     </div>
