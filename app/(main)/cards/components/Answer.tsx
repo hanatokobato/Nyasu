@@ -28,7 +28,7 @@ const Answer = ({ card, isCorrect }: IProps) => {
   }, [audio]);
 
   return (
-    <div className="w-full p-0 absolute" id="ele-answer">
+    <div className="w-full p-0" id="ele-answer">
       <div
         className={`rounded-2xl w-full ${
           isCorrect ? 'bg-success' : 'bg-error'
