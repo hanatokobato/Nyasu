@@ -81,7 +81,7 @@ const Review = () => {
         return currentReviews;
       });
       setSelectedAnswer(undefined);
-      setAnswerText(undefined);
+      setAnswerText('');
       setIsSubmitted(false);
     }
   }, [selectedAnswer, isSubmitted]);
@@ -202,7 +202,7 @@ const Review = () => {
                                 ? reviews[0].card.id
                                 : '_'
                             );
-                            setAnswerText(val.join());
+                            setAnswerText(val.join(''));
                           }}
                           onSubmit={checkAnswerHandler}
                         />

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import styles from './FillBlankInput.module.scss';
 import { useForm } from 'react-hook-form';
 
@@ -10,13 +10,15 @@ interface IProps {
 }
 
 const FillBlankInput = ({ numOfChars, onChange, onSubmit, value }: IProps) => {
-  const { register, getValues, setFocus, setValue } = useForm(
-    value
-      ? value
-          .split('')
-          .reduce((a, v, i) => ({ ...a, [`character-${i}`]: v }), {})
-      : {}
-  );
+  const values: Record<string, string> = value
+    ? value.split('').reduce((a, v, i) => ({ ...a, [`character-${i}`]: v }), {})
+    : Array.from(Array(numOfChars).keys()).reduce(
+        (a, v, i) => ({ ...a, [`character-${i}`]: '' }),
+        {}
+      );
+  const { register, getValues, setFocus, setValue } = useForm({
+    values,
+  });
 
   const inputChangeHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
