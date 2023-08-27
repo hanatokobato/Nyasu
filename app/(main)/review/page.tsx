@@ -81,6 +81,7 @@ const Review = () => {
         return currentReviews;
       });
       setSelectedAnswer(undefined);
+      setAnswerText(undefined);
       setIsSubmitted(false);
     }
   }, [selectedAnswer, isSubmitted]);
