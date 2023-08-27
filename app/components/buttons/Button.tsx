@@ -1,8 +1,12 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes, ForwardedRef } from 'react';
 
-const Button = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
+const Button = (
+  props: ButtonHTMLAttributes<HTMLButtonElement>,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   return (
     <div
+      ref={ref}
       className={`relative h-12 bg-lime-700 rounded-full mx-auto ${props.className}`}
     >
       <button
@@ -19,4 +23,4 @@ const Button = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
   );
 };
 
-export default Button;
+export default React.forwardRef(Button);

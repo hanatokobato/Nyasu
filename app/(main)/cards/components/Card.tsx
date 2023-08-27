@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Card.module.scss';
 import MDEditor from '@uiw/react-md-editor';
 import Image from 'next/image';
-import { set } from 'react-hook-form';
 import { useMount } from 'react-use';
 
 interface IProps {

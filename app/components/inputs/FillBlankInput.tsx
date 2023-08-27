@@ -3,13 +3,20 @@ import styles from './FillBlankInput.module.scss';
 import { useForm } from 'react-hook-form';
 
 interface IProps {
+  value?: string;
   numOfChars: number;
   onChange?: (val: string[]) => void;
   onSubmit?: any;
 }
 
-const FillBlankInput = ({ numOfChars, onChange, onSubmit }: IProps) => {
-  const { register, getValues, setFocus, setValue } = useForm();
+const FillBlankInput = ({ numOfChars, onChange, onSubmit, value }: IProps) => {
+  const { register, getValues, setFocus, setValue } = useForm(
+    value
+      ? value
+          .split('')
+          .reduce((a, v, i) => ({ ...a, [`character-${i}`]: v }), {})
+      : {}
+  );
 
   const inputChangeHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

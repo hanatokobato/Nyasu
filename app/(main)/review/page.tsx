@@ -1,13 +1,14 @@
 'use client';
 
 import axios from 'axios';
-import { cloneDeep, isEmpty, sample, uniqBy } from 'lodash';
+import { cloneDeep, isEmpty, sample, set, uniqBy } from 'lodash';
 import React, {
   useCallback,
   useEffect,
   useMemo,
   useState,
   ChangeEvent,
+  useRef,
 } from 'react';
 import Question from './components/Question';
 import SelectAnswer from './components/SelectAnswer';
@@ -32,8 +33,10 @@ const Review = () => {
   const [reviews, setReviews] = useState<IReviewReviewing[]>([]);
   const [randomCards, setRandomCards] = useState<ICard[]>();
   const [selectedAnswer, setSelectedAnswer] = useState<string>();
+  const [answerText, setAnswerText] = useState<string>();
   const [passedCards, setPassedCards] = useState<IPassedCard[]>([]);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const submitBtnRef = useRef<HTMLDivElement>(null);
 
   const fetchReviews = useCallback(async () => {
     const res = await axios.get(
@@ -56,7 +59,9 @@ const Review = () => {
   }, []);
 
   const checkAnswerHandler = useCallback(() => {
-    if (selectedAnswer && !isSubmitted) setIsSubmitted(true);
+    if (selectedAnswer && !isSubmitted) {
+      setIsSubmitted(true);
+    }
     if (selectedAnswer && isSubmitted) {
       setReviews((curr) => {
         const currentReviews = cloneDeep(curr);
@@ -90,6 +95,12 @@ const Review = () => {
       ]) as string;
     }
   }, [reviews]);
+
+  useEffect(() => {
+    if (isSubmitted) {
+      submitBtnRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [isSubmitted]);
 
   useEffect(() => {
     fetchReviews();
@@ -160,14 +171,16 @@ const Review = () => {
                         )}
                       {quizType === 'freeinput' && (
                         <GameInput
+                          value={answerText}
                           placeholder="Gõ lại từ bạn đã nghe được"
-                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                          onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             selectAnswerHandler(
                               e.target.value === reviews[0].card.fields.word
                                 ? reviews[0].card.id
                                 : '_'
-                            )
-                          }
+                            );
+                            setAnswerText(e.target.value);
+                          }}
                           onKeyDown={(
                             e: React.KeyboardEvent<HTMLInputElement>
                           ) => {
@@ -180,6 +193,7 @@ const Review = () => {
                       )}
                       {quizType === 'fillinput' && (
                         <FillBlankInput
+                          value={answerText ?? ''}
                           numOfChars={reviews[0].card.fields.word.length}
                           onChange={(val) => {
                             selectAnswerHandler(
@@ -187,6 +201,7 @@ const Review = () => {
                                 ? reviews[0].card.id
                                 : '_'
                             );
+                            setAnswerText(val.join());
                           }}
                           onSubmit={checkAnswerHandler}
                         />
@@ -208,7 +223,8 @@ const Review = () => {
             </div>
           )}
           <LearnButton
-            className="w-60 mt-10"
+            ref={submitBtnRef}
+            className="w-60 my-10"
             disabled={isEmpty(selectedAnswer)}
             onClick={checkAnswerHandler}
           >
