@@ -13,6 +13,7 @@ import '@uiw/react-md-editor/dist/markdown-editor.css';
 import '@uiw/react-markdown-preview/dist/markdown.css';
 import axios from 'axios';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
   card?: ICard;
@@ -50,6 +51,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
   const [audio, setAudio] = useState<HTMLAudioElement | undefined>(
     card?.audioUrl ? new Audio(card?.audioUrl) : undefined
   );
+  const router = useRouter();
 
   const onChooseImageAttachment = useCallback(
     async (state: TextState, api: TextAreaTextApi) => {
@@ -152,7 +154,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
   );
 
   const submitHandler = useCallback(
-    (data: any) => {
+    async (data: any) => {
       const formData = new FormData();
 
       formData.append('content[front]', content.front);
@@ -165,7 +167,8 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
       formData.append('deck_id', deckId);
       if (audioAttachmentRef.current?.files?.length)
         formData.append('file', audioAttachmentRef.current.files[0]);
-      card?.id ? updateCard(formData) : createCard(formData);
+      card?.id ? await updateCard(formData) : await createCard(formData);
+      router.push(`/settings/cards?deck_id=${deckId}`);
     },
     [card?.id, createCard, updateCard, content, deckId]
   );
