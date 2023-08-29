@@ -96,9 +96,11 @@ const Cards = () => {
       <div className="mb-8">
         <div className="flex justify-between p-4 m-auto bg-white rounded-lg shadow w-96">
           <div>
-            <span className="text-xs font-bold inline-block py-1 px-2 uppercase rounded-full text-white bg-yellow-300">
-              {deck?.name}
-            </span>
+            <Link href={`/settings/decks/${deckId}`}>
+              <span className="text-xs font-bold inline-block py-1 px-2 uppercase rounded-full text-white bg-yellow-300">
+                {deck?.name}
+              </span>
+            </Link>
           </div>
 
           <button

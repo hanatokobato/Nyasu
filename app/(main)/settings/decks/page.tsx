@@ -10,15 +10,29 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import { BsSearch } from 'react-icons/bs';
 import { GiCardRandom } from 'react-icons/gi';
 import Pagination from '@/app/components/Pagination';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+interface ISearchInput {
+  search: string;
+}
 
 const SettingsDecks = () => {
   const router = useRouter();
   const [decks, setDecks] = useState<IDeck[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [pageCount, setPageCount] = useState(0);
+  const {
+    register: searchRegister,
+    handleSubmit: handleSearch,
+    getValues: getSearchValues,
+  } = useForm<ISearchInput>();
 
   const fetchDecks = useCallback(
-    async (page: number = 1, perPage: number = 10): Promise<IDeck[]> => {
+    async (
+      page: number = 1,
+      perPage: number = 10,
+      search: string = ''
+    ): Promise<IDeck[]> => {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/decks`,
@@ -26,6 +40,7 @@ const SettingsDecks = () => {
           params: {
             page,
             per_page: perPage,
+            search: search,
           },
         }
       );
@@ -58,11 +73,21 @@ const SettingsDecks = () => {
 
   const pageChangeHandler = useCallback(
     async (selectedItem: { selected: number }) => {
-      const decks = await fetchDecks(selectedItem.selected + 1);
+      console.log(getSearchValues('search'))
+      const decks = await fetchDecks(
+        selectedItem.selected + 1,
+        10,
+        getSearchValues('search')
+      );
       setDecks(decks);
     },
-    [fetchDecks]
+    [fetchDecks, getSearchValues]
   );
+
+  const onSubmitSearch: SubmitHandler<ISearchInput> = async (data) => {
+    const searchedDecks = await fetchDecks(1, 10, data.search);
+    setDecks(searchedDecks);
+  };
 
   const initData = useCallback(async () => {
     const initDecks = await fetchDecks();
@@ -80,9 +105,13 @@ const SettingsDecks = () => {
         <div className="flex flex-row justify-between w-full mb-1 sm:mb-0">
           <h2 className="text-2xl leading-tight">Các chủ đề</h2>
           <div className="text-end">
-            <form className="flex flex-col justify-center items-center space-y-3 md:flex-row md:w-full md:space-x-3 md:space-y-0">
+            <form
+              className="flex flex-col justify-center items-center space-y-3 md:flex-row md:w-full md:space-x-3 md:space-y-0"
+              onSubmit={handleSearch(onSubmitSearch)}
+            >
               <div className=" relative ">
                 <input
+                  {...searchRegister('search')}
                   type="text"
                   id='"form-subscribe-Filter'
                   className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
