@@ -97,6 +97,25 @@ const Review = () => {
     }
   }, [reviews]);
 
+  const updateLearning = useCallback(async () => {
+    try {
+      await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/learnings`, {
+        passed_cards: passedCards
+          .filter((card) => card.attemptCount === 1)
+          .map((card) => card.id),
+        failed_cards: passedCards
+          .filter((card) => card.attemptCount > 1)
+          .map((card) => card.id)
+          .concat(reviews.map((r) => r.card.id)),
+      });
+
+      router.prefetch('/');
+      router.push('/');
+    } catch (e: any) {
+      toast(e.message, { type: 'error' });
+    }
+  }, [passedCards, reviews, router]);
+
   useEffect(() => {
     if (isSubmitted) {
       submitBtnRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -115,32 +134,24 @@ const Review = () => {
   }, [reviews, fetchRandomCards]);
 
   useEffect(() => {
-    const updateLearning = async () => {
-      try {
-        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/learnings`, {
-          passed_cards: passedCards
-            .filter((card) => card.attemptCount === 1)
-            .map((card) => card.id),
-          failed_cards: passedCards
-            .filter((card) => card.attemptCount > 1)
-            .map((card) => card.id)
-            .concat(reviews.map((r) => r.card.id)),
-        });
-
-        router.prefetch('/');
-        router.push('/');
-      } catch (e: any) {
-        toast(e.message, { type: 'error' });
-      }
-    };
-
     if (
       (reviews.length === 0 && passedCards.length > 0) ||
       reviews.some((r) => r.attemptCount > 3)
     ) {
       updateLearning();
     }
-  }, [reviews, passedCards, router]);
+  }, [updateLearning, passedCards.length, reviews]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (passedCards.length > 0) updateLearning();
+
+      router.prefetch('/');
+      router.push('/');
+    }, 1000 * 60 * 10);
+
+    return clearTimeout(timer);
+  }, []);
 
   return (
     <div className="flex bg-slate-100 min-h-full-minus-header">
