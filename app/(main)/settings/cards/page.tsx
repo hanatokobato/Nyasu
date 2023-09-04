@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { AiFillFileAdd, AiFillDelete } from 'react-icons/ai';
 import { TfiMoreAlt } from 'react-icons/tfi';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { toast, ToastContainer } from 'react-toastify';
 
 const Cards = () => {
@@ -19,7 +20,8 @@ const Cards = () => {
   const [deck, setDeck] = useState<IDeck>();
   const [isLoading, setIsLoading] = useState(false);
   const [audio, setAudio] = useState<HTMLAudioElement>();
-  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean | string>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
 
   const fetchDeck = useCallback(async () => {
     const res = await axios.get(
@@ -48,12 +50,19 @@ const Cards = () => {
         content: card.content,
         audioUrl: card.audioUrl,
       }));
+      setTotalPage(response.data.total_page);
       setIsLoading(false);
 
       return fetchedCards;
     },
     [deckId]
   );
+
+  const loadMoreCards = useCallback(async () => {
+    const nextCards = await fetchCards(currentPage + 1);
+    setCurrentPage(currentPage + 1);
+    setCards((currentCards) => currentCards.concat(nextCards));
+  }, [fetchCards, currentPage]);
 
   const deleteCard = useCallback(async (id: string) => {
     try {
@@ -117,47 +126,54 @@ const Cards = () => {
       </div>
 
       <div className="container flex flex-col items-center justify-center w-full mx-auto">
-        <ul className="flex flex-wrap">
-          {cards.map((card) => (
-            <li
-              key={card.id}
-              className="flex flex-col ml-4 mb-4 border-gray-400 w-60"
-            >
-              {card.audioUrl && (
-                <button className="relative w-14 h-14 bg-neutral-200 rounded-full">
-                  <Image
-                    src="/sound.svg"
-                    alt="sound"
-                    width={59}
-                    height={59}
-                    className="cursor-pointer rounded-full bg-white absolute left-0 bottom-1.5 active:translate-y-1.5 focus:translate-y-1.5"
-                    onClick={() => playAudio(card)}
+        <InfiniteScroll
+          next={loadMoreCards}
+          hasMore={currentPage < totalPage}
+          dataLength={cards.length}
+          loader={<h4>Loading...</h4>}
+        >
+          <ul className="flex flex-wrap">
+            {cards.map((card) => (
+              <li
+                key={card.id}
+                className="flex flex-col ml-4 mb-4 border-gray-400 w-60"
+              >
+                {card.audioUrl && (
+                  <button className="relative w-14 h-14 bg-neutral-200 rounded-full">
+                    <Image
+                      src="/sound.svg"
+                      alt="sound"
+                      width={59}
+                      height={59}
+                      className="cursor-pointer rounded-full bg-white absolute left-0 bottom-1.5 active:translate-y-1.5 focus:translate-y-1.5"
+                      onClick={() => playAudio(card)}
+                    />
+                  </button>
+                )}
+                <div className="flex justify-end">
+                  <DropDownMenu
+                    items={[
+                      {
+                        label: 'Xóa',
+                        icon: <AiFillDelete color="#CC0000" />,
+                        clickHandler: () => deleteCard(card.id),
+                      },
+                    ]}
+                    icon={<TfiMoreAlt />}
                   />
-                </button>
-              )}
-              <div className="flex justify-end">
-                <DropDownMenu
-                  items={[
-                    {
-                      label: 'Xóa',
-                      icon: <AiFillDelete color="#CC0000" />,
-                      clickHandler: () => deleteCard(card.id),
-                    },
-                  ]}
-                  icon={<TfiMoreAlt />}
-                />
-              </div>
-              <div className="shadow border select-none cursor-pointer bg-white dark:bg-gray-800 rounded-md flex flex-1 items-center p-4">
-                <Link
-                  href={`/settings/cards/${card.id}`}
-                  className="w-full h-full"
-                >
-                  <MDEditor.Markdown source={card.content.front} />
-                </Link>
-              </div>
-            </li>
-          ))}
-        </ul>
+                </div>
+                <div className="shadow border select-none cursor-pointer bg-white dark:bg-gray-800 rounded-md flex flex-1 items-center p-4">
+                  <Link
+                    href={`/settings/cards/${card.id}`}
+                    className="w-full h-full"
+                  >
+                    <MDEditor.Markdown source={card.content.front} />
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </InfiniteScroll>
       </div>
     </>
   );
