@@ -137,7 +137,7 @@ const Cards = () => {
     const addLearning = async () => {
       try {
         await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/learnings`, {
-          deck_id: deckId,
+          card_ids: passedCards.map((c) => c.id),
         });
 
         router.push('/');
