@@ -5,9 +5,10 @@ import Link from 'next/link';
 import reviewImg from '../images/review.png';
 import learningImg from '../images/learning.png';
 import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useMemo, useRef, useState } from 'react';
 import { useOutsideClicked } from '@/hooks/useOutsideAlerter';
+import JwtDecode from 'jwt-decode';
 
 const Header = () => {
   const { status, data: session } = useSession();
@@ -15,6 +16,13 @@ const Header = () => {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
   useOutsideClicked(menuRef, () => setIsOpenMenu(false));
+  if (
+    status === 'authenticated' &&
+    new Date() >
+      new Date(1000 * JwtDecode<{ exp: number }>(session?.user.auth_token).exp)
+  ) {
+    signOut();
+  }
 
   const isLoggedIn = useMemo(() => status === 'authenticated', [status]);
   const isAdminLoggedIn = useMemo(
