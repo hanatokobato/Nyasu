@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styles from './FillBlankInput.module.scss';
 import { useForm } from 'react-hook-form';
 
@@ -50,6 +50,12 @@ const FillBlankInput = ({ numOfChars, onChange, onSubmit, value }: IProps) => {
     },
     [setFocus, setValue, getValues, onChange, onSubmit]
   );
+
+  useEffect(() => {
+    if (!value) {
+      setFocus('character-0');
+    }
+  }, [value, setFocus]);
 
   return (
     <div className={styles['box-answer']}>
