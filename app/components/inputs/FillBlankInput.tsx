@@ -46,6 +46,7 @@ const FillBlankInput = ({ numOfChars, onChange, onSubmit, value }: IProps) => {
 
       if (e.key === 'Enter') {
         onSubmit();
+        setFocus('character-0');
       }
     },
     [setFocus, setValue, getValues, onChange, onSubmit]
