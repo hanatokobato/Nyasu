@@ -14,6 +14,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/current-user'
+        '401':
+          $ref: '#/components/responses/unauthorized'
       operationId: get-api-v1-auth-user
       x-stoplight:
         id: ad6temuyucje0
@@ -81,11 +83,11 @@ paths:
                 - password
   /api/v1/auth/logout:
     delete:
-      summary: ''
+      summary: Logout
       operationId: delete-api-v1-auth-logout
       responses:
         '200':
-          $ref: '#/components/responses/logout-success'
+          $ref: '#/components/responses/delete-success'
       x-stoplight:
         id: tqgbrdec8idnw
       security:
@@ -97,6 +99,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/decks-list'
+        '401':
+          $ref: '#/components/responses/unauthorized'
       operationId: get-api-v1-decks
       x-stoplight:
         id: akix2asdzqdgg
@@ -115,6 +119,113 @@ paths:
             type: string
           in: query
           name: search
+    post:
+      summary: Create deck
+      operationId: post-api-v1-decks
+      responses:
+        '200':
+          $ref: '#/components/responses/deck-detail'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+      x-stoplight:
+        id: u5xb5oul92282
+      description: ''
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  x-stoplight:
+                    id: qk2jhtecbmtur
+                description:
+                  type: string
+                  x-stoplight:
+                    id: t6kfewfiiedmj
+                file:
+                  type: string
+                  x-stoplight:
+                    id: oq14ykt4uuhhn
+                  format: binary
+              required:
+                - name
+          application/json:
+            schema:
+              type: object
+              properties: {}
+        description: ''
+      security:
+        - authorization: []
+  '/api/v1/decks/{id}':
+    get:
+      summary: Get deck
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/deck-detail'
+        '401':
+          description: Unauthorized
+      operationId: 'get-api-v1-decks-:id'
+      x-stoplight:
+        id: 86yywl8ax3j3f
+      description: ''
+      security:
+        - authorization: []
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    put:
+      summary: Update deck
+      operationId: put-api-v1-decks-id
+      responses:
+        '200':
+          $ref: '#/components/responses/deck-detail'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  x-stoplight:
+                    id: y74tsce4kxr7b
+                description:
+                  type: string
+                  x-stoplight:
+                    id: wugp3cn6oghxx
+                file:
+                  type: string
+                  x-stoplight:
+                    id: 372hpk7ubjeqg
+                  format: binary
+    delete:
+      summary: Delete deck
+      operationId: delete-api-v1-decks-id
+      responses:
+        '200':
+          $ref: '#/components/responses/delete-success'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+      x-stoplight:
+        id: 7xt58v7wf0b2m
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
 components:
   schemas:
     current-user:
@@ -172,6 +283,24 @@ components:
       required:
         - id
         - name
+    deck-detail:
+      title: deck-detail
+      x-stoplight:
+        id: qu4i08ff9mfn6
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: pov5v0ju8o121
+        name:
+          type: string
+          x-stoplight:
+            id: oyee6habo81od
+        photo:
+          type: string
+          x-stoplight:
+            id: tz3nu5542ss6v
   securitySchemes:
     authorization:
       type: http
@@ -233,7 +362,7 @@ components:
               - success
               - token
               - data
-    logout-success:
+    delete-success:
       description: Example response
       content:
         application/json:
@@ -283,3 +412,47 @@ components:
             required:
               - success
               - data
+    deck-detail:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: dimtb8jypoqkv
+              data:
+                type: object
+                x-stoplight:
+                  id: 2rciez72n4v4o
+                properties:
+                  deck:
+                    $ref: '#/components/schemas/deck-detail'
+        application/xml:
+          schema:
+            type: object
+            properties: {}
+    unauthorized:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+        application/xml:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: 7ldgasy43gzjy
+                default: false
+              errors:
+                type: array
+                x-stoplight:
+                  id: iu8vtft34554o
+                items: {}
