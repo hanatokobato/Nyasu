@@ -226,6 +226,95 @@ paths:
             schema:
               type: object
               properties: {}
+  /api/v1/cards:
+    get:
+      summary: Get cards list
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/cards-list'
+      operationId: get-api-v1-cards
+      x-stoplight:
+        id: g4kbjciqtaxdx
+      security:
+        - authorization: []
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: page
+        - schema:
+            type: number
+          in: query
+          name: per_page
+    post:
+      summary: Create card
+      operationId: post-api-v1-cards
+      responses:
+        '201':
+          $ref: '#/components/responses/card-detail'
+      x-stoplight:
+        id: fw3y46ern6o3k
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                deck_id:
+                  type: string
+                  x-stoplight:
+                    id: ge03imzu24n2f
+                content:
+                  type: object
+                  x-stoplight:
+                    id: 8ro2a2vuy618g
+                  properties:
+                    front:
+                      type: string
+                      x-stoplight:
+                        id: 0xgg50gnmnlmq
+                    back:
+                      type: string
+                      x-stoplight:
+                        id: q17yhgpf6n8v2
+                fields:
+                  type: object
+                  x-stoplight:
+                    id: o7jwgyhgm2rvp
+                  properties:
+                    word:
+                      type: string
+                      x-stoplight:
+                        id: 14r5lj9d2xtlx
+                    translate:
+                      type: string
+                      x-stoplight:
+                        id: 3cjk4hcb1zdhj
+                    spelling:
+                      type: string
+                      x-stoplight:
+                        id: loumx01ee4yiw
+                    example:
+                      type: object
+                      x-stoplight:
+                        id: eyvc9vdz5odln
+                      properties:
+                        sentence:
+                          type: string
+                          x-stoplight:
+                            id: 962pe1stpwpq1
+                        translate:
+                          type: string
+                          x-stoplight:
+                            id: mxhws5gltdsqf
+                file:
+                  type: string
+                  x-stoplight:
+                    id: xvoxrhvnehx4t
+                  format: binary
 components:
   schemas:
     current-user:
@@ -301,6 +390,69 @@ components:
           type: string
           x-stoplight:
             id: tz3nu5542ss6v
+    card:
+      title: card
+      x-stoplight:
+        id: ljow1et88cqhq
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: c7oh3wkvi6s81
+        deck_id:
+          type: string
+          x-stoplight:
+            id: qwmwh1etyd5e6
+        content:
+          type: object
+          x-stoplight:
+            id: kyms05luv80zz
+          properties:
+            front:
+              type: string
+              x-stoplight:
+                id: n6vvgmiw9iqjd
+            back:
+              type: string
+              x-stoplight:
+                id: jwjbij2tvz1p6
+        fields:
+          type: object
+          x-stoplight:
+            id: rg996l7hekie0
+          properties:
+            word:
+              type: string
+              x-stoplight:
+                id: inhnoannv7qy4
+            translate:
+              type: string
+              x-stoplight:
+                id: 6f8sdrvcasvpy
+            spelling:
+              type: string
+              x-stoplight:
+                id: ehp58d9c8m95d
+            example:
+              type: object
+              x-stoplight:
+                id: si3vuqnfbyqqp
+              properties:
+                sentence:
+                  type: string
+                  x-stoplight:
+                    id: 7r5cv900985rg
+                translate:
+                  type: string
+                  x-stoplight:
+                    id: 8b5srs7ptvsvg
+        audioUrl:
+          type: string
+          x-stoplight:
+            id: zk6daz7qbjer3
+      required:
+        - id
   securitySchemes:
     authorization:
       type: http
@@ -456,3 +608,64 @@ components:
                 x-stoplight:
                   id: iu8vtft34554o
                 items: {}
+    cards-list:
+      description: Example response
+      content:
+        application/xml:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: y0g6qi39086xz
+              data:
+                type: object
+                x-stoplight:
+                  id: 3gkrehmdolkqm
+                properties:
+                  cards:
+                    type: array
+                    x-stoplight:
+                      id: hdn1ua0646dia
+                    items:
+                      $ref: '#/components/schemas/card'
+                  page:
+                    type: integer
+                    x-stoplight:
+                      id: 2xm03qgcfwwtb
+                  total_page:
+                    type: integer
+                    x-stoplight:
+                      id: 7cxicqprktg3c
+        multipart/form-data:
+          schema:
+            type: object
+            properties: {}
+        text/html:
+          schema:
+            type: object
+            properties: {}
+    card-detail:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+        application/xml:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: stopkxdwtnuue
+              data:
+                type: object
+                x-stoplight:
+                  id: 1f8f99jvwj2ur
+                properties:
+                  card:
+                    $ref: '#/components/schemas/card'
