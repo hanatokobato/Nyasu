@@ -3,9 +3,10 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import DeckItem from './components/DeckItem';
 import Link from 'next/link';
+import { useDecks } from '../../../hooks/decks/useDecks';
 
 const Decks = () => {
-  const [decks, setDecks] = useState<IDeck[]>([]);
+  const { decks, loadDecks } = useDecks();
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchDecks = useCallback(
@@ -36,9 +37,8 @@ const Decks = () => {
   );
 
   const initData = useCallback(async () => {
-    const initDecks = await fetchDecks();
-    setDecks(initDecks);
-  }, [fetchDecks]);
+    loadDecks
+  }, [loadDecks]);
 
   useEffect(() => {
     initData();
