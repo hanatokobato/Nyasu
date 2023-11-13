@@ -562,8 +562,6 @@ paths:
       operationId: get-api-v1-learnings-reviews
       x-stoplight:
         id: dqnenicjinkqb
-      requestBody:
-        content: {}
       security:
         - authorization: []
 components:
