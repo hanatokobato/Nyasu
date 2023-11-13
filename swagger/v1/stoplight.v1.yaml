@@ -332,7 +332,7 @@ paths:
           name: limit
       security:
         - authorization: []
-  /api/v1/cards/learning:
+  /api/v1/learnings:
     get:
       summary: Get learning cards
       tags: []
@@ -353,6 +353,91 @@ paths:
             type: integer
           in: query
           name: limit
+    post:
+      summary: Add learning
+      operationId: post-api-v1-cards-learning
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    x-stoplight:
+                      id: tsv8zxd4kr4nz
+                  data:
+                    type: object
+                    x-stoplight:
+                      id: x137xmccra3as
+      x-stoplight:
+        id: 32dobc54cl0o9
+      description: ''
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                card_id:
+                  type: string
+                  x-stoplight:
+                    id: 9npa7aodvqc0z
+                deck_id:
+                  type: string
+                  x-stoplight:
+                    id: g96ao8bvo37yx
+    put:
+      summary: Update learnings
+      operationId: put-api-v1-cards-learning
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    x-stoplight:
+                      id: jze52h83nbc0z
+                  data:
+                    type: object
+                    x-stoplight:
+                      id: gyqg8c72ccens
+      x-stoplight:
+        id: qtlpjcnyloymj
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passed_cards:
+                  type: array
+                  x-stoplight:
+                    id: 17no3vnlstogh
+                  items:
+                    x-stoplight:
+                      id: 7yp15m9151zl1
+                    type: string
+                failed_cards:
+                  type: array
+                  x-stoplight:
+                    id: 10pu4rzartlwj
+                  items:
+                    x-stoplight:
+                      id: mxu8nzntoskak
+                    type: string
+        description: ''
+    parameters: []
   '/api/v1/cards/{id}':
     parameters:
       - schema:
@@ -467,6 +552,20 @@ paths:
                   x-stoplight:
                     id: 0k5wut8b7vzi4
                   format: binary
+  /api/v1/learnings/reviews:
+    get:
+      summary: Get reviewing cards
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/cards-list'
+      operationId: get-api-v1-learnings-reviews
+      x-stoplight:
+        id: dqnenicjinkqb
+      requestBody:
+        content: {}
+      security:
+        - authorization: []
 components:
   schemas:
     current-user:
