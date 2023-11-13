@@ -1,0 +1,1005 @@
+openapi: 3.0.0
+x-stoplight:
+  id: 67bms2ggvyzi5
+info:
+  title: nyasu
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /api/v1/auth/user:
+    get:
+      summary: Get current user
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/current-user'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+      operationId: get-api-v1-auth-user
+      x-stoplight:
+        id: ad6temuyucje0
+      security:
+        - authorization: []
+  /api/v1/auth/signup:
+    parameters: []
+    post:
+      summary: Register new user
+      operationId: post-api-v1-auth-signup
+      responses:
+        '200':
+          $ref: '#/components/responses/login-success'
+      x-stoplight:
+        id: j0tmr7x8yp554
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  x-stoplight:
+                    id: cesvhty1o7h3x
+                  format: email
+                password:
+                  type: string
+                  x-stoplight:
+                    id: zhotnztdxpexq
+                password_confirm:
+                  type: string
+                  x-stoplight:
+                    id: 9xyy6992olv25
+              required:
+                - email
+                - password
+                - password_confirm
+  /api/v1/auth/login:
+    post:
+      summary: Login
+      operationId: post-api-v1-auth-login
+      responses:
+        '200':
+          $ref: '#/components/responses/login-success'
+      x-stoplight:
+        id: pve4b9wwotr3c
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  x-stoplight:
+                    id: 71g6ibqrs66zu
+                  format: email
+                password:
+                  type: string
+                  x-stoplight:
+                    id: 2nu06be12fbhu
+              required:
+                - email
+                - password
+  /api/v1/auth/logout:
+    delete:
+      summary: Logout
+      operationId: delete-api-v1-auth-logout
+      responses:
+        '200':
+          $ref: '#/components/responses/delete-success'
+      x-stoplight:
+        id: tqgbrdec8idnw
+      security:
+        - authorization: []
+  /api/v1/decks:
+    get:
+      summary: List decks of current user
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/decks-list'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+      operationId: get-api-v1-decks
+      x-stoplight:
+        id: akix2asdzqdgg
+      security:
+        - authorization: []
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: page
+        - schema:
+            type: number
+          in: query
+          name: per_page
+        - schema:
+            type: string
+          in: query
+          name: search
+    post:
+      summary: Create deck
+      operationId: post-api-v1-decks
+      responses:
+        '200':
+          $ref: '#/components/responses/deck-detail'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+      x-stoplight:
+        id: u5xb5oul92282
+      description: ''
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  x-stoplight:
+                    id: qk2jhtecbmtur
+                description:
+                  type: string
+                  x-stoplight:
+                    id: t6kfewfiiedmj
+                file:
+                  type: string
+                  x-stoplight:
+                    id: oq14ykt4uuhhn
+                  format: binary
+              required:
+                - name
+          application/json:
+            schema:
+              type: object
+              properties: {}
+        description: ''
+      security:
+        - authorization: []
+  '/api/v1/decks/{id}':
+    get:
+      summary: Get deck
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/deck-detail'
+        '401':
+          description: Unauthorized
+      operationId: 'get-api-v1-decks-:id'
+      x-stoplight:
+        id: 86yywl8ax3j3f
+      description: ''
+      security:
+        - authorization: []
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    put:
+      summary: Update deck
+      operationId: put-api-v1-decks-id
+      responses:
+        '200':
+          $ref: '#/components/responses/deck-detail'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  x-stoplight:
+                    id: y74tsce4kxr7b
+                description:
+                  type: string
+                  x-stoplight:
+                    id: wugp3cn6oghxx
+                file:
+                  type: string
+                  x-stoplight:
+                    id: 372hpk7ubjeqg
+                  format: binary
+    delete:
+      summary: Delete deck
+      operationId: delete-api-v1-decks-id
+      responses:
+        '200':
+          $ref: '#/components/responses/delete-success'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+      x-stoplight:
+        id: 7xt58v7wf0b2m
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+  /api/v1/cards:
+    get:
+      summary: Get cards list
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/cards-list'
+      operationId: get-api-v1-cards
+      x-stoplight:
+        id: g4kbjciqtaxdx
+      security:
+        - authorization: []
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: page
+        - schema:
+            type: number
+          in: query
+          name: per_page
+    post:
+      summary: Create card
+      operationId: post-api-v1-cards
+      responses:
+        '201':
+          $ref: '#/components/responses/card-detail'
+      x-stoplight:
+        id: fw3y46ern6o3k
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                deck_id:
+                  type: string
+                  x-stoplight:
+                    id: ge03imzu24n2f
+                content:
+                  type: object
+                  x-stoplight:
+                    id: 8ro2a2vuy618g
+                  properties:
+                    front:
+                      type: string
+                      x-stoplight:
+                        id: 0xgg50gnmnlmq
+                    back:
+                      type: string
+                      x-stoplight:
+                        id: q17yhgpf6n8v2
+                fields:
+                  type: object
+                  x-stoplight:
+                    id: o7jwgyhgm2rvp
+                  properties:
+                    word:
+                      type: string
+                      x-stoplight:
+                        id: 14r5lj9d2xtlx
+                    translate:
+                      type: string
+                      x-stoplight:
+                        id: 3cjk4hcb1zdhj
+                    spelling:
+                      type: string
+                      x-stoplight:
+                        id: loumx01ee4yiw
+                    example:
+                      type: object
+                      x-stoplight:
+                        id: eyvc9vdz5odln
+                      properties:
+                        sentence:
+                          type: string
+                          x-stoplight:
+                            id: 962pe1stpwpq1
+                        translate:
+                          type: string
+                          x-stoplight:
+                            id: mxhws5gltdsqf
+                file:
+                  type: string
+                  x-stoplight:
+                    id: xvoxrhvnehx4t
+                  format: binary
+  /api/v1/cards/random:
+    get:
+      summary: Get random cards
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/random-cards'
+      operationId: get-api-v1-cards-random
+      x-stoplight:
+        id: kjsiybb0icpbl
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: limit
+      security:
+        - authorization: []
+  /api/v1/learnings:
+    get:
+      summary: Get learning cards
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/learning-cards'
+      operationId: get-api-v1-cards-learning
+      x-stoplight:
+        id: gdmpfmj32cor3
+      security:
+        - authorization: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: deck_id
+        - schema:
+            type: integer
+          in: query
+          name: limit
+    post:
+      summary: Add learning
+      operationId: post-api-v1-cards-learning
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    x-stoplight:
+                      id: tsv8zxd4kr4nz
+                  data:
+                    type: object
+                    x-stoplight:
+                      id: x137xmccra3as
+      x-stoplight:
+        id: 32dobc54cl0o9
+      description: ''
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                card_id:
+                  type: string
+                  x-stoplight:
+                    id: 9npa7aodvqc0z
+                deck_id:
+                  type: string
+                  x-stoplight:
+                    id: g96ao8bvo37yx
+    put:
+      summary: Update learnings
+      operationId: put-api-v1-cards-learning
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    x-stoplight:
+                      id: jze52h83nbc0z
+                  data:
+                    type: object
+                    x-stoplight:
+                      id: gyqg8c72ccens
+      x-stoplight:
+        id: qtlpjcnyloymj
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passed_cards:
+                  type: array
+                  x-stoplight:
+                    id: 17no3vnlstogh
+                  items:
+                    x-stoplight:
+                      id: 7yp15m9151zl1
+                    type: string
+                failed_cards:
+                  type: array
+                  x-stoplight:
+                    id: 10pu4rzartlwj
+                  items:
+                    x-stoplight:
+                      id: mxu8nzntoskak
+                    type: string
+        description: ''
+    parameters: []
+  '/api/v1/cards/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Card detail
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/card-detail'
+      operationId: get-api-v1-cards-id
+      x-stoplight:
+        id: xq0526nym5t2d
+      security:
+        - authorization: []
+    put:
+      summary: Update card
+      operationId: put-api-v1-cards-id
+      responses:
+        '202':
+          $ref: '#/components/responses/card-detail'
+      x-stoplight:
+        id: el39c8kandmp8
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: object
+                  x-stoplight:
+                    id: hdlt1pfqeh7or
+                  properties:
+                    front:
+                      type: string
+                      x-stoplight:
+                        id: sdu25ro0odyv8
+                    back:
+                      type: string
+                      x-stoplight:
+                        id: 3s0fe1wwy8c41
+                fields:
+                  type: object
+                  x-stoplight:
+                    id: vk0ltqkohohmz
+                  properties:
+                    word:
+                      type: string
+                      x-stoplight:
+                        id: jqznuss9c4a9t
+                    translate:
+                      type: string
+                      x-stoplight:
+                        id: 4wglxt53zhojf
+                    spelling:
+                      type: string
+                      x-stoplight:
+                        id: 4da64op4skyfo
+                    example:
+                      type: object
+                      x-stoplight:
+                        id: q27yci481rkhz
+                      properties:
+                        sentence:
+                          type: string
+                          x-stoplight:
+                            id: mfqr0uem4h3dm
+                        translate:
+                          type: string
+                          x-stoplight:
+                            id: cchqejtkkna2j
+                file:
+                  type: string
+                  x-stoplight:
+                    id: abud76j8bpxih
+                  format: binary
+    delete:
+      summary: Delete card
+      operationId: delete-api-v1-cards-id
+      responses:
+        '204':
+          $ref: '#/components/responses/delete-success'
+      x-stoplight:
+        id: 7dph401rfvotm
+      security:
+        - authorization: []
+  /api/v1/cards/attachments:
+    post:
+      summary: Upload card photo
+      operationId: post-api-v1-cards-attachments
+      responses:
+        '201':
+          $ref: '#/components/responses/uploaded-photo'
+      x-stoplight:
+        id: jd0afcsghktla
+      security:
+        - authorization: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  x-stoplight:
+                    id: 0k5wut8b7vzi4
+                  format: binary
+  /api/v1/learnings/reviews:
+    get:
+      summary: Get reviewing cards
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/cards-list'
+      operationId: get-api-v1-learnings-reviews
+      x-stoplight:
+        id: dqnenicjinkqb
+      requestBody:
+        content: {}
+      security:
+        - authorization: []
+components:
+  schemas:
+    current-user:
+      title: User
+      type: object
+      x-examples:
+        example:
+          id: 56cb91bdc3464f14678934ca
+          email: test@example.com
+          role: ADMIN
+      x-stoplight:
+        id: 3umxjq787hak2
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the given user.
+          x-stoplight:
+            id: oveprx7h234rq
+          readOnly: true
+        email:
+          type: string
+          format: email
+          x-stoplight:
+            id: mbhygb261017d
+          readOnly: true
+        role:
+          x-stoplight:
+            id: c359sejujgtn6
+          enum:
+            - ADMIN
+            - USER
+          readOnly: true
+      required:
+        - id
+        - email
+        - role
+    deck-list-item:
+      title: deck-list-item
+      x-stoplight:
+        id: jymrj1tzsxc8u
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: pyfuu1it16uwe
+        name:
+          type: string
+          x-stoplight:
+            id: p51tvtdde0vzk
+        photo:
+          type: string
+          x-stoplight:
+            id: ltxzw4mvd5fmu
+      required:
+        - id
+        - name
+    deck-detail:
+      title: deck-detail
+      x-stoplight:
+        id: qu4i08ff9mfn6
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: pov5v0ju8o121
+        name:
+          type: string
+          x-stoplight:
+            id: oyee6habo81od
+        photo:
+          type: string
+          x-stoplight:
+            id: tz3nu5542ss6v
+    card:
+      title: card
+      x-stoplight:
+        id: ljow1et88cqhq
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: c7oh3wkvi6s81
+        deck_id:
+          type: string
+          x-stoplight:
+            id: qwmwh1etyd5e6
+        content:
+          type: object
+          x-stoplight:
+            id: kyms05luv80zz
+          properties:
+            front:
+              type: string
+              x-stoplight:
+                id: n6vvgmiw9iqjd
+            back:
+              type: string
+              x-stoplight:
+                id: jwjbij2tvz1p6
+        fields:
+          type: object
+          x-stoplight:
+            id: rg996l7hekie0
+          properties:
+            word:
+              type: string
+              x-stoplight:
+                id: inhnoannv7qy4
+            translate:
+              type: string
+              x-stoplight:
+                id: 6f8sdrvcasvpy
+            spelling:
+              type: string
+              x-stoplight:
+                id: ehp58d9c8m95d
+            example:
+              type: object
+              x-stoplight:
+                id: si3vuqnfbyqqp
+              properties:
+                sentence:
+                  type: string
+                  x-stoplight:
+                    id: 7r5cv900985rg
+                translate:
+                  type: string
+                  x-stoplight:
+                    id: 8b5srs7ptvsvg
+        audioUrl:
+          type: string
+          x-stoplight:
+            id: zk6daz7qbjer3
+      required:
+        - id
+  securitySchemes:
+    authorization:
+      type: http
+      scheme: bearer
+  responses:
+    current-user:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: vxjinfqi2itar
+              data:
+                type: object
+                x-stoplight:
+                  id: 4l0ay7bthv5zu
+                required:
+                  - user
+                properties:
+                  user:
+                    $ref: '#/components/schemas/current-user'
+            required:
+              - success
+              - data
+    login-success:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+        application/xml:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: bep0cuguxc04v
+              token:
+                type: string
+                x-stoplight:
+                  id: 5xy6ke9m30m6x
+              data:
+                type: object
+                x-stoplight:
+                  id: foze666zldxp0
+                required:
+                  - user
+                properties:
+                  user:
+                    $ref: '#/components/schemas/current-user'
+            required:
+              - success
+              - token
+              - data
+    delete-success:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: x2vjuw26wgyj8
+            required:
+              - success
+    decks-list:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: 8ub3l84r3qm90
+              data:
+                type: object
+                x-stoplight:
+                  id: eanqq04twc057
+                required:
+                  - decks
+                  - page
+                  - total_page
+                properties:
+                  decks:
+                    type: array
+                    x-stoplight:
+                      id: v2706kgxsiddy
+                    items:
+                      $ref: '#/components/schemas/deck-list-item'
+                  page:
+                    type: integer
+                    x-stoplight:
+                      id: nwn8a3i5bdk3p
+                  total_page:
+                    type: integer
+                    x-stoplight:
+                      id: 6f754pt8t7lwn
+            required:
+              - success
+              - data
+    deck-detail:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: dimtb8jypoqkv
+              data:
+                type: object
+                x-stoplight:
+                  id: 2rciez72n4v4o
+                properties:
+                  deck:
+                    $ref: '#/components/schemas/deck-detail'
+        application/xml:
+          schema:
+            type: object
+            properties: {}
+    unauthorized:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+        application/xml:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: 7ldgasy43gzjy
+                default: false
+              errors:
+                type: array
+                x-stoplight:
+                  id: iu8vtft34554o
+                items: {}
+    cards-list:
+      description: Example response
+      content:
+        application/xml:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: y0g6qi39086xz
+              data:
+                type: object
+                x-stoplight:
+                  id: 3gkrehmdolkqm
+                properties:
+                  cards:
+                    type: array
+                    x-stoplight:
+                      id: hdn1ua0646dia
+                    items:
+                      $ref: '#/components/schemas/card'
+                  page:
+                    type: integer
+                    x-stoplight:
+                      id: 2xm03qgcfwwtb
+                  total_page:
+                    type: integer
+                    x-stoplight:
+                      id: 7cxicqprktg3c
+        multipart/form-data:
+          schema:
+            type: object
+            properties: {}
+        text/html:
+          schema:
+            type: object
+            properties: {}
+    card-detail:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+        application/xml:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: stopkxdwtnuue
+              data:
+                type: object
+                x-stoplight:
+                  id: 1f8f99jvwj2ur
+                properties:
+                  card:
+                    $ref: '#/components/schemas/card'
+    random-cards:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: fcmiolivgptve
+              data:
+                type: object
+                x-stoplight:
+                  id: gyqp0o4bzgcpe
+                properties:
+                  cards:
+                    type: array
+                    x-stoplight:
+                      id: a39gjvoyeca6x
+                    items:
+                      $ref: '#/components/schemas/card'
+    learning-cards:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+        application/xml:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: 2dfqpbvlh4evm
+              data:
+                type: object
+                x-stoplight:
+                  id: 0gjo91q1bl6up
+                properties:
+                  cards:
+                    type: array
+                    x-stoplight:
+                      id: 0ca194mf3uu5d
+                    items:
+                      $ref: '#/components/schemas/card'
+    uploaded-photo:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+        application/xml:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: rh8cyvq88raxa
+              data:
+                type: object
+                x-stoplight:
+                  id: u49kegglnflu2
+                properties:
+                  attachment:
+                    type: object
+                    x-stoplight:
+                      id: ajts7gv0b9lcx
+                    properties:
+                      name:
+                        type: string
+                        x-stoplight:
+                          id: jx1dbsjt066x4
+                      path:
+                        type: string
+                        x-stoplight:
+                          id: f71l4av5b5011
