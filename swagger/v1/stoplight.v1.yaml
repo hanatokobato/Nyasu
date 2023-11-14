@@ -334,11 +334,11 @@ paths:
         - authorization: []
   /api/v1/learnings:
     get:
-      summary: Get learning cards
+      summary: Get learning statistic
       tags: []
       responses:
         '200':
-          $ref: '#/components/responses/learning-cards'
+          $ref: '#/components/responses/learnings'
       operationId: get-api-v1-cards-learning
       x-stoplight:
         id: gdmpfmj32cor3
@@ -614,10 +614,18 @@ components:
           type: string
           x-stoplight:
             id: p51tvtdde0vzk
-        photo:
+        photo_url:
           type: string
           x-stoplight:
             id: ltxzw4mvd5fmu
+        has_unlearned_card:
+          type: boolean
+          x-stoplight:
+            id: hljv4pqq7apdt
+        description:
+          type: string
+          x-stoplight:
+            id: zsmetynassz0t
       required:
         - id
         - name
@@ -940,7 +948,7 @@ components:
                       id: a39gjvoyeca6x
                     items:
                       $ref: '#/components/schemas/card'
-    learning-cards:
+    reviewing-cards:
       description: Example response
       content:
         application/json:
@@ -1001,3 +1009,57 @@ components:
                         type: string
                         x-stoplight:
                           id: f71l4av5b5011
+    learnings:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: 68l1y3625h71a
+              data:
+                type: object
+                x-stoplight:
+                  id: 3v5gihqafxcnf
+                properties:
+                  word_levels:
+                    type: object
+                    x-stoplight:
+                      id: lqai5vbfdlxtj
+                    properties:
+                      level_1:
+                        type: integer
+                        x-stoplight:
+                          id: 2y768uw93ocyy
+                      level_2:
+                        type: integer
+                        x-stoplight:
+                          id: 2gm94m1ymksey
+                      level_3:
+                        type: integer
+                        x-stoplight:
+                          id: zvh8ptkqri0ql
+                      level_4:
+                        type: integer
+                        x-stoplight:
+                          id: ce9yoc63svvtp
+                      level_5:
+                        type: integer
+                        x-stoplight:
+                          id: qfqaxv63y68p6
+                  curr_review_count:
+                    type: integer
+                    x-stoplight:
+                      id: t05gt9w3vwufm
+                  wait_review_count:
+                    type: integer
+                    x-stoplight:
+                      id: 7gbqu38yibiqv
+                  upcoming:
+                    type: string
+                    x-stoplight:
+                      id: itn4gka5yxcm0
+                    format: date-time

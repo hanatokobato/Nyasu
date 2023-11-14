@@ -1,5 +1,4 @@
 'use client';
-import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import DeckItem from './components/DeckItem';
 import Link from 'next/link';
@@ -9,35 +8,10 @@ const Decks = () => {
   const { decks, loadDecks } = useDecks();
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchDecks = useCallback(
-    async (page: number = 1, perPage: number = 10): Promise<IDeck[]> => {
-      setIsLoading(true);
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/decks`,
-        {
-          params: {
-            page,
-            per_page: perPage,
-          },
-        }
-      );
-      const fetchedDecks = response.data.decks.map((deck: any) => ({
-        id: deck._id,
-        name: deck.name,
-        description: deck.description,
-        photoUrl: deck.photoUrl,
-        createdAt: deck.createdAt,
-        hasUnlearnedCard: deck.hasUnlearnedCard,
-      }));
-      setIsLoading(false);
-
-      return fetchedDecks;
-    },
-    []
-  );
-
   const initData = useCallback(async () => {
-    loadDecks
+    setIsLoading(true);
+    await loadDecks();
+    setIsLoading(false);
   }, [loadDecks]);
 
   useEffect(() => {
@@ -51,7 +25,7 @@ const Decks = () => {
         <div className="flex justify-center flex-wrap mx-6 mt-2">
           <div className="w-9/12 mt-10">
             {decks.map((deck) =>
-              deck.hasUnlearnedCard ? (
+              deck.has_unlearned_card ? (
                 <Link href={`/cards?deck_id=${deck.id}`} key={deck.id}>
                   <DeckItem deck={deck} />
                 </Link>

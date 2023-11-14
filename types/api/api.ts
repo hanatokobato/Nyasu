@@ -210,7 +210,19 @@ export interface DeckListItem {
      * @type {string}
      * @memberof DeckListItem
      */
-    'photo'?: string;
+    'photo_url'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof DeckListItem
+     */
+    'has_unlearned_card'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof DeckListItem
+     */
+    'description'?: string;
 }
 /**
  * 
@@ -360,10 +372,65 @@ export interface GetApiV1CardsLearning200Response {
 export interface GetApiV1CardsLearning200ResponseData {
     /**
      * 
-     * @type {Array<Card>}
+     * @type {GetApiV1CardsLearning200ResponseDataWordLevels}
      * @memberof GetApiV1CardsLearning200ResponseData
      */
-    'cards'?: Array<Card>;
+    'word_levels'?: GetApiV1CardsLearning200ResponseDataWordLevels;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1CardsLearning200ResponseData
+     */
+    'curr_review_count'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1CardsLearning200ResponseData
+     */
+    'wait_review_count'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetApiV1CardsLearning200ResponseData
+     */
+    'upcoming'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface GetApiV1CardsLearning200ResponseDataWordLevels
+ */
+export interface GetApiV1CardsLearning200ResponseDataWordLevels {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1CardsLearning200ResponseDataWordLevels
+     */
+    'level_1'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1CardsLearning200ResponseDataWordLevels
+     */
+    'level_2'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1CardsLearning200ResponseDataWordLevels
+     */
+    'level_3'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1CardsLearning200ResponseDataWordLevels
+     */
+    'level_4'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1CardsLearning200ResponseDataWordLevels
+     */
+    'level_5'?: number;
 }
 /**
  * 
@@ -1091,7 +1158,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary Get learning cards
+         * @summary Get learning statistic
          * @param {string} [deckId] 
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
@@ -1785,13 +1852,13 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Get learning cards
+         * @summary Get learning statistic
          * @param {string} [deckId] 
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getApiV1CardsLearning(deckId?: string, limit?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1AuthUser401Response>> {
+        async getApiV1CardsLearning(deckId?: string, limit?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1CardsLearning200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1CardsLearning(deckId, limit, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -2022,13 +2089,13 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary Get learning cards
+         * @summary Get learning statistic
          * @param {string} [deckId] 
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApiV1CardsLearning(deckId?: string, limit?: number, options?: any): AxiosPromise<GetApiV1AuthUser401Response> {
+        getApiV1CardsLearning(deckId?: string, limit?: number, options?: any): AxiosPromise<GetApiV1CardsLearning200Response> {
             return localVarFp.getApiV1CardsLearning(deckId, limit, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2257,7 +2324,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary Get learning cards
+     * @summary Get learning statistic
      * @param {string} [deckId] 
      * @param {number} [limit] 
      * @param {*} [options] Override http request option.
