@@ -348,93 +348,6 @@ export interface GetApiV1Cards200ResponseData {
 /**
  * 
  * @export
- * @interface GetApiV1CardsLearning200Response
- */
-export interface GetApiV1CardsLearning200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetApiV1CardsLearning200Response
-     */
-    'success'?: boolean;
-    /**
-     * 
-     * @type {GetApiV1CardsLearning200ResponseData}
-     * @memberof GetApiV1CardsLearning200Response
-     */
-    'data'?: GetApiV1CardsLearning200ResponseData;
-}
-/**
- * 
- * @export
- * @interface GetApiV1CardsLearning200ResponseData
- */
-export interface GetApiV1CardsLearning200ResponseData {
-    /**
-     * 
-     * @type {GetApiV1CardsLearning200ResponseDataWordLevels}
-     * @memberof GetApiV1CardsLearning200ResponseData
-     */
-    'word_levels'?: GetApiV1CardsLearning200ResponseDataWordLevels;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetApiV1CardsLearning200ResponseData
-     */
-    'curr_review_count'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetApiV1CardsLearning200ResponseData
-     */
-    'wait_review_count'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetApiV1CardsLearning200ResponseData
-     */
-    'upcoming'?: string;
-}
-/**
- * 
- * @export
- * @interface GetApiV1CardsLearning200ResponseDataWordLevels
- */
-export interface GetApiV1CardsLearning200ResponseDataWordLevels {
-    /**
-     * 
-     * @type {number}
-     * @memberof GetApiV1CardsLearning200ResponseDataWordLevels
-     */
-    'level_1'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetApiV1CardsLearning200ResponseDataWordLevels
-     */
-    'level_2'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetApiV1CardsLearning200ResponseDataWordLevels
-     */
-    'level_3'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetApiV1CardsLearning200ResponseDataWordLevels
-     */
-    'level_4'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetApiV1CardsLearning200ResponseDataWordLevels
-     */
-    'level_5'?: number;
-}
-/**
- * 
- * @export
  * @interface GetApiV1CardsRandom200Response
  */
 export interface GetApiV1CardsRandom200Response {
@@ -507,6 +420,93 @@ export interface GetApiV1Decks200ResponseData {
      * @memberof GetApiV1Decks200ResponseData
      */
     'total_page': number;
+}
+/**
+ * 
+ * @export
+ * @interface GetApiV1LearningStatistic200Response
+ */
+export interface GetApiV1LearningStatistic200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetApiV1LearningStatistic200Response
+     */
+    'success'?: boolean;
+    /**
+     * 
+     * @type {GetApiV1LearningStatistic200ResponseData}
+     * @memberof GetApiV1LearningStatistic200Response
+     */
+    'data'?: GetApiV1LearningStatistic200ResponseData;
+}
+/**
+ * 
+ * @export
+ * @interface GetApiV1LearningStatistic200ResponseData
+ */
+export interface GetApiV1LearningStatistic200ResponseData {
+    /**
+     * 
+     * @type {GetApiV1LearningStatistic200ResponseDataWordLevels}
+     * @memberof GetApiV1LearningStatistic200ResponseData
+     */
+    'word_levels': GetApiV1LearningStatistic200ResponseDataWordLevels;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseData
+     */
+    'curr_review_count': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseData
+     */
+    'wait_review_count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetApiV1LearningStatistic200ResponseData
+     */
+    'upcoming': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetApiV1LearningStatistic200ResponseDataWordLevels
+ */
+export interface GetApiV1LearningStatistic200ResponseDataWordLevels {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseDataWordLevels
+     */
+    'level_1': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseDataWordLevels
+     */
+    'level_2': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseDataWordLevels
+     */
+    'level_3': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseDataWordLevels
+     */
+    'level_4': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseDataWordLevels
+     */
+    'level_5': number;
 }
 /**
  * 
@@ -1158,50 +1158,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary Get learning statistic
-         * @param {string} [deckId] 
-         * @param {number} [limit] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getApiV1CardsLearning: async (deckId?: string, limit?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/learnings`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication authorization required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (deckId !== undefined) {
-                localVarQueryParameter['deck_id'] = deckId;
-            }
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary Get random cards
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
@@ -1300,6 +1256,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             assertParamExists('getApiV1DecksId', 'id', id)
             const localVarPath = `/api/v1/decks/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication authorization required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get learning statistic
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApiV1LearningStatistic: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/learnings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1852,18 +1842,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Get learning statistic
-         * @param {string} [deckId] 
-         * @param {number} [limit] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getApiV1CardsLearning(deckId?: string, limit?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1CardsLearning200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1CardsLearning(deckId, limit, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @summary Get random cards
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
@@ -1895,6 +1873,16 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          */
         async getApiV1DecksId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostApiV1Decks200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1DecksId(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get learning statistic
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getApiV1LearningStatistic(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1LearningStatistic200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1LearningStatistic(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2089,17 +2077,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary Get learning statistic
-         * @param {string} [deckId] 
-         * @param {number} [limit] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getApiV1CardsLearning(deckId?: string, limit?: number, options?: any): AxiosPromise<GetApiV1CardsLearning200Response> {
-            return localVarFp.getApiV1CardsLearning(deckId, limit, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary Get random cards
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
@@ -2129,6 +2106,15 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         getApiV1DecksId(id: string, options?: any): AxiosPromise<PostApiV1Decks200Response> {
             return localVarFp.getApiV1DecksId(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get learning statistic
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApiV1LearningStatistic(options?: any): AxiosPromise<GetApiV1LearningStatistic200Response> {
+            return localVarFp.getApiV1LearningStatistic(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2324,19 +2310,6 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary Get learning statistic
-     * @param {string} [deckId] 
-     * @param {number} [limit] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public getApiV1CardsLearning(deckId?: string, limit?: number, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getApiV1CardsLearning(deckId, limit, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary Get random cards
      * @param {number} [limit] 
      * @param {*} [options] Override http request option.
@@ -2371,6 +2344,17 @@ export class DefaultApi extends BaseAPI {
      */
     public getApiV1DecksId(id: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getApiV1DecksId(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get learning statistic
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getApiV1LearningStatistic(options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getApiV1LearningStatistic(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

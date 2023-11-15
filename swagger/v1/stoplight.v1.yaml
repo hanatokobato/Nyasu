@@ -339,20 +339,13 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/learnings'
-      operationId: get-api-v1-cards-learning
+      operationId: get-api-v1-learning-statistic
       x-stoplight:
         id: gdmpfmj32cor3
       security:
         - authorization: []
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: deck_id
-        - schema:
-            type: integer
-          in: query
-          name: limit
+      parameters: []
+      description: ''
     post:
       summary: Add learning
       operationId: post-api-v1-cards-learning
@@ -1029,6 +1022,12 @@ components:
                     type: object
                     x-stoplight:
                       id: lqai5vbfdlxtj
+                    required:
+                      - level_1
+                      - level_2
+                      - level_3
+                      - level_4
+                      - level_5
                     properties:
                       level_1:
                         type: integer
@@ -1063,3 +1062,8 @@ components:
                     x-stoplight:
                       id: itn4gka5yxcm0
                     format: date-time
+                required:
+                  - word_levels
+                  - curr_review_count
+                  - wait_review_count
+                  - upcoming
