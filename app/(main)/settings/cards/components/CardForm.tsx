@@ -14,6 +14,7 @@ import '@uiw/react-markdown-preview/dist/markdown.css';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Card as ICard } from '@/types/api';
 
 interface IProps {
   card?: ICard;

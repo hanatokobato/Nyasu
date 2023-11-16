@@ -1,3 +1,5 @@
+import { Card as ICard } from "./api";
+
 export {};
 
 declare global {
@@ -8,25 +10,6 @@ declare global {
     photoUrl?: string;
     createdAt?: date;
     hasUnlearnedCard: boolean;
-  }
-
-  interface ICard {
-    id: string;
-    content: {
-      front: string;
-      back: string;
-    };
-    deckId: string;
-    audioUrl: string;
-    fields: {
-      word: string;
-      spelling: string;
-      translate: string;
-      example: {
-        sentence: string;
-        translate?: string;
-      };
-    };
   }
 
   interface IReview {

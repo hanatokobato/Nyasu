@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import GameInput from '@/app/components/inputs/TextInput';
 import FillBlankInput from '@/app/components/inputs/FillBlankInput';
+import { Card as ICard } from '@/types/api';
 
 interface IPassedCard {
   id: string;

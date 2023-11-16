@@ -1,3 +1,4 @@
+import { Card as ICard } from '@/types/api';
 import Image from 'next/image';
 import React, { useCallback, useEffect } from 'react';
 import styles from './Question.module.scss';

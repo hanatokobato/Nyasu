@@ -46,13 +46,13 @@ export interface Card {
      * @type {CardContent}
      * @memberof Card
      */
-    'content'?: CardContent;
+    'content': CardContent;
     /**
      * 
      * @type {CardFields}
      * @memberof Card
      */
-    'fields'?: CardFields;
+    'fields': CardFields;
     /**
      * 
      * @type {string}
@@ -71,13 +71,13 @@ export interface CardContent {
      * @type {string}
      * @memberof CardContent
      */
-    'front'?: string;
+    'front': string;
     /**
      * 
      * @type {string}
      * @memberof CardContent
      */
-    'back'?: string;
+    'back': string;
 }
 /**
  * 
@@ -90,25 +90,25 @@ export interface CardFields {
      * @type {string}
      * @memberof CardFields
      */
-    'word'?: string;
+    'word': string;
     /**
      * 
      * @type {string}
      * @memberof CardFields
      */
-    'translate'?: string;
+    'translate': string;
     /**
      * 
      * @type {string}
      * @memberof CardFields
      */
-    'spelling'?: string;
+    'spelling': string;
     /**
      * 
      * @type {CardFieldsExample}
      * @memberof CardFields
      */
-    'example'?: CardFieldsExample;
+    'example': CardFieldsExample;
 }
 /**
  * 
@@ -121,7 +121,7 @@ export interface CardFieldsExample {
      * @type {string}
      * @memberof CardFieldsExample
      */
-    'sentence'?: string;
+    'sentence': string;
     /**
      * 
      * @type {string}
@@ -344,6 +344,38 @@ export interface GetApiV1Cards200ResponseData {
      * @memberof GetApiV1Cards200ResponseData
      */
     'total_page'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface GetApiV1CardsLearning200Response
+ */
+export interface GetApiV1CardsLearning200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetApiV1CardsLearning200Response
+     */
+    'success'?: boolean;
+    /**
+     * 
+     * @type {GetApiV1CardsLearning200ResponseData}
+     * @memberof GetApiV1CardsLearning200Response
+     */
+    'data': GetApiV1CardsLearning200ResponseData;
+}
+/**
+ * 
+ * @export
+ * @interface GetApiV1CardsLearning200ResponseData
+ */
+export interface GetApiV1CardsLearning200ResponseData {
+    /**
+     * 
+     * @type {Array<Card>}
+     * @memberof GetApiV1CardsLearning200ResponseData
+     */
+    'cards': Array<Card>;
 }
 /**
  * 
@@ -1158,6 +1190,47 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Get learning cards
+         * @param {string} deckId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApiV1CardsLearning: async (deckId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deckId' is not null or undefined
+            assertParamExists('getApiV1CardsLearning', 'deckId', deckId)
+            const localVarPath = `/api/v1/cards/learning`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication authorization required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (deckId !== undefined) {
+                localVarQueryParameter['deck_id'] = deckId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get random cards
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
@@ -1842,6 +1915,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get learning cards
+         * @param {string} deckId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getApiV1CardsLearning(deckId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1CardsLearning200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1CardsLearning(deckId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get random cards
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
@@ -2077,6 +2161,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Get learning cards
+         * @param {string} deckId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApiV1CardsLearning(deckId: string, options?: any): AxiosPromise<GetApiV1CardsLearning200Response> {
+            return localVarFp.getApiV1CardsLearning(deckId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get random cards
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
@@ -2306,6 +2400,18 @@ export class DefaultApi extends BaseAPI {
      */
     public getApiV1CardsId(id: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getApiV1CardsId(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get learning cards
+     * @param {string} deckId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getApiV1CardsLearning(deckId: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getApiV1CardsLearning(deckId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

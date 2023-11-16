@@ -1,6 +1,7 @@
 'use client';
 
 import DropDownMenu from '@/app/components/DropDownMenu';
+import { Card as ICard } from '@/types/api';
 import MDEditor from '@uiw/react-md-editor';
 import axios from 'axios';
 import Image from 'next/image';
