@@ -1,6 +1,5 @@
 'use client';
 
-import axios from 'axios';
 import { cloneDeep, isEmpty, sample, set, uniqBy } from 'lodash';
 import React, {
   useCallback,
@@ -19,41 +18,34 @@ import { toast, ToastContainer } from 'react-toastify';
 import GameInput from '@/app/components/inputs/TextInput';
 import FillBlankInput from '@/app/components/inputs/FillBlankInput';
 import { Card as ICard } from '@/types/api';
+import { useLearnings } from '@/hooks/learnings/useLearnings';
 
 interface IPassedCard {
   id: string;
   attemptCount: number;
 }
 
-interface IReviewReviewing extends IReview {
+interface IReviewReviewing extends ICard {
   attemptCount: number;
 }
 
 const Review = () => {
   const router = useRouter();
-  const [reviews, setReviews] = useState<IReviewReviewing[]>([]);
-  const [randomCards, setRandomCards] = useState<ICard[]>();
   const [selectedAnswer, setSelectedAnswer] = useState<string>();
   const [answerText, setAnswerText] = useState<string>();
   const [passedCards, setPassedCards] = useState<IPassedCard[]>([]);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const submitBtnRef = useRef<HTMLDivElement>(null);
-
-  const fetchReviews = useCallback(async () => {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/learnings/reviews`
-    );
-    const { reviews } = res.data;
-    setReviews(reviews);
-  }, []);
-
-  const fetchRandomCards = useCallback(async () => {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/cards/random`
-    );
-    const { cards } = res.data;
-    setRandomCards(cards.map((card: any) => ({ ...card, id: card._id })));
-  }, []);
+  const {
+    reviews: reviewCards,
+    randomCards,
+    loadReviews,
+    loadRandomCards,
+    updateLearnings,
+  } = useLearnings();
+  const [reviews, setReviews] = useState<IReviewReviewing[]>(() => {
+    return reviewCards.map((card) => ({ ...card, attemptCount: 0 }));
+  });
 
   const selectAnswerHandler = useCallback((selected: string | null) => {
     if (selected) setSelectedAnswer(selected);
@@ -68,10 +60,10 @@ const Review = () => {
         const currentReviews = cloneDeep(curr);
         const firstReview = currentReviews.shift() as IReviewReviewing;
         firstReview.attemptCount = (firstReview.attemptCount ?? 0) + 1;
-        if (firstReview.card.id === selectedAnswer) {
+        if (firstReview.id === selectedAnswer) {
           setPassedCards((currPassed) =>
             currPassed.concat({
-              id: firstReview.card.id,
+              id: firstReview.id,
               attemptCount: firstReview.attemptCount,
             })
           );
@@ -98,16 +90,16 @@ const Review = () => {
     }
   }, [reviews]);
 
-  const updateLearning = useCallback(async () => {
+  const storeLearnings = useCallback(async () => {
     try {
-      await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/learnings`, {
-        passed_cards: passedCards
+      await updateLearnings({
+        passedCards: passedCards
           .filter((card) => card.attemptCount === 1)
           .map((card) => card.id),
-        failed_cards: passedCards
+        failedCards: passedCards
           .filter((card) => card.attemptCount > 1)
           .map((card) => card.id)
-          .concat(reviews.map((r) => r.card.id)),
+          .concat(reviews.map((card) => card.id)),
       });
 
       router.prefetch('/');
@@ -115,7 +107,7 @@ const Review = () => {
     } catch (e: any) {
       toast(e.message, { type: 'error' });
     }
-  }, [passedCards, reviews, router]);
+  }, [passedCards, reviews, router, updateLearnings]);
 
   useEffect(() => {
     if (isSubmitted) {
@@ -124,35 +116,35 @@ const Review = () => {
   }, [isSubmitted]);
 
   useEffect(() => {
-    fetchReviews();
-    fetchRandomCards();
-  }, [fetchReviews, fetchRandomCards]);
+    loadReviews();
+    loadRandomCards();
+  }, [loadReviews, loadRandomCards]);
 
   useEffect(() => {
     if (reviews && reviews.length > 0) {
-      fetchRandomCards();
+      loadRandomCards();
     }
-  }, [reviews, fetchRandomCards]);
+  }, [reviews, loadRandomCards]);
 
   useEffect(() => {
     if (
       (reviews.length === 0 && passedCards.length > 0) ||
       reviews.some((r) => r.attemptCount > 3)
     ) {
-      updateLearning();
+      storeLearnings();
     }
-  }, [updateLearning, passedCards.length, reviews]);
+  }, [storeLearnings, passedCards.length, reviews]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (passedCards.length > 0) updateLearning();
+      if (passedCards.length > 0) storeLearnings();
 
       router.prefetch('/');
       router.push('/');
     }, 1000 * 60 * 10);
 
     return clearTimeout(timer);
-  }, []);
+  }, [passedCards, storeLearnings, router]);
 
   return (
     <div className="flex bg-slate-100 min-h-full-minus-header">
@@ -165,17 +157,14 @@ const Review = () => {
               <div className="w-9/12">
                 {reviews && reviews.length > 0 && (
                   <>
-                    <Question
-                      card={reviews[0].card}
-                      quizType={quizType ?? ''}
-                    />
+                    <Question card={reviews[0]} quizType={quizType ?? ''} />
                     <div className="mt-8">
                       {quizType &&
                         ['translate', 'fillblank'].includes(quizType) && (
                           <SelectAnswer
                             value={selectedAnswer}
                             options={uniqBy(
-                              [...(randomCards || []), reviews[0].card],
+                              [...(randomCards || []), reviews[0]],
                               'id'
                             )}
                             quizType={quizType ?? ''}
@@ -188,8 +177,8 @@ const Review = () => {
                           placeholder="Gõ lại từ bạn đã nghe được"
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             selectAnswerHandler(
-                              e.target.value === reviews[0].card.fields.word
-                                ? reviews[0].card.id
+                              e.target.value === reviews[0].fields.word
+                                ? reviews[0].id
                                 : '_'
                             );
                             setAnswerText(e.target.value);
@@ -207,11 +196,11 @@ const Review = () => {
                       {quizType === 'fillinput' && (
                         <FillBlankInput
                           value={answerText ?? ''}
-                          numOfChars={reviews[0].card.fields.word.length}
+                          numOfChars={reviews[0].fields.word.length}
                           onChange={(val) => {
                             selectAnswerHandler(
-                              val.join('') === reviews[0].card.fields.word
-                                ? reviews[0].card.id
+                              val.join('') === reviews[0].fields.word
+                                ? reviews[0].id
                                 : '_'
                             );
                             setAnswerText(val.join(''));
@@ -230,8 +219,8 @@ const Review = () => {
           {isSubmitted && (
             <div>
               <Answer
-                card={reviews[0].card}
-                isCorrect={reviews[0].card.id === selectedAnswer}
+                card={reviews[0]}
+                isCorrect={reviews[0].id === selectedAnswer}
               />
             </div>
           )}

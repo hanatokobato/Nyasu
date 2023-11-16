@@ -376,10 +376,14 @@ paths:
             schema:
               type: object
               properties:
-                card_id:
-                  type: string
+                card_ids:
+                  type: array
                   x-stoplight:
                     id: 6pshg0rr3gxyt
+                  items:
+                    x-stoplight:
+                      id: hyzenocps7at5
+                    type: string
                 deck_id:
                   type: string
                   x-stoplight:

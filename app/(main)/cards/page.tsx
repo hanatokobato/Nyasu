@@ -2,7 +2,6 @@
 
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import Card from './components/Card';
-import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { cloneDeep, lowerCase } from 'lodash';
 import GameInput from '../../components/inputs/TextInput';
@@ -13,6 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import LearnButton from '../../components/buttons/Button';
 import { useCards } from '@/hooks/cards/useCards';
 import { Card as ICard } from '@/types/api';
+import { useLearnings } from '@/hooks/learnings/useLearnings';
 
 enum QuestionType {
   FREE_INPUT = 'FREE_INPUT',
@@ -29,11 +29,12 @@ const Cards = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
-  const deckId = searchParams.get('deck_id');
+  const deckId = searchParams.get('deck_id') || undefined;
   const [passedCards, setPassedCards] = useState<ICardLearning[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<string>();
   const { learningCards: cards, loadLearningCards } = useCards();
   const [learningCards, setLearingCards] = useState<ICardLearning[]>([]);
+  const { postLearning } = useLearnings();
 
   const goNextHandler = useCallback(async () => {
     const card = learningCards[0];
@@ -119,10 +120,7 @@ const Cards = () => {
   useEffect(() => {
     const addLearning = async () => {
       try {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/learnings`, {
-          deck_id: deckId,
-          card_ids: passedCards.map((c) => c.id),
-        });
+        await postLearning({ deckId, cardIds: passedCards.map((c) => c.id) });
 
         router.push('/');
       } catch (e: any) {
@@ -133,7 +131,7 @@ const Cards = () => {
     if (cards.length === 0 && passedCards.length > 0) {
       addLearning();
     }
-  }, [cards, passedCards, router, deckId]);
+  }, [cards, passedCards, router, deckId, postLearning]);
 
   return (
     <div className="flex bg-slate-100 min-h-full-minus-header">

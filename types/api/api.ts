@@ -732,10 +732,10 @@ export interface PostApiV1CardsLearning200Response {
 export interface PostApiV1CardsLearningRequest {
     /**
      * 
-     * @type {string}
+     * @type {Array<string>}
      * @memberof PostApiV1CardsLearningRequest
      */
-    'card_id'?: string;
+    'card_ids'?: Array<string>;
     /**
      * 
      * @type {string}
