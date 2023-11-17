@@ -1111,10 +1111,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @summary Get cards list
          * @param {number} [page] 
          * @param {number} [perPage] 
+         * @param {string} [deckId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApiV1Cards: async (page?: number, perPage?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getApiV1Cards: async (page?: number, perPage?: number, deckId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/cards`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1137,6 +1138,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
             if (perPage !== undefined) {
                 localVarQueryParameter['per_page'] = perPage;
+            }
+
+            if (deckId !== undefined) {
+                localVarQueryParameter['deck_id'] = deckId;
             }
 
 
@@ -1895,11 +1900,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @summary Get cards list
          * @param {number} [page] 
          * @param {number} [perPage] 
+         * @param {string} [deckId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getApiV1Cards(page?: number, perPage?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1Cards200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1Cards(page, perPage, options);
+        async getApiV1Cards(page?: number, perPage?: number, deckId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1Cards200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1Cards(page, perPage, deckId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2143,11 +2149,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @summary Get cards list
          * @param {number} [page] 
          * @param {number} [perPage] 
+         * @param {string} [deckId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApiV1Cards(page?: number, perPage?: number, options?: any): AxiosPromise<GetApiV1Cards200Response> {
-            return localVarFp.getApiV1Cards(page, perPage, options).then((request) => request(axios, basePath));
+        getApiV1Cards(page?: number, perPage?: number, deckId?: string, options?: any): AxiosPromise<GetApiV1Cards200Response> {
+            return localVarFp.getApiV1Cards(page, perPage, deckId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2382,12 +2389,13 @@ export class DefaultApi extends BaseAPI {
      * @summary Get cards list
      * @param {number} [page] 
      * @param {number} [perPage] 
+     * @param {string} [deckId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getApiV1Cards(page?: number, perPage?: number, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getApiV1Cards(page, perPage, options).then((request) => request(this.axios, this.basePath));
+    public getApiV1Cards(page?: number, perPage?: number, deckId?: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getApiV1Cards(page, perPage, deckId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

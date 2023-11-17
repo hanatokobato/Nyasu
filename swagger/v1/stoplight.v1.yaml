@@ -247,6 +247,10 @@ paths:
             type: number
           in: query
           name: per_page
+        - schema:
+            type: string
+          in: query
+          name: deck_id
     post:
       summary: Create card
       operationId: post-api-v1-cards
