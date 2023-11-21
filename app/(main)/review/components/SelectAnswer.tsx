@@ -1,5 +1,6 @@
 'use client';
 
+import { Card as ICard } from '@/types/api';
 import React, { useCallback, useState, MouseEvent, useEffect } from 'react';
 
 interface IProps {
