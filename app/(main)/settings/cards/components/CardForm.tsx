@@ -18,7 +18,7 @@ import { Card as ICard } from '@/types/api';
 
 interface IProps {
   card?: ICard;
-  deckId: string;
+  deckId?: string;
 }
 
 interface IFormInputs {
@@ -165,7 +165,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
       formData.append('fields[example][sentence]', data.example);
       formData.append('fields[example][translate]', data.example_translate);
       if (content.back) formData.append('content[back]', content.back);
-      formData.append('deck_id', deckId);
+      if (deckId) formData.append('deck_id', deckId);
       if (audioAttachmentRef.current?.files?.length)
         formData.append('file', audioAttachmentRef.current.files[0]);
       card?.id ? await updateCard(formData) : await createCard(formData);

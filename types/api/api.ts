@@ -633,13 +633,45 @@ export interface PostApiV1Cards201Response {
      * @type {boolean}
      * @memberof PostApiV1Cards201Response
      */
-    'success'?: boolean;
+    'success': boolean;
     /**
      * 
      * @type {PostApiV1Cards201ResponseData}
      * @memberof PostApiV1Cards201Response
      */
-    'data'?: PostApiV1Cards201ResponseData;
+    'data': PostApiV1Cards201ResponseData;
+}
+/**
+ * 
+ * @export
+ * @interface PostApiV1Cards201Response1
+ */
+export interface PostApiV1Cards201Response1 {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PostApiV1Cards201Response1
+     */
+    'success'?: boolean;
+    /**
+     * 
+     * @type {PostApiV1Cards201Response1Data}
+     * @memberof PostApiV1Cards201Response1
+     */
+    'data'?: PostApiV1Cards201Response1Data;
+}
+/**
+ * 
+ * @export
+ * @interface PostApiV1Cards201Response1Data
+ */
+export interface PostApiV1Cards201Response1Data {
+    /**
+     * 
+     * @type {Card}
+     * @memberof PostApiV1Cards201Response1Data
+     */
+    'card'?: Card;
 }
 /**
  * 
@@ -652,7 +684,7 @@ export interface PostApiV1Cards201ResponseData {
      * @type {Card}
      * @memberof PostApiV1Cards201ResponseData
      */
-    'card'?: Card;
+    'card': Card;
 }
 /**
  * 
@@ -1915,7 +1947,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getApiV1CardsId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1AuthUser401Response>> {
+        async getApiV1CardsId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostApiV1Cards201Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1CardsId(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -2017,7 +2049,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postApiV1Cards(deckId?: string, content?: PostApiV1CardsRequestContent, fields?: PostApiV1CardsRequestFields, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1AuthUser401Response>> {
+        async postApiV1Cards(deckId?: string, content?: PostApiV1CardsRequestContent, fields?: PostApiV1CardsRequestFields, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostApiV1Cards201Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postApiV1Cards(deckId, content, fields, file, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -2066,7 +2098,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putApiV1CardsId(id: string, content?: PutApiV1CardsIdRequestContent, fields?: PutApiV1CardsIdRequestFields, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1AuthUser401Response>> {
+        async putApiV1CardsId(id: string, content?: PutApiV1CardsIdRequestContent, fields?: PutApiV1CardsIdRequestFields, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostApiV1Cards201Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.putApiV1CardsId(id, content, fields, file, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -2163,7 +2195,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApiV1CardsId(id: string, options?: any): AxiosPromise<GetApiV1AuthUser401Response> {
+        getApiV1CardsId(id: string, options?: any): AxiosPromise<PostApiV1Cards201Response> {
             return localVarFp.getApiV1CardsId(id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2256,7 +2288,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postApiV1Cards(deckId?: string, content?: PostApiV1CardsRequestContent, fields?: PostApiV1CardsRequestFields, file?: File, options?: any): AxiosPromise<GetApiV1AuthUser401Response> {
+        postApiV1Cards(deckId?: string, content?: PostApiV1CardsRequestContent, fields?: PostApiV1CardsRequestFields, file?: File, options?: any): AxiosPromise<PostApiV1Cards201Response> {
             return localVarFp.postApiV1Cards(deckId, content, fields, file, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2301,7 +2333,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putApiV1CardsId(id: string, content?: PutApiV1CardsIdRequestContent, fields?: PutApiV1CardsIdRequestFields, file?: File, options?: any): AxiosPromise<GetApiV1AuthUser401Response> {
+        putApiV1CardsId(id: string, content?: PutApiV1CardsIdRequestContent, fields?: PutApiV1CardsIdRequestFields, file?: File, options?: any): AxiosPromise<PostApiV1Cards201Response> {
             return localVarFp.putApiV1CardsId(id, content, fields, file, options).then((request) => request(axios, basePath));
         },
         /**

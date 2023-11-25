@@ -14,6 +14,7 @@ const useCards = () => {
   const [cards, setCards] = useState<Card[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
+  const [card, setCard] = useState<Card>();
 
   const loadLearningCards = useCallback(async (deckId: string) => {
     const response: AxiosResponse<GetApiV1CardsLearning200Response> =
@@ -42,6 +43,11 @@ const useCards = () => {
     []
   );
 
+  const loadCard = useCallback(async (cardId: string) => {
+    const response = await apiClient.getApiV1CardsId(cardId);
+    setCard(response.data.data.card);
+  }, []);
+
   const deleteCard = useCallback(async (id: string) => {
     await apiClient.deleteApiV1CardsId(id);
     setCards((currentCards) => currentCards.filter((c) => c.id !== id));
@@ -49,11 +55,13 @@ const useCards = () => {
 
   return {
     learningCards,
-    loadLearningCards,
     cards,
+    card,
     currentPage,
     totalPage,
+    loadLearningCards,
     loadCards,
+    loadCard,
     deleteCard,
   };
 };

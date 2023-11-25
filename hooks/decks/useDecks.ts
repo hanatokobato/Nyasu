@@ -1,4 +1,8 @@
-import { GetApiV1Decks200Response, DeckListItem } from '../../types/api';
+import {
+  GetApiV1Decks200Response,
+  DeckListItem,
+  DeckDetail,
+} from '../../types/api';
 import { AxiosResponse } from 'axios';
 import { useState, useCallback } from 'react';
 import { buildApiClient } from '../../lib/apiClient';
@@ -7,6 +11,7 @@ const apiClient = buildApiClient();
 
 const useDecks = () => {
   const [decks, setDecks] = useState<DeckListItem[]>([]);
+  const [deck, setDeck] = useState<DeckDetail>();
 
   const loadDecks = useCallback(
     async (page: number = 1, perPage: number = 10, search: string = '') => {
@@ -17,7 +22,12 @@ const useDecks = () => {
     []
   );
 
-  return { decks, loadDecks };
+  const loadDeck = useCallback(async (deckId: string) => {
+    const response = await apiClient.getApiV1DecksId(deckId);
+    setDeck(response.data.data?.deck);
+  }, []);
+
+  return { decks, deck, loadDecks, loadDeck };
 };
 
 export { useDecks };

@@ -2,9 +2,9 @@
 
 import DropDownMenu from '@/app/components/DropDownMenu';
 import { useCards } from '@/hooks/cards/useCards';
+import { useDecks } from '@/hooks/decks/useDecks';
 import { Card as ICard } from '@/types/api';
 import MDEditor from '@uiw/react-md-editor';
-import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -18,18 +18,10 @@ const Cards = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const deckId = searchParams.get('deck_id') || undefined;
-  const [deck, setDeck] = useState<IDeck>();
   const [isLoading, setIsLoading] = useState(false);
   const [audio, setAudio] = useState<HTMLAudioElement>();
   const { cards, currentPage, totalPage, loadCards, deleteCard } = useCards();
-
-  const fetchDeck = useCallback(async () => {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/decks/${deckId}`
-    );
-    const deck = res.data.deck;
-    return deck;
-  }, [deckId]);
+  const { deck, loadDeck } = useDecks();
 
   const loadMoreCards = useCallback(async () => {
     await loadCards({ page: currentPage + 1, deckId });
@@ -47,9 +39,8 @@ const Cards = () => {
   }, []);
 
   const initData = useCallback(async () => {
-    const [fetchedDeck] = await Promise.all([fetchDeck(), loadCards({})]);
-    setDeck(fetchedDeck);
-  }, [fetchDeck, loadCards]);
+    await Promise.all([loadDeck(deckId!), loadCards({})]);
+  }, [deckId, loadDeck, loadCards]);
 
   const playAudio = useCallback((card: ICard) => {
     setAudio(new Audio(card?.audioUrl));

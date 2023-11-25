@@ -963,9 +963,24 @@ components:
       content:
         application/json:
           schema:
+            type: object
             properties:
-              id:
-                type: string
+              success:
+                type: boolean
+                x-stoplight:
+                  id: 8sge8atdth2cu
+              data:
+                type: object
+                x-stoplight:
+                  id: fil2n18bvhekn
+                required:
+                  - card
+                properties:
+                  card:
+                    $ref: '#/components/schemas/card'
+            required:
+              - success
+              - data
         application/xml:
           schema:
             type: object
