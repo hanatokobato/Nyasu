@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { AxiosResponse } from 'axios';
 import Link from 'next/link';
 import LearnButton from '../components/buttons/Button';
 import Chart from './review/components/Chart';
@@ -7,14 +7,19 @@ import { getServerSession, Session } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]/route';
 import Image from 'next/image';
 import Button from '../components/buttons/Button';
+import { GetApiV1LearningStatistic200Response } from '../../types/api';
+
+import { buildApiClient } from '../../lib/apiClient';
+
+const apiClient = buildApiClient();
 
 const getData = async (session: Session) => {
-  const result = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/learnings`,
-    { headers: {'Authorization': `Bearer ${session.user.auth_token}`} }
-  );
+  const response: AxiosResponse<GetApiV1LearningStatistic200Response> =
+    await apiClient.getApiV1LearningStatistic({
+      headers: { Authorization: `Bearer ${session.user.auth_token}` },
+    });
   const { word_levels, wait_review_count, curr_review_count, upcoming } =
-    result.data;
+    response.data.data!;
   return { word_levels, wait_review_count, curr_review_count, upcoming };
 };
 
@@ -47,7 +52,9 @@ const Home = async () => {
           {wait_review_count > 0 && (
             <p className="mb-12">Chuẩn bị ôn tập: {wait_review_count} từ</p>
           )}
-          {curr_review_count === 0 && <WaitReviewBtn date={upcoming} />}
+          {curr_review_count === 0 && (
+            <WaitReviewBtn date={new Date(upcoming)} />
+          )}
           {curr_review_count > 0 && (
             <Link href="/review">
               <LearnButton className="w-60">ÔN TẬP NGAY</LearnButton>

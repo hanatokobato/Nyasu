@@ -2,7 +2,6 @@
 
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import Card from './components/Card';
-import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { cloneDeep, lowerCase } from 'lodash';
 import GameInput from '../../components/inputs/TextInput';
@@ -11,6 +10,9 @@ import Answer from './components/Answer';
 import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import LearnButton from '../../components/buttons/Button';
+import { useCards } from '@/hooks/cards/useCards';
+import { Card as ICard } from '@/types/api';
+import { useLearnings } from '@/hooks/learnings/useLearnings';
 
 enum QuestionType {
   FREE_INPUT = 'FREE_INPUT',
@@ -27,41 +29,21 @@ const Cards = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
-  const deckId = searchParams.get('deck_id');
-  const [cards, setCards] = useState<ICardLearning[]>([]);
+  const deckId = searchParams.get('deck_id') || undefined;
   const [passedCards, setPassedCards] = useState<ICardLearning[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<string>();
-
-  const fetchCards = useCallback(async (): Promise<ICard[]> => {
-    setIsLoading(true);
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/cards/learning`,
-      {
-        params: {
-          deck_id: deckId,
-        },
-      }
-    );
-    const fetchedCards = response.data.cards.map((card: any) => ({
-      id: card._id,
-      deckId: card.deck_id,
-      content: card.content,
-      audioUrl: card.audioUrl,
-      fields: card.fields,
-    }));
-    setIsLoading(false);
-
-    return fetchedCards;
-  }, [deckId]);
+  const { learningCards: cards, loadLearningCards } = useCards();
+  const [learningCards, setLearingCards] = useState<ICardLearning[]>([]);
+  const { postLearning } = useLearnings();
 
   const goNextHandler = useCallback(async () => {
-    const card = cards[0];
+    const card = learningCards[0];
     if (!card) {
       return;
     }
 
     if (!card.currentQuestion) {
-      setCards((curr) => {
+      setLearingCards((curr) => {
         const currentCards = cloneDeep(curr);
         currentCards[0].currentQuestion = QuestionType.FREE_INPUT;
         currentCards[0].currentAnswer = undefined;
@@ -71,15 +53,15 @@ const Cards = () => {
       card.currentQuestion === QuestionType.FREE_INPUT &&
       card.currentAnswer === undefined
     ) {
-      setCards((curr) => {
+      setLearingCards((curr) => {
         const currentCards = cloneDeep(curr);
         currentCards[0].currentAnswer =
-          lowerCase(currentAnswer) === lowerCase(card.fields.word);
+          lowerCase(currentAnswer) === lowerCase(card.fields?.word);
         if (currentCards[0].currentAnswer) currentCards[0].correctCount += 1;
         return currentCards;
       });
     } else if (card.currentQuestion === QuestionType.FREE_INPUT) {
-      setCards((curr) => {
+      setLearingCards((curr) => {
         const currentCards = cloneDeep(curr);
         currentCards[0].currentQuestion = QuestionType.FILL_BLANK;
         currentCards[0].currentAnswer = undefined;
@@ -89,15 +71,15 @@ const Cards = () => {
       card.currentQuestion === QuestionType.FILL_BLANK &&
       card.currentAnswer === undefined
     ) {
-      setCards((curr) => {
+      setLearingCards((curr) => {
         const currentCards = cloneDeep(curr);
         currentCards[0].currentAnswer =
-          lowerCase(currentAnswer) === lowerCase(card.fields.word);
+          lowerCase(currentAnswer) === lowerCase(card.fields?.word);
         if (currentCards[0].currentAnswer) currentCards[0].correctCount += 1;
         return currentCards;
       });
     } else {
-      setCards((curr) => {
+      setLearingCards((curr) => {
         const currentCards = cloneDeep(curr);
         const firstCard = currentCards.shift() as ICardLearning;
         if (firstCard.correctCount >= 2) {
@@ -112,22 +94,24 @@ const Cards = () => {
         return currentCards;
       });
     }
-  }, [cards, currentAnswer]);
+  }, [learningCards, currentAnswer]);
 
   const initData = useCallback(async () => {
-    const initCards = await fetchCards();
-    const learningCards = initCards.map((card) => ({
+    setIsLoading(true);
+    await loadLearningCards(deckId!);
+    setIsLoading(false);
+    const learningCards = cards.map((card) => ({
       ...card,
       correctCount: 0,
     }));
-    setCards(learningCards);
-  }, [fetchCards]);
+    setLearingCards(learningCards);
+  }, [cards, loadLearningCards, deckId]);
 
   useEffect(() => {
-    if (cards[0]?.audioUrl) {
-      new Audio(cards[0].audioUrl).play();
+    if (learningCards[0]?.audioUrl) {
+      new Audio(learningCards[0].audioUrl).play();
     }
-  }, [cards, cards[0]?.currentQuestion]);
+  }, [learningCards, learningCards[0]?.currentQuestion]);
 
   useEffect(() => {
     initData();
@@ -136,10 +120,7 @@ const Cards = () => {
   useEffect(() => {
     const addLearning = async () => {
       try {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/learnings`, {
-          deck_id: deckId,
-          card_ids: passedCards.map((c) => c.id),
-        });
+        await postLearning({ deckId, cardIds: passedCards.map((c) => c.id) });
 
         router.push('/');
       } catch (e: any) {
@@ -150,7 +131,7 @@ const Cards = () => {
     if (cards.length === 0 && passedCards.length > 0) {
       addLearning();
     }
-  }, [cards, passedCards, router, deckId]);
+  }, [cards, passedCards, router, deckId, postLearning]);
 
   return (
     <div className="flex bg-slate-100 min-h-full-minus-header">
@@ -159,11 +140,11 @@ const Cards = () => {
       <div className="flex-auto w-2/3 bg-main-center relative">
         <div className="flex justify-center flex-wrap mx-6 mt-2">
           <div className="w-6/12 mt-10">
-            {cards.length > 0 && !cards[0].currentQuestion && (
-              <Card card={cards[0]} />
+            {learningCards.length > 0 && !learningCards[0].currentQuestion && (
+              <Card card={learningCards[0]} />
             )}
-            {cards.length > 0 &&
-              cards[0].currentQuestion === QuestionType.FREE_INPUT && (
+            {learningCards.length > 0 &&
+              learningCards[0].currentQuestion === QuestionType.FREE_INPUT && (
                 <GameInput
                   placeholder="Gõ lại từ bạn đã nghe được"
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -177,10 +158,10 @@ const Cards = () => {
                   autoFocus
                 />
               )}
-            {cards.length > 0 &&
-              cards[0].currentQuestion === QuestionType.FILL_BLANK && (
+            {learningCards.length > 0 &&
+              learningCards[0].currentQuestion === QuestionType.FILL_BLANK && (
                 <FillBlankInput
-                  numOfChars={cards[0].fields.word.length}
+                  numOfChars={learningCards[0].fields.word.length}
                   onChange={(val) => {
                     setCurrentAnswer(val.join(''));
                   }}
@@ -194,11 +175,15 @@ const Cards = () => {
             TIẾP TỤC
           </LearnButton>
         </div>
-        {cards.length > 0 && cards[0].currentAnswer !== undefined && (
-          <div className="mt-20">
-            <Answer card={cards[0]} isCorrect={cards[0].currentAnswer} />
-          </div>
-        )}
+        {learningCards.length > 0 &&
+          learningCards[0].currentAnswer !== undefined && (
+            <div className="mt-20">
+              <Answer
+                card={learningCards[0]}
+                isCorrect={learningCards[0].currentAnswer}
+              />
+            </div>
+          )}
       </div>
       <div className="flex-auto w-1/4"></div>
     </div>

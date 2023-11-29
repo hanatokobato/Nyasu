@@ -1,6 +1,5 @@
 'use client';
 
-import axios from 'axios';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -11,6 +10,7 @@ import { BsSearch } from 'react-icons/bs';
 import { GiCardRandom } from 'react-icons/gi';
 import Pagination from '@/app/components/Pagination';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useDecks } from '@/hooks/decks/useDecks';
 
 interface ISearchInput {
   search: string;
@@ -18,81 +18,28 @@ interface ISearchInput {
 
 const SettingsDecks = () => {
   const router = useRouter();
-  const [decks, setDecks] = useState<IDeck[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [pageCount, setPageCount] = useState(0);
   const {
     register: searchRegister,
     handleSubmit: handleSearch,
     getValues: getSearchValues,
   } = useForm<ISearchInput>();
-
-  const fetchDecks = useCallback(
-    async (
-      page: number = 1,
-      perPage: number = 10,
-      search: string = ''
-    ): Promise<IDeck[]> => {
-      setIsLoading(true);
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/decks`,
-        {
-          params: {
-            page,
-            per_page: perPage,
-            search: search,
-          },
-        }
-      );
-      const fetchedDecks = response.data.decks.map((deck: any) => ({
-        id: deck._id,
-        name: deck.name,
-        description: deck.description,
-        photoUrl: deck.photoUrl,
-        createdAt: deck.createdAt,
-      }));
-      setPageCount(response.data.total_page);
-      setIsLoading(false);
-
-      return fetchedDecks;
-    },
-    []
-  );
-
-  const deleteDeck = useCallback(async (id: string) => {
-    try {
-      if (confirm('Want to delete?') === true) {
-        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/decks/${id}`);
-        setDecks((currentDecks) => currentDecks.filter((d) => d.id !== id));
-        toast('Deck deleted!', { type: 'success' });
-      }
-    } catch (e: any) {
-      toast(e.message, { type: 'error' });
-    }
-  }, []);
+  const { decks, totalPage, loadDecks, deleteDeck } = useDecks();
 
   const pageChangeHandler = useCallback(
     async (selectedItem: { selected: number }) => {
-      console.log(getSearchValues('search'))
-      const decks = await fetchDecks(
-        selectedItem.selected + 1,
-        10,
-        getSearchValues('search')
-      );
-      setDecks(decks);
+      loadDecks(selectedItem.selected + 1, 10, getSearchValues('search'));
     },
-    [fetchDecks, getSearchValues]
+    [loadDecks, getSearchValues]
   );
 
   const onSubmitSearch: SubmitHandler<ISearchInput> = async (data) => {
-    const searchedDecks = await fetchDecks(1, 10, data.search);
-    setDecks(searchedDecks);
+    loadDecks(1, 10, data.search);
   };
 
   const initData = useCallback(async () => {
-    const initDecks = await fetchDecks();
-    setDecks(initDecks);
-  }, [fetchDecks]);
+    const initDecks = await loadDecks();
+  }, [loadDecks]);
 
   useEffect(() => {
     initData();
@@ -175,7 +122,7 @@ const SettingsDecks = () => {
                               width={40}
                               height={40}
                               alt="profil"
-                              src={deck.photoUrl ?? ''}
+                              src={deck.photo_url ?? ''}
                               className="mx-auto object-cover rounded-full h-10 w-10 "
                             />
                           </a>
@@ -193,9 +140,13 @@ const SettingsDecks = () => {
                       </p>
                     </td>
                     <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {new Date(deck.createdAt).toLocaleDateString('vi-VN')}
-                      </p>
+                      {deck.created_at && (
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {new Date(deck.created_at).toLocaleDateString(
+                            'vi-VN'
+                          )}
+                        </p>
+                      )}
                     </td>
                     <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
                       <div className="flex items-center">
@@ -228,7 +179,7 @@ const SettingsDecks = () => {
             </table>
             <div className="flex flex-col items-center px-5 py-5 bg-white xs:flex-row xs:justify-between">
               <Pagination
-                pageCount={pageCount}
+                pageCount={totalPage}
                 onPageChange={pageChangeHandler}
               />
             </div>

@@ -46,13 +46,13 @@ export interface Card {
      * @type {CardContent}
      * @memberof Card
      */
-    'content'?: CardContent;
+    'content': CardContent;
     /**
      * 
      * @type {CardFields}
      * @memberof Card
      */
-    'fields'?: CardFields;
+    'fields': CardFields;
     /**
      * 
      * @type {string}
@@ -71,13 +71,13 @@ export interface CardContent {
      * @type {string}
      * @memberof CardContent
      */
-    'front'?: string;
+    'front': string;
     /**
      * 
      * @type {string}
      * @memberof CardContent
      */
-    'back'?: string;
+    'back': string;
 }
 /**
  * 
@@ -90,25 +90,25 @@ export interface CardFields {
      * @type {string}
      * @memberof CardFields
      */
-    'word'?: string;
+    'word': string;
     /**
      * 
      * @type {string}
      * @memberof CardFields
      */
-    'translate'?: string;
+    'translate': string;
     /**
      * 
      * @type {string}
      * @memberof CardFields
      */
-    'spelling'?: string;
+    'spelling': string;
     /**
      * 
      * @type {CardFieldsExample}
      * @memberof CardFields
      */
-    'example'?: CardFieldsExample;
+    'example': CardFieldsExample;
 }
 /**
  * 
@@ -121,7 +121,7 @@ export interface CardFieldsExample {
      * @type {string}
      * @memberof CardFieldsExample
      */
-    'sentence'?: string;
+    'sentence': string;
     /**
      * 
      * @type {string}
@@ -185,7 +185,13 @@ export interface DeckDetail {
      * @type {string}
      * @memberof DeckDetail
      */
-    'photo'?: string;
+    'photo_url'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DeckDetail
+     */
+    'description'?: string;
 }
 /**
  * 
@@ -210,7 +216,25 @@ export interface DeckListItem {
      * @type {string}
      * @memberof DeckListItem
      */
-    'photo'?: string;
+    'photo_url'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof DeckListItem
+     */
+    'has_unlearned_card'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof DeckListItem
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DeckListItem
+     */
+    'created_at'?: string;
 }
 /**
  * 
@@ -350,7 +374,7 @@ export interface GetApiV1CardsLearning200Response {
      * @type {GetApiV1CardsLearning200ResponseData}
      * @memberof GetApiV1CardsLearning200Response
      */
-    'data'?: GetApiV1CardsLearning200ResponseData;
+    'data': GetApiV1CardsLearning200ResponseData;
 }
 /**
  * 
@@ -363,7 +387,7 @@ export interface GetApiV1CardsLearning200ResponseData {
      * @type {Array<Card>}
      * @memberof GetApiV1CardsLearning200ResponseData
      */
-    'cards'?: Array<Card>;
+    'cards': Array<Card>;
 }
 /**
  * 
@@ -440,6 +464,93 @@ export interface GetApiV1Decks200ResponseData {
      * @memberof GetApiV1Decks200ResponseData
      */
     'total_page': number;
+}
+/**
+ * 
+ * @export
+ * @interface GetApiV1LearningStatistic200Response
+ */
+export interface GetApiV1LearningStatistic200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetApiV1LearningStatistic200Response
+     */
+    'success'?: boolean;
+    /**
+     * 
+     * @type {GetApiV1LearningStatistic200ResponseData}
+     * @memberof GetApiV1LearningStatistic200Response
+     */
+    'data'?: GetApiV1LearningStatistic200ResponseData;
+}
+/**
+ * 
+ * @export
+ * @interface GetApiV1LearningStatistic200ResponseData
+ */
+export interface GetApiV1LearningStatistic200ResponseData {
+    /**
+     * 
+     * @type {GetApiV1LearningStatistic200ResponseDataWordLevels}
+     * @memberof GetApiV1LearningStatistic200ResponseData
+     */
+    'word_levels': GetApiV1LearningStatistic200ResponseDataWordLevels;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseData
+     */
+    'curr_review_count': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseData
+     */
+    'wait_review_count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetApiV1LearningStatistic200ResponseData
+     */
+    'upcoming': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetApiV1LearningStatistic200ResponseDataWordLevels
+ */
+export interface GetApiV1LearningStatistic200ResponseDataWordLevels {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseDataWordLevels
+     */
+    'level_1': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseDataWordLevels
+     */
+    'level_2': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseDataWordLevels
+     */
+    'level_3': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseDataWordLevels
+     */
+    'level_4': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetApiV1LearningStatistic200ResponseDataWordLevels
+     */
+    'level_5': number;
 }
 /**
  * 
@@ -534,13 +645,45 @@ export interface PostApiV1Cards201Response {
      * @type {boolean}
      * @memberof PostApiV1Cards201Response
      */
-    'success'?: boolean;
+    'success': boolean;
     /**
      * 
      * @type {PostApiV1Cards201ResponseData}
      * @memberof PostApiV1Cards201Response
      */
-    'data'?: PostApiV1Cards201ResponseData;
+    'data': PostApiV1Cards201ResponseData;
+}
+/**
+ * 
+ * @export
+ * @interface PostApiV1Cards201Response1
+ */
+export interface PostApiV1Cards201Response1 {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PostApiV1Cards201Response1
+     */
+    'success'?: boolean;
+    /**
+     * 
+     * @type {PostApiV1Cards201Response1Data}
+     * @memberof PostApiV1Cards201Response1
+     */
+    'data'?: PostApiV1Cards201Response1Data;
+}
+/**
+ * 
+ * @export
+ * @interface PostApiV1Cards201Response1Data
+ */
+export interface PostApiV1Cards201Response1Data {
+    /**
+     * 
+     * @type {Card}
+     * @memberof PostApiV1Cards201Response1Data
+     */
+    'card'?: Card;
 }
 /**
  * 
@@ -553,7 +696,7 @@ export interface PostApiV1Cards201ResponseData {
      * @type {Card}
      * @memberof PostApiV1Cards201ResponseData
      */
-    'card'?: Card;
+    'card': Card;
 }
 /**
  * 
@@ -566,13 +709,13 @@ export interface PostApiV1CardsAttachments201Response {
      * @type {boolean}
      * @memberof PostApiV1CardsAttachments201Response
      */
-    'success'?: boolean;
+    'success': boolean;
     /**
      * 
      * @type {PostApiV1CardsAttachments201ResponseData}
      * @memberof PostApiV1CardsAttachments201Response
      */
-    'data'?: PostApiV1CardsAttachments201ResponseData;
+    'data': PostApiV1CardsAttachments201ResponseData;
 }
 /**
  * 
@@ -585,7 +728,7 @@ export interface PostApiV1CardsAttachments201ResponseData {
      * @type {PostApiV1CardsAttachments201ResponseDataAttachment}
      * @memberof PostApiV1CardsAttachments201ResponseData
      */
-    'attachment'?: PostApiV1CardsAttachments201ResponseDataAttachment;
+    'attachment': PostApiV1CardsAttachments201ResponseDataAttachment;
 }
 /**
  * 
@@ -598,13 +741,13 @@ export interface PostApiV1CardsAttachments201ResponseDataAttachment {
      * @type {string}
      * @memberof PostApiV1CardsAttachments201ResponseDataAttachment
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof PostApiV1CardsAttachments201ResponseDataAttachment
      */
-    'path'?: string;
+    'path': string;
 }
 /**
  * 
@@ -633,10 +776,10 @@ export interface PostApiV1CardsLearning200Response {
 export interface PostApiV1CardsLearningRequest {
     /**
      * 
-     * @type {string}
+     * @type {Array<string>}
      * @memberof PostApiV1CardsLearningRequest
      */
-    'card_id'?: string;
+    'card_ids'?: Array<string>;
     /**
      * 
      * @type {string}
@@ -724,13 +867,13 @@ export interface PostApiV1Decks200Response {
      * @type {boolean}
      * @memberof PostApiV1Decks200Response
      */
-    'success'?: boolean;
+    'success': boolean;
     /**
      * 
      * @type {PostApiV1Decks200ResponseData}
      * @memberof PostApiV1Decks200Response
      */
-    'data'?: PostApiV1Decks200ResponseData;
+    'data': PostApiV1Decks200ResponseData;
 }
 /**
  * 
@@ -743,7 +886,7 @@ export interface PostApiV1Decks200ResponseData {
      * @type {DeckDetail}
      * @memberof PostApiV1Decks200ResponseData
      */
-    'deck'?: DeckDetail;
+    'deck': DeckDetail;
 }
 /**
  * 
@@ -1012,10 +1155,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @summary Get cards list
          * @param {number} [page] 
          * @param {number} [perPage] 
+         * @param {string} [deckId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApiV1Cards: async (page?: number, perPage?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getApiV1Cards: async (page?: number, perPage?: number, deckId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/cards`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1038,6 +1182,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
             if (perPage !== undefined) {
                 localVarQueryParameter['per_page'] = perPage;
+            }
+
+            if (deckId !== undefined) {
+                localVarQueryParameter['deck_id'] = deckId;
             }
 
 
@@ -1092,13 +1240,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Get learning cards
-         * @param {string} [deckId] 
-         * @param {number} [limit] 
+         * @param {string} deckId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApiV1CardsLearning: async (deckId?: string, limit?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/learnings`;
+        getApiV1CardsLearning: async (deckId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deckId' is not null or undefined
+            assertParamExists('getApiV1CardsLearning', 'deckId', deckId)
+            const localVarPath = `/api/v1/cards/learning`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1116,10 +1265,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
             if (deckId !== undefined) {
                 localVarQueryParameter['deck_id'] = deckId;
-            }
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
             }
 
 
@@ -1233,6 +1378,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             assertParamExists('getApiV1DecksId', 'id', id)
             const localVarPath = `/api/v1/decks/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication authorization required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get learning statistic
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApiV1LearningStatistic: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/learnings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1765,11 +1944,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @summary Get cards list
          * @param {number} [page] 
          * @param {number} [perPage] 
+         * @param {string} [deckId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getApiV1Cards(page?: number, perPage?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1Cards200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1Cards(page, perPage, options);
+        async getApiV1Cards(page?: number, perPage?: number, deckId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1Cards200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1Cards(page, perPage, deckId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1779,20 +1959,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getApiV1CardsId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1AuthUser401Response>> {
+        async getApiV1CardsId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostApiV1Cards201Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1CardsId(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary Get learning cards
-         * @param {string} [deckId] 
-         * @param {number} [limit] 
+         * @param {string} deckId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getApiV1CardsLearning(deckId?: string, limit?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1AuthUser401Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1CardsLearning(deckId, limit, options);
+        async getApiV1CardsLearning(deckId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1CardsLearning200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1CardsLearning(deckId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1828,6 +2007,16 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          */
         async getApiV1DecksId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostApiV1Decks200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1DecksId(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get learning statistic
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getApiV1LearningStatistic(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1LearningStatistic200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApiV1LearningStatistic(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1872,7 +2061,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postApiV1Cards(deckId?: string, content?: PostApiV1CardsRequestContent, fields?: PostApiV1CardsRequestFields, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1AuthUser401Response>> {
+        async postApiV1Cards(deckId?: string, content?: PostApiV1CardsRequestContent, fields?: PostApiV1CardsRequestFields, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostApiV1Cards201Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postApiV1Cards(deckId, content, fields, file, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1883,7 +2072,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postApiV1CardsAttachments(file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1AuthUser401Response>> {
+        async postApiV1CardsAttachments(file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostApiV1CardsAttachments201Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postApiV1CardsAttachments(file, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1921,7 +2110,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putApiV1CardsId(id: string, content?: PutApiV1CardsIdRequestContent, fields?: PutApiV1CardsIdRequestFields, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1AuthUser401Response>> {
+        async putApiV1CardsId(id: string, content?: PutApiV1CardsIdRequestContent, fields?: PutApiV1CardsIdRequestFields, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostApiV1Cards201Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.putApiV1CardsId(id, content, fields, file, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -2004,11 +2193,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @summary Get cards list
          * @param {number} [page] 
          * @param {number} [perPage] 
+         * @param {string} [deckId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApiV1Cards(page?: number, perPage?: number, options?: any): AxiosPromise<GetApiV1Cards200Response> {
-            return localVarFp.getApiV1Cards(page, perPage, options).then((request) => request(axios, basePath));
+        getApiV1Cards(page?: number, perPage?: number, deckId?: string, options?: any): AxiosPromise<GetApiV1Cards200Response> {
+            return localVarFp.getApiV1Cards(page, perPage, deckId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2017,19 +2207,18 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApiV1CardsId(id: string, options?: any): AxiosPromise<GetApiV1AuthUser401Response> {
+        getApiV1CardsId(id: string, options?: any): AxiosPromise<PostApiV1Cards201Response> {
             return localVarFp.getApiV1CardsId(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Get learning cards
-         * @param {string} [deckId] 
-         * @param {number} [limit] 
+         * @param {string} deckId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApiV1CardsLearning(deckId?: string, limit?: number, options?: any): AxiosPromise<GetApiV1AuthUser401Response> {
-            return localVarFp.getApiV1CardsLearning(deckId, limit, options).then((request) => request(axios, basePath));
+        getApiV1CardsLearning(deckId: string, options?: any): AxiosPromise<GetApiV1CardsLearning200Response> {
+            return localVarFp.getApiV1CardsLearning(deckId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2062,6 +2251,15 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         getApiV1DecksId(id: string, options?: any): AxiosPromise<PostApiV1Decks200Response> {
             return localVarFp.getApiV1DecksId(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get learning statistic
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApiV1LearningStatistic(options?: any): AxiosPromise<GetApiV1LearningStatistic200Response> {
+            return localVarFp.getApiV1LearningStatistic(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2102,7 +2300,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postApiV1Cards(deckId?: string, content?: PostApiV1CardsRequestContent, fields?: PostApiV1CardsRequestFields, file?: File, options?: any): AxiosPromise<GetApiV1AuthUser401Response> {
+        postApiV1Cards(deckId?: string, content?: PostApiV1CardsRequestContent, fields?: PostApiV1CardsRequestFields, file?: File, options?: any): AxiosPromise<PostApiV1Cards201Response> {
             return localVarFp.postApiV1Cards(deckId, content, fields, file, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2112,7 +2310,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postApiV1CardsAttachments(file?: File, options?: any): AxiosPromise<GetApiV1AuthUser401Response> {
+        postApiV1CardsAttachments(file?: File, options?: any): AxiosPromise<PostApiV1CardsAttachments201Response> {
             return localVarFp.postApiV1CardsAttachments(file, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2147,7 +2345,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putApiV1CardsId(id: string, content?: PutApiV1CardsIdRequestContent, fields?: PutApiV1CardsIdRequestFields, file?: File, options?: any): AxiosPromise<GetApiV1AuthUser401Response> {
+        putApiV1CardsId(id: string, content?: PutApiV1CardsIdRequestContent, fields?: PutApiV1CardsIdRequestFields, file?: File, options?: any): AxiosPromise<PostApiV1Cards201Response> {
             return localVarFp.putApiV1CardsId(id, content, fields, file, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2235,12 +2433,13 @@ export class DefaultApi extends BaseAPI {
      * @summary Get cards list
      * @param {number} [page] 
      * @param {number} [perPage] 
+     * @param {string} [deckId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getApiV1Cards(page?: number, perPage?: number, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getApiV1Cards(page, perPage, options).then((request) => request(this.axios, this.basePath));
+    public getApiV1Cards(page?: number, perPage?: number, deckId?: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getApiV1Cards(page, perPage, deckId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2258,14 +2457,13 @@ export class DefaultApi extends BaseAPI {
     /**
      * 
      * @summary Get learning cards
-     * @param {string} [deckId] 
-     * @param {number} [limit] 
+     * @param {string} deckId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getApiV1CardsLearning(deckId?: string, limit?: number, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getApiV1CardsLearning(deckId, limit, options).then((request) => request(this.axios, this.basePath));
+    public getApiV1CardsLearning(deckId: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getApiV1CardsLearning(deckId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2304,6 +2502,17 @@ export class DefaultApi extends BaseAPI {
      */
     public getApiV1DecksId(id: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getApiV1DecksId(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get learning statistic
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getApiV1LearningStatistic(options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getApiV1LearningStatistic(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

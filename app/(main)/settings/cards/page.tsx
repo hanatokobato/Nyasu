@@ -1,8 +1,10 @@
 'use client';
 
 import DropDownMenu from '@/app/components/DropDownMenu';
+import { useCards } from '@/hooks/cards/useCards';
+import { useDecks } from '@/hooks/decks/useDecks';
+import { Card as ICard } from '@/types/api';
 import MDEditor from '@uiw/react-md-editor';
-import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -15,82 +17,39 @@ import { toast, ToastContainer } from 'react-toastify';
 const Cards = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const deckId = searchParams.get('deck_id');
-  const [cards, setCards] = useState<ICard[]>([]);
-  const [deck, setDeck] = useState<IDeck>();
+  const deckId = searchParams.get('deck_id') || undefined;
   const [isLoading, setIsLoading] = useState(false);
   const [audio, setAudio] = useState<HTMLAudioElement>();
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(1);
-
-  const fetchDeck = useCallback(async () => {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/decks/${deckId}`
-    );
-    const deck = res.data.deck;
-    return deck;
-  }, [deckId]);
-
-  const fetchCards = useCallback(
-    async (page: number = 1, perPage: number = 10): Promise<ICard[]> => {
-      setIsLoading(true);
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/cards`,
-        {
-          params: {
-            page,
-            per_page: perPage,
-            deck_id: deckId,
-          },
-        }
-      );
-      const fetchedCards = response.data.cards.map((card: any) => ({
-        id: card._id,
-        deckId: card.deck_id,
-        content: card.content,
-        audioUrl: card.audioUrl,
-      }));
-      setTotalPage(response.data.total_page);
-      setIsLoading(false);
-
-      return fetchedCards;
-    },
-    [deckId]
-  );
+  const { cards, currentPage, totalPage, loadCards, deleteCard } = useCards();
+  const { deck, loadDeck } = useDecks();
 
   const loadMoreCards = useCallback(async () => {
-    const nextCards = await fetchCards(currentPage + 1);
-    setCurrentPage(currentPage + 1);
-    setCards((currentCards) => currentCards.concat(nextCards));
-  }, [fetchCards, currentPage]);
+    await loadCards({ page: currentPage + 1, deckId });
+  }, [currentPage, deckId, loadCards]);
 
-  const deleteCard = useCallback(async (id: string) => {
+  const deleteCardHandler = useCallback(async (id: string) => {
     try {
       if (confirm('Want to delete?') === true) {
-        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cards/${id}`);
-        setCards((currentCards) => currentCards.filter((c) => c.id !== id));
+        await deleteCard(id);
         toast('Deck deleted!', { type: 'success' });
       }
     } catch (e: any) {
       toast(e.message, { type: 'error' });
     }
-  }, []);
+  }, [deleteCard]);
 
   const initData = useCallback(async () => {
-    const [fetchedDeck, initCards] = await Promise.all([
-      fetchDeck(),
-      fetchCards(),
-    ]);
-    setDeck(fetchedDeck);
-    setCards(initCards);
-  }, [fetchCards, fetchDeck]);
+    await Promise.all([loadDeck(deckId!), loadCards({})]);
+  }, [deckId, loadDeck, loadCards]);
 
   const playAudio = useCallback((card: ICard) => {
     setAudio(new Audio(card?.audioUrl));
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     initData();
+    setIsLoading(false);
   }, [initData]);
 
   useEffect(() => {
@@ -156,7 +115,7 @@ const Cards = () => {
                       {
                         label: 'Xóa',
                         icon: <AiFillDelete color="#CC0000" />,
-                        clickHandler: () => deleteCard(card.id),
+                        clickHandler: () => deleteCardHandler(card.id),
                       },
                     ]}
                     icon={<TfiMoreAlt />}

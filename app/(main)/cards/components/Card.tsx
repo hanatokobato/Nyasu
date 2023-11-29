@@ -3,6 +3,7 @@ import styles from './Card.module.scss';
 import MDEditor from '@uiw/react-md-editor';
 import Image from 'next/image';
 import { useMount } from 'react-use';
+import { Card as ICard } from '@/types/api';
 
 interface IProps {
   card: ICard;
