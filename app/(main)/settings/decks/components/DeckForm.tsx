@@ -1,13 +1,14 @@
 'use client';
 
-import axios from 'axios';
+import { useDecks } from '@/hooks/decks/useDecks';
+import { DeckDetail } from '@/types/api';
 import Image from 'next/image';
 import React, { useCallback, useState } from 'react';
 import { useForm, Resolver } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 
 interface IProps {
-  deck?: IDeck;
+  deck?: DeckDetail;
 }
 
 type FormValues = {
@@ -44,42 +45,19 @@ const DeckForm: React.FC<IProps> = ({ deck }) => {
       description: deck?.description,
     },
   });
-
-  const updateDeck = useCallback(async (id: string, formData: FormData) => {
-    try {
-      await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/decks/${id}`,
-        formData
-      );
-      toast('Deck updated!', { type: 'success' });
-    } catch (e: any) {
-      toast(e.message, { type: 'error' });
-    }
-  }, []);
-
-  const createDeck = useCallback(async (formData: FormData) => {
-    try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/decks`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      reset({ name: '', description: '', photo: [] });
-      setImage(undefined);
-      toast('Deck created!', { type: 'success' });
-    } catch (e: any) {
-      toast(e.message, { type: 'error' });
-    }
-  }, []);
+  const { createDeck, updateDeck } = useDecks();
 
   const submitHandler = useCallback(
     (data: FormValues) => {
-      const formData = new FormData();
-      formData.append('name', data.name);
-      formData.append('description', data.description);
-      formData.append('photo', data.photo[0]);
+      const deckParams = {
+        name: data.name,
+        description: data.description,
+        file: data.photo[0],
+      };
 
       const res = deck?.id
-        ? updateDeck(deck.id, formData)
-        : createDeck(formData);
+        ? updateDeck(deck.id, deckParams)
+        : createDeck(deckParams);
     },
     [deck?.id, updateDeck, createDeck]
   );
@@ -145,9 +123,9 @@ const DeckForm: React.FC<IProps> = ({ deck }) => {
                 {...register('photo')}
                 onChange={onImageChange}
               />
-              {(deck?.photoUrl || image) && (
+              {(deck?.photo_url || image) && (
                 <Image
-                  src={(image ? image : deck?.photoUrl) ?? ''}
+                  src={(image ? image : deck?.photo_url) ?? ''}
                   width={80}
                   height={80}
                   alt="deck"

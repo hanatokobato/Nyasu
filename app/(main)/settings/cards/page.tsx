@@ -36,7 +36,7 @@ const Cards = () => {
     } catch (e: any) {
       toast(e.message, { type: 'error' });
     }
-  }, []);
+  }, [deleteCard]);
 
   const initData = useCallback(async () => {
     await Promise.all([loadDeck(deckId!), loadCards({})]);

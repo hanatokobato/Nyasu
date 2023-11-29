@@ -11,10 +11,10 @@ import MDEditor, {
 } from '@uiw/react-md-editor';
 import '@uiw/react-md-editor/dist/markdown-editor.css';
 import '@uiw/react-markdown-preview/dist/markdown.css';
-import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Card as ICard } from '@/types/api';
+import { Card as ICard, PostApiV1CardsRequestContent } from '@/types/api';
+import { ICardParams, useCards } from '@/hooks/cards/useCards';
 
 interface IProps {
   card?: ICard;
@@ -44,7 +44,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
       example_translate: card?.fields.example.translate,
     },
   });
-  const [content, setContent] = useState<{ front: string; back?: string }>(
+  const [content, setContent] = useState<PostApiV1CardsRequestContent>(
     card?.content ?? { front: '' }
   );
   const imageAttachmentRef = useRef<HTMLInputElement>(null);
@@ -53,6 +53,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
     card?.audioUrl ? new Audio(card?.audioUrl) : undefined
   );
   const router = useRouter();
+  const { uploadAttachment, createCard, updateCard } = useCards();
 
   const onChooseImageAttachment = useCallback(
     async (state: TextState, api: TextAreaTextApi) => {
@@ -60,14 +61,9 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
         if (imageAttachmentRef.current?.files?.length) {
           const formData = new FormData();
           formData.append('file', imageAttachmentRef.current.files[0]);
-          const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/cards/attachments`,
-            formData,
-            {
-              headers: { 'Content-Type': 'multipart/form-data' },
-            }
+          const { name, path: fileUrl } = await uploadAttachment(
+            imageAttachmentRef.current.files[0]
           );
-          const { name, path: fileUrl } = res.data.attachment;
           imageAttachmentRef.current.value = '';
 
           // Replaces the current selection with the image
@@ -79,7 +75,7 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
         throw e;
       }
     },
-    []
+    [uploadAttachment]
   );
 
   const onChooseAudioAttachment = useCallback(() => {
@@ -130,48 +126,28 @@ const CardForm: React.FC<IProps> = ({ card, deckId }) => {
     [card?.audioUrl]
   );
 
-  const createCard = useCallback(async (formData: FormData) => {
-    try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cards`, formData);
-      toast('Card created!', { type: 'success' });
-    } catch (e: any) {
-      toast(e.message, { type: 'error' });
-    }
-  }, []);
-
-  const updateCard = useCallback(
-    async (formData: FormData) => {
-      try {
-        await axios.put(
-          `${process.env.NEXT_PUBLIC_API_URL}/cards/${card?.id}`,
-          formData
-        );
-        toast('Card updated!', { type: 'success' });
-      } catch (e: any) {
-        toast(e.message, { type: 'error' });
-      }
-    },
-    [card?.id]
-  );
-
   const submitHandler = useCallback(
     async (data: any) => {
-      const formData = new FormData();
-
-      formData.append('content[front]', content.front);
-      formData.append('fields[word]', data.word);
-      formData.append('fields[translate]', data.translate);
-      formData.append('fields[spelling]', data.spelling);
-      formData.append('fields[example][sentence]', data.example);
-      formData.append('fields[example][translate]', data.example_translate);
-      if (content.back) formData.append('content[back]', content.back);
-      if (deckId) formData.append('deck_id', deckId);
+      const params: ICardParams = {
+        deckId,
+        content,
+        fields: {
+          word: data.word,
+          translate: data.translate,
+          spelling: data.spelling,
+          example: {
+            sentence: data.example,
+            translate: data.example_translate,
+          },
+        },
+      };
       if (audioAttachmentRef.current?.files?.length)
-        formData.append('file', audioAttachmentRef.current.files[0]);
-      card?.id ? await updateCard(formData) : await createCard(formData);
+        params.file = audioAttachmentRef.current.files[0];
+      card?.id ? await updateCard(card.id, params) : await createCard(params);
+      toast('Card saved!', { type: 'success' });
       router.push(`/settings/cards?deck_id=${deckId}`);
     },
-    [card?.id, createCard, updateCard, content, deckId]
+    [card?.id, createCard, updateCard, content, deckId, router]
   );
 
   useEffect(() => {

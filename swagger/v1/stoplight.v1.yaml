@@ -1,6 +1,6 @@
 openapi: 3.0.0
 x-stoplight:
-  id: uyud55tdhme2t
+  id: 4rpvyuih7071x
 info:
   title: nyasu
   version: '1.0'
@@ -18,7 +18,7 @@ paths:
           $ref: '#/components/responses/unauthorized'
       operationId: get-api-v1-auth-user
       x-stoplight:
-        id: 49fuqmpb2hpy3
+        id: 6pzrj2j0rdwqf
       security:
         - authorization: []
   /api/v1/auth/signup:
@@ -30,7 +30,7 @@ paths:
         '200':
           $ref: '#/components/responses/login-success'
       x-stoplight:
-        id: 6smqs1z9btpmt
+        id: x3l90fdvzewwm
       requestBody:
         content:
           application/json:
@@ -40,16 +40,16 @@ paths:
                 email:
                   type: string
                   x-stoplight:
-                    id: 5jl26m9zjlmh7
+                    id: 31v892u1zzzw8
                   format: email
                 password:
                   type: string
                   x-stoplight:
-                    id: geaqoi0vxgh2q
+                    id: cteck2x58kkco
                 password_confirm:
                   type: string
                   x-stoplight:
-                    id: qn6te2od60ncf
+                    id: 9f673cknddm7t
               required:
                 - email
                 - password
@@ -62,7 +62,7 @@ paths:
         '200':
           $ref: '#/components/responses/login-success'
       x-stoplight:
-        id: ibcsv7dgepbwu
+        id: wwmgbb4gd9xlc
       requestBody:
         content:
           application/json:
@@ -72,12 +72,12 @@ paths:
                 email:
                   type: string
                   x-stoplight:
-                    id: z702wurh517r5
+                    id: 30e0l92niyai4
                   format: email
                 password:
                   type: string
                   x-stoplight:
-                    id: nbn9qhv9mek01
+                    id: kt223ru4sz6c0
               required:
                 - email
                 - password
@@ -89,7 +89,7 @@ paths:
         '200':
           $ref: '#/components/responses/delete-success'
       x-stoplight:
-        id: cdbu2f8kp629g
+        id: b98rxfdk5p5v8
       security:
         - authorization: []
   /api/v1/decks:
@@ -103,7 +103,7 @@ paths:
           $ref: '#/components/responses/unauthorized'
       operationId: get-api-v1-decks
       x-stoplight:
-        id: exx7emdibfaov
+        id: 1oiavk1tbgt3z
       security:
         - authorization: []
       parameters:
@@ -128,7 +128,7 @@ paths:
         '401':
           $ref: '#/components/responses/unauthorized'
       x-stoplight:
-        id: sc1imvl6knb3r
+        id: 210mnbhpogipe
       description: ''
       requestBody:
         content:
@@ -139,15 +139,15 @@ paths:
                 name:
                   type: string
                   x-stoplight:
-                    id: bmxxx0gz5iknm
+                    id: ytb0h2mnurxbk
                 description:
                   type: string
                   x-stoplight:
-                    id: kp9ewh626307m
+                    id: ug0z9yc7nx1f0
                 file:
                   type: string
                   x-stoplight:
-                    id: qou3w2dogzlxp
+                    id: qhgv7nkymmaim
                   format: binary
               required:
                 - name
@@ -169,7 +169,7 @@ paths:
           description: Unauthorized
       operationId: 'get-api-v1-decks-:id'
       x-stoplight:
-        id: tx1qnkp4118oc
+        id: lk0hzdasjxp2m
       description: ''
       security:
         - authorization: []
@@ -198,15 +198,15 @@ paths:
                 name:
                   type: string
                   x-stoplight:
-                    id: 98m3563r1hwpm
+                    id: 0r9fsqbegqu2i
                 description:
                   type: string
                   x-stoplight:
-                    id: 5gx9ax8aiy5cc
+                    id: r1lu9jiqu31iz
                 file:
                   type: string
                   x-stoplight:
-                    id: qs2i5wxdkkya8
+                    id: u479hnwpi5efj
                   format: binary
     delete:
       summary: Delete deck
@@ -217,7 +217,7 @@ paths:
         '401':
           $ref: '#/components/responses/unauthorized'
       x-stoplight:
-        id: s5sf62aql3n7i
+        id: wjq4rnukt3ha7
       security:
         - authorization: []
       requestBody:
@@ -235,7 +235,7 @@ paths:
           $ref: '#/components/responses/cards-list'
       operationId: get-api-v1-cards
       x-stoplight:
-        id: w37j433td0bfd
+        id: anrzugmbc2alj
       security:
         - authorization: []
       parameters:
@@ -258,7 +258,7 @@ paths:
         '201':
           $ref: '#/components/responses/card-detail'
       x-stoplight:
-        id: 08jjivbsexcz7
+        id: yhnrcqajnl3aw
       security:
         - authorization: []
       requestBody:
@@ -270,54 +270,54 @@ paths:
                 deck_id:
                   type: string
                   x-stoplight:
-                    id: wj1jn91dh6398
+                    id: jvrilemgapny0
                 content:
                   type: object
                   x-stoplight:
-                    id: t3us8z40upqfo
+                    id: 8kxp8xgt2ybgc
                   properties:
                     front:
                       type: string
                       x-stoplight:
-                        id: eo6zo3tf66u2f
+                        id: tkeo33f87qe3y
                     back:
                       type: string
                       x-stoplight:
-                        id: h9rsvpchs2bx9
+                        id: zxu8gulhyxwke
                 fields:
                   type: object
                   x-stoplight:
-                    id: e7m9ajjs4bpx9
+                    id: rv8dljkkw9qgy
                   properties:
                     word:
                       type: string
                       x-stoplight:
-                        id: v67ei7rm01rpf
+                        id: jc08agw1mluwp
                     translate:
                       type: string
                       x-stoplight:
-                        id: 1mddv20g1tkz9
+                        id: px7azlvuir4jn
                     spelling:
                       type: string
                       x-stoplight:
-                        id: ggnpbx7eyr4i2
+                        id: 5c3tgfst16zqc
                     example:
                       type: object
                       x-stoplight:
-                        id: uj98u9fcl1qsr
+                        id: 53sge4i79sphl
                       properties:
                         sentence:
                           type: string
                           x-stoplight:
-                            id: uvsxf1tgdqkn9
+                            id: zm1omdgjn4tcu
                         translate:
                           type: string
                           x-stoplight:
-                            id: nnc7c0egil348
+                            id: xuo4m9neg8ln9
                 file:
                   type: string
                   x-stoplight:
-                    id: ew00uks3u859b
+                    id: njt7b80ed6n0o
                   format: binary
   /api/v1/cards/random:
     get:
@@ -328,7 +328,7 @@ paths:
           $ref: '#/components/responses/random-cards'
       operationId: get-api-v1-cards-random
       x-stoplight:
-        id: 06i2m3s8qwwaq
+        id: 4lxsaf5fmio1h
       parameters:
         - schema:
             type: number
@@ -345,7 +345,7 @@ paths:
           $ref: '#/components/responses/learnings'
       operationId: get-api-v1-learning-statistic
       x-stoplight:
-        id: p6576atz48pf4
+        id: jnencjqztmhz6
       security:
         - authorization: []
       parameters: []
@@ -364,13 +364,13 @@ paths:
                   success:
                     type: boolean
                     x-stoplight:
-                      id: 9xnpjwqq0h7kg
+                      id: 2uk8vars995tx
                   data:
                     type: object
                     x-stoplight:
-                      id: n0wfev6ivlwjl
+                      id: nbkm65cy658zm
       x-stoplight:
-        id: gza8fyettfwy5
+        id: ixvratci56t1x
       description: ''
       security:
         - authorization: []
@@ -383,15 +383,15 @@ paths:
                 card_ids:
                   type: array
                   x-stoplight:
-                    id: 6pshg0rr3gxyt
+                    id: dld6l4picr6js
                   items:
                     x-stoplight:
-                      id: hyzenocps7at5
+                      id: rcdmkwc8a9bgq
                     type: string
                 deck_id:
                   type: string
                   x-stoplight:
-                    id: 501ras7i3jr7o
+                    id: ap38o1x0igxbr
     put:
       summary: Update learnings
       operationId: put-api-v1-cards-learning
@@ -406,13 +406,13 @@ paths:
                   success:
                     type: boolean
                     x-stoplight:
-                      id: uc9xf2ekqsxk6
+                      id: tq7zxn2fr2nbh
                   data:
                     type: object
                     x-stoplight:
-                      id: 5cxwyme1i5jjl
+                      id: kewhb5mjescxx
       x-stoplight:
-        id: 6shhbe4ivaqrz
+        id: u9poz0xzgfrs8
       security:
         - authorization: []
       requestBody:
@@ -424,18 +424,18 @@ paths:
                 passed_cards:
                   type: array
                   x-stoplight:
-                    id: yye93nc1m49zk
+                    id: tx2uzm782jq8w
                   items:
                     x-stoplight:
-                      id: 007oryuvff9pp
+                      id: 72b6qcf0blrg2
                     type: string
                 failed_cards:
                   type: array
                   x-stoplight:
-                    id: hwtkrsreupajj
+                    id: c5s42b7xc3zj1
                   items:
                     x-stoplight:
-                      id: bgkbkakyl1g66
+                      id: mm2m5gdn8x24j
                     type: string
         description: ''
     parameters: []
@@ -454,7 +454,7 @@ paths:
           $ref: '#/components/responses/card-detail'
       operationId: get-api-v1-cards-id
       x-stoplight:
-        id: 295oxdrnd5fcd
+        id: 8lcxv8ynzhcxu
       security:
         - authorization: []
     put:
@@ -464,7 +464,7 @@ paths:
         '202':
           $ref: '#/components/responses/card-detail'
       x-stoplight:
-        id: cdj4o71vuxc3x
+        id: k29pe0l0rgz04
       security:
         - authorization: []
       requestBody:
@@ -476,50 +476,50 @@ paths:
                 content:
                   type: object
                   x-stoplight:
-                    id: 7s8orpp45e4ka
+                    id: jodhgas0s5akl
                   properties:
                     front:
                       type: string
                       x-stoplight:
-                        id: 99bcqwl8zv6ac
+                        id: 13e1xk64vx8ev
                     back:
                       type: string
                       x-stoplight:
-                        id: cl6s7it7o1v7q
+                        id: o4zxkxk7g63rm
                 fields:
                   type: object
                   x-stoplight:
-                    id: h9liuwkjwxzgi
+                    id: rfpa2rx8yz0fc
                   properties:
                     word:
                       type: string
                       x-stoplight:
-                        id: 0kdwfefsgu7fl
+                        id: pnoheroj6aeg7
                     translate:
                       type: string
                       x-stoplight:
-                        id: ru5ocmsth703w
+                        id: dh7w1stx19nxf
                     spelling:
                       type: string
                       x-stoplight:
-                        id: j6hbnge6md8rt
+                        id: atjv74sw6buud
                     example:
                       type: object
                       x-stoplight:
-                        id: 1x2ae4cmw1tbp
+                        id: vcea0s4fnan32
                       properties:
                         sentence:
                           type: string
                           x-stoplight:
-                            id: iya6ene28hrw1
+                            id: jwb7m4a5020q8
                         translate:
                           type: string
                           x-stoplight:
-                            id: d4dfmwql1xfbo
+                            id: ovvcmlm5qe12n
                 file:
                   type: string
                   x-stoplight:
-                    id: bj4isqarfkxnf
+                    id: he9gef9ujaak4
                   format: binary
     delete:
       summary: Delete card
@@ -528,7 +528,7 @@ paths:
         '204':
           $ref: '#/components/responses/delete-success'
       x-stoplight:
-        id: 1uee5j5k1thb7
+        id: fj92i4ghidpdg
       security:
         - authorization: []
   /api/v1/cards/attachments:
@@ -539,7 +539,7 @@ paths:
         '201':
           $ref: '#/components/responses/uploaded-photo'
       x-stoplight:
-        id: wjs30ujodcuig
+        id: iyot6n1cesham
       security:
         - authorization: []
       requestBody:
@@ -551,7 +551,7 @@ paths:
                 file:
                   type: string
                   x-stoplight:
-                    id: taly4752e69up
+                    id: e33v2r5nsj4rj
                   format: binary
   /api/v1/learnings/reviews:
     get:
@@ -562,7 +562,7 @@ paths:
           $ref: '#/components/responses/cards-list'
       operationId: get-api-v1-learnings-reviews
       x-stoplight:
-        id: q8abt0c8dauly
+        id: u24v8srtp51s8
       security:
         - authorization: []
   /api/v1/cards/learning:
@@ -580,25 +580,25 @@ paths:
                   success:
                     type: boolean
                     x-stoplight:
-                      id: dbw7bcxemcr56
+                      id: 7a8wl86t5h78x
                   data:
                     type: object
                     x-stoplight:
-                      id: t5uvfxxnegupa
+                      id: g8rdydqd9hmec
                     required:
                       - cards
                     properties:
                       cards:
                         type: array
                         x-stoplight:
-                          id: ufjjevuw825nm
+                          id: 60d721p14qz1y
                         items:
                           $ref: '#/components/schemas/card'
                 required:
                   - data
       operationId: get-api-v1-cards-learning
       x-stoplight:
-        id: 3ry765u8c3m1q
+        id: wj0wks1yewdyo
       security:
         - authorization: []
       parameters:
@@ -618,23 +618,23 @@ components:
           email: test@example.com
           role: ADMIN
       x-stoplight:
-        id: al7miur3xizkj
+        id: lnokhesse5a0i
       properties:
         id:
           type: integer
           description: Unique identifier for the given user.
           x-stoplight:
-            id: 1k4g5ebd2rax5
+            id: 6s27c0dh4nu0i
           readOnly: true
         email:
           type: string
           format: email
           x-stoplight:
-            id: e7qqguadr2qc7
+            id: ve0oc5sfrtdpf
           readOnly: true
         role:
           x-stoplight:
-            id: x9o9ilxrmsh0p
+            id: ojjqexe4a3t8p
           enum:
             - ADMIN
             - USER
@@ -646,68 +646,77 @@ components:
     deck-list-item:
       title: deck-list-item
       x-stoplight:
-        id: fy2lf86cjxgkr
+        id: 2cmcz75gdpm9y
       type: object
       properties:
         id:
           type: string
           x-stoplight:
-            id: fnyy7inn4owf5
+            id: 88f7dr7m61rqc
         name:
           type: string
           x-stoplight:
-            id: lb02shlqszb37
+            id: 6gr3n53h08gt6
         photo_url:
           type: string
           x-stoplight:
-            id: 2wz8jsa3vpds5
+            id: 13md269oc6inr
         has_unlearned_card:
           type: boolean
           x-stoplight:
-            id: w9g3lqvmajwew
+            id: 0mblsolo12iq2
         description:
           type: string
           x-stoplight:
-            id: 1xrz3d3z5iw2s
+            id: 60372tfynzxsw
+        created_at:
+          type: string
+          x-stoplight:
+            id: 4aj1i4huw4s2a
+          format: date-time
       required:
         - id
         - name
     deck-detail:
       title: deck-detail
       x-stoplight:
-        id: paj7uetnt4p77
+        id: 47xu41aqki6c2
       type: object
       properties:
         id:
           type: string
           x-stoplight:
-            id: was2kvd6qrchk
+            id: u9acu0dkejhlr
         name:
           type: string
           x-stoplight:
-            id: gnv3rz6hgcryc
-        photo:
+            id: tcu8dw294k60t
+        photo_url:
           type: string
           x-stoplight:
-            id: d8kd9cv1eilng
+            id: 0rvuimfvuch1f
+        description:
+          type: string
+          x-stoplight:
+            id: 3dw1twdyvoscc
     card:
       title: card
       x-stoplight:
-        id: 9fi1e52g44egf
+        id: sfs1ho1h93xqp
       type: object
       properties:
         id:
           type: string
           x-stoplight:
-            id: j063vvb3kphe5
+            id: uwbdg83sp4mjb
         deck_id:
           type: string
           x-stoplight:
-            id: mcpbpss12ou21
+            id: s8gszh3iddhgj
         content:
           type: object
           x-stoplight:
-            id: 75jfma4ujgion
+            id: ga53yyqffnrto
           required:
             - front
             - back
@@ -715,15 +724,15 @@ components:
             front:
               type: string
               x-stoplight:
-                id: slokeb9svceg1
+                id: 84rjssxowu27m
             back:
               type: string
               x-stoplight:
-                id: lugvmtlz1i9ne
+                id: 24apou45m1jlu
         fields:
           type: object
           x-stoplight:
-            id: 518pl76fplppb
+            id: jn9dlfse4nb63
           required:
             - word
             - translate
@@ -733,34 +742,34 @@ components:
             word:
               type: string
               x-stoplight:
-                id: hj443xo9fz2wu
+                id: xyhbipgwylfyx
             translate:
               type: string
               x-stoplight:
-                id: ns0r9borw917h
+                id: kt56eqrvyw7nj
             spelling:
               type: string
               x-stoplight:
-                id: gs9yyd1kshwys
+                id: hx148haklopjc
             example:
               type: object
               x-stoplight:
-                id: cz4poo4p24y13
+                id: dakgluxxzsojg
               required:
                 - sentence
               properties:
                 sentence:
                   type: string
                   x-stoplight:
-                    id: 3i2vzwecm64aa
+                    id: 6sic7xs5sj3wx
                 translate:
                   type: string
                   x-stoplight:
-                    id: 2vg92rjnwxvm4
+                    id: mx4jox8we378w
         audioUrl:
           type: string
           x-stoplight:
-            id: avxr7pryw2wuq
+            id: lnszwqyahh9cw
       required:
         - id
         - content
@@ -780,11 +789,11 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: nzps8at5qr6gz
+                  id: tq2r8c3p1vsmh
               data:
                 type: object
                 x-stoplight:
-                  id: ijqrpbuqtvdc2
+                  id: dxixwfij0w5dj
                 required:
                   - user
                 properties:
@@ -808,15 +817,15 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: b9xlez03img5v
+                  id: 2o5sw112zh9mc
               token:
                 type: string
                 x-stoplight:
-                  id: 4ji5husgh13qr
+                  id: gchbwhklnuq6a
               data:
                 type: object
                 x-stoplight:
-                  id: 22hhzrpajzyfj
+                  id: fu8jhd984gz2l
                 required:
                   - user
                 properties:
@@ -836,7 +845,7 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: yhm3whilgva9r
+                  id: 6475vkse7r0kn
             required:
               - success
     decks-list:
@@ -849,11 +858,11 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: atvyba2eh38vk
+                  id: 5sfamaxbi0cps
               data:
                 type: object
                 x-stoplight:
-                  id: 7mum72nzil42v
+                  id: 9wbq6vwb23hf0
                 required:
                   - decks
                   - page
@@ -862,17 +871,17 @@ components:
                   decks:
                     type: array
                     x-stoplight:
-                      id: nwm4p3e9gb20j
+                      id: 15igt4fx58m9q
                     items:
                       $ref: '#/components/schemas/deck-list-item'
                   page:
                     type: integer
                     x-stoplight:
-                      id: ukr7xe470rrs8
+                      id: 722obe2yoeizl
                   total_page:
                     type: integer
                     x-stoplight:
-                      id: t52n7sqcfpk7s
+                      id: lcgzl50ez0drs
             required:
               - success
               - data
@@ -886,14 +895,19 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: v326kxip8juoy
+                  id: 6xfrc4ogdcytp
               data:
                 type: object
                 x-stoplight:
-                  id: 013p8xscn2wux
+                  id: syisk2wi2m2eb
+                required:
+                  - deck
                 properties:
                   deck:
                     $ref: '#/components/schemas/deck-detail'
+            required:
+              - success
+              - data
         application/xml:
           schema:
             type: object
@@ -913,12 +927,12 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: fahog56lu8zhn
+                  id: p4heorwqrhh8p
                 default: false
               errors:
                 type: array
                 x-stoplight:
-                  id: jt1hkmmoh9drf
+                  id: qb8kzqgzgb6xj
                 items: {}
     cards-list:
       description: Example response
@@ -930,26 +944,26 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: qywkkfxsbuslz
+                  id: eutxfdw131o3v
               data:
                 type: object
                 x-stoplight:
-                  id: swty8jhqr2dbl
+                  id: dbnmgwwj4duk5
                 properties:
                   cards:
                     type: array
                     x-stoplight:
-                      id: 7py21h2654lc6
+                      id: gwtf9z5m0fiqw
                     items:
                       $ref: '#/components/schemas/card'
                   page:
                     type: integer
                     x-stoplight:
-                      id: cbvq4gbh9c4ji
+                      id: rawygjvecnivm
                   total_page:
                     type: integer
                     x-stoplight:
-                      id: rta95n5ohcfda
+                      id: 24peoop0yz6dg
         multipart/form-data:
           schema:
             type: object
@@ -968,11 +982,11 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: 8sge8atdth2cu
+                  id: irke2oagd96ii
               data:
                 type: object
                 x-stoplight:
-                  id: fil2n18bvhekn
+                  id: 2zmxyh6v6usu2
                 required:
                   - card
                 properties:
@@ -988,11 +1002,11 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: uehokdausxece
+                  id: xctxhqvpr5tnb
               data:
                 type: object
                 x-stoplight:
-                  id: 0o68ipjjqgewi
+                  id: de9z799ip87i6
                 properties:
                   card:
                     $ref: '#/components/schemas/card'
@@ -1006,16 +1020,16 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: eo50mt4wxersj
+                  id: bu0i6nw6etudy
               data:
                 type: object
                 x-stoplight:
-                  id: of5oz53v2rek4
+                  id: iirwwxtnn9o94
                 properties:
                   cards:
                     type: array
                     x-stoplight:
-                      id: zhy75mra663c7
+                      id: p4c7ocfg4ncwr
                     items:
                       $ref: '#/components/schemas/card'
     reviewing-cards:
@@ -1033,16 +1047,16 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: 6v69s42bryu98
+                  id: 512kwemqr53gi
               data:
                 type: object
                 x-stoplight:
-                  id: cccy6suoqg9ui
+                  id: xqtbqz09ktw04
                 properties:
                   cards:
                     type: array
                     x-stoplight:
-                      id: pci0dttixrv63
+                      id: 4ojup388i8jex
                     items:
                       $ref: '#/components/schemas/card'
     uploaded-photo:
@@ -1050,35 +1064,38 @@ components:
       content:
         application/json:
           schema:
-            properties:
-              id:
-                type: string
-        application/xml:
-          schema:
             type: object
             properties:
               success:
                 type: boolean
                 x-stoplight:
-                  id: c5uai8rs5a7yj
+                  id: 87oyg7b06fq6k
               data:
                 type: object
                 x-stoplight:
-                  id: ne4wye9c1bjip
+                  id: 7bk2j89cc9xvz
+                required:
+                  - attachment
                 properties:
                   attachment:
                     type: object
                     x-stoplight:
-                      id: taqpncedwtxap
+                      id: iker3fzp3tnf4
+                    required:
+                      - name
+                      - path
                     properties:
                       name:
                         type: string
                         x-stoplight:
-                          id: ef4h2hygcwh3w
+                          id: yi4wsjdwjqgtv
                       path:
                         type: string
                         x-stoplight:
-                          id: qc1w16pi37lbe
+                          id: q8l2zo9aq9izr
+            required:
+              - success
+              - data
     learnings:
       description: Example response
       content:
@@ -1089,16 +1106,16 @@ components:
               success:
                 type: boolean
                 x-stoplight:
-                  id: 1aeb7r0jyddqq
+                  id: 546ptye88jw0a
               data:
                 type: object
                 x-stoplight:
-                  id: udrzhrfekth9j
+                  id: szl712nij6ig4
                 properties:
                   word_levels:
                     type: object
                     x-stoplight:
-                      id: x5v5wxoovh9kc
+                      id: kkyowwmpa1eq8
                     required:
                       - level_1
                       - level_2
@@ -1109,35 +1126,35 @@ components:
                       level_1:
                         type: integer
                         x-stoplight:
-                          id: 6zrvp8cvrx70h
+                          id: 1mty5ryu7my7k
                       level_2:
                         type: integer
                         x-stoplight:
-                          id: 8tij33hjz17fb
+                          id: q67gaxli07lnp
                       level_3:
                         type: integer
                         x-stoplight:
-                          id: vmw946gunxzyw
+                          id: 0ocr96r90tq5n
                       level_4:
                         type: integer
                         x-stoplight:
-                          id: vu7qoyut5xlas
+                          id: h65xcosbtwd7p
                       level_5:
                         type: integer
                         x-stoplight:
-                          id: kajy6zvmdptsz
+                          id: qeglyigwfikx2
                   curr_review_count:
                     type: integer
                     x-stoplight:
-                      id: f1oguz2ml2l4w
+                      id: baw9l6b7bz671
                   wait_review_count:
                     type: integer
                     x-stoplight:
-                      id: bzcm6q9im8xxh
+                      id: u5gvlre4pz3qg
                   upcoming:
                     type: string
                     x-stoplight:
-                      id: y7yuuzde1rk47
+                      id: roubgo8rxrad5
                     format: date-time
                 required:
                   - word_levels

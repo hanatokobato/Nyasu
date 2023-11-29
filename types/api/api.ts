@@ -185,7 +185,13 @@ export interface DeckDetail {
      * @type {string}
      * @memberof DeckDetail
      */
-    'photo'?: string;
+    'photo_url'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DeckDetail
+     */
+    'description'?: string;
 }
 /**
  * 
@@ -223,6 +229,12 @@ export interface DeckListItem {
      * @memberof DeckListItem
      */
     'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DeckListItem
+     */
+    'created_at'?: string;
 }
 /**
  * 
@@ -697,13 +709,13 @@ export interface PostApiV1CardsAttachments201Response {
      * @type {boolean}
      * @memberof PostApiV1CardsAttachments201Response
      */
-    'success'?: boolean;
+    'success': boolean;
     /**
      * 
      * @type {PostApiV1CardsAttachments201ResponseData}
      * @memberof PostApiV1CardsAttachments201Response
      */
-    'data'?: PostApiV1CardsAttachments201ResponseData;
+    'data': PostApiV1CardsAttachments201ResponseData;
 }
 /**
  * 
@@ -716,7 +728,7 @@ export interface PostApiV1CardsAttachments201ResponseData {
      * @type {PostApiV1CardsAttachments201ResponseDataAttachment}
      * @memberof PostApiV1CardsAttachments201ResponseData
      */
-    'attachment'?: PostApiV1CardsAttachments201ResponseDataAttachment;
+    'attachment': PostApiV1CardsAttachments201ResponseDataAttachment;
 }
 /**
  * 
@@ -729,13 +741,13 @@ export interface PostApiV1CardsAttachments201ResponseDataAttachment {
      * @type {string}
      * @memberof PostApiV1CardsAttachments201ResponseDataAttachment
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof PostApiV1CardsAttachments201ResponseDataAttachment
      */
-    'path'?: string;
+    'path': string;
 }
 /**
  * 
@@ -855,13 +867,13 @@ export interface PostApiV1Decks200Response {
      * @type {boolean}
      * @memberof PostApiV1Decks200Response
      */
-    'success'?: boolean;
+    'success': boolean;
     /**
      * 
      * @type {PostApiV1Decks200ResponseData}
      * @memberof PostApiV1Decks200Response
      */
-    'data'?: PostApiV1Decks200ResponseData;
+    'data': PostApiV1Decks200ResponseData;
 }
 /**
  * 
@@ -874,7 +886,7 @@ export interface PostApiV1Decks200ResponseData {
      * @type {DeckDetail}
      * @memberof PostApiV1Decks200ResponseData
      */
-    'deck'?: DeckDetail;
+    'deck': DeckDetail;
 }
 /**
  * 
@@ -2060,7 +2072,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postApiV1CardsAttachments(file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApiV1AuthUser401Response>> {
+        async postApiV1CardsAttachments(file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostApiV1CardsAttachments201Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postApiV1CardsAttachments(file, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -2298,7 +2310,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postApiV1CardsAttachments(file?: File, options?: any): AxiosPromise<GetApiV1AuthUser401Response> {
+        postApiV1CardsAttachments(file?: File, options?: any): AxiosPromise<PostApiV1CardsAttachments201Response> {
             return localVarFp.postApiV1CardsAttachments(file, options).then((request) => request(axios, basePath));
         },
         /**
